@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Игорь Бабушкин](https://up.htmlacademy.ru/yii/1/user/185816).
-* Наставник: `Неизвестно`.
+* Наставник: [unknown](https://up.htmlacademy.ru/yii/1/user/unknown).
 
 ---
 
