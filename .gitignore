@@ -7,3 +7,5 @@
 *.sublime*
 Thumbs.db
 vendor
+composer.phar
+composer-setup.php
