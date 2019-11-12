@@ -20,6 +20,14 @@ CREATE TABLE `role`
     `updated_at` timestamp DEFAULT NOW()
 );
 
+CREATE TABLE `user_status`
+(
+    `id`         int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `status`       varchar(255) UNIQUE,
+    `created_at` timestamp DEFAULT NOW(),
+    `updated_at` timestamp DEFAULT NOW()
+);
+
 CREATE TABLE `user`
 (
     `id`         int PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -27,6 +35,7 @@ CREATE TABLE `user`
     `email`      varchar(255) UNIQUE,
     `role_id`    int,
     `city_id`    int,
+    `user_status_id` int,
     `date_birth` timestamp NOT NULL,
     `about`      text,
     `password`   varchar(255) NOT NULL,
@@ -36,7 +45,8 @@ CREATE TABLE `user`
     `created_at` timestamp DEFAULT NOW(),
     `updated_at` timestamp DEFAULT NOW(),
     FOREIGN KEY (role_id) REFERENCES role(id),
-    FOREIGN KEY (city_id) REFERENCES city(id)
+    FOREIGN KEY (city_id) REFERENCES city(id),
+    FOREIGN KEY (user_status_id) REFERENCES user_status(id)
 );
 
 CREATE TABLE `category`
@@ -69,6 +79,7 @@ CREATE TABLE `response`
 (
     `id`         int PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `user_id`   int,
+    `amount`    int,
     `created_at` timestamp DEFAULT NOW(),
     `updated_at` timestamp DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES user(id)
@@ -86,6 +97,7 @@ CREATE TABLE `task`
     `executor_id`   int,
     `comment_id`   int,
     `response_id`  int,
+    `amount`       int,
     `rating`        int,
     `status_id`    int,
     `created_at` timestamp DEFAULT NOW(),
