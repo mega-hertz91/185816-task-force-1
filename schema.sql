@@ -49,6 +49,18 @@ CREATE TABLE `user`
     FOREIGN KEY (user_status_id) REFERENCES user_status(id)
 );
 
+CREATE TABLE `message`
+(
+    `id`         int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `sender`      int,
+    `recipient`   int,
+    `message`     text,
+    `created_at` timestamp DEFAULT NOW(),
+    `updated_at` timestamp DEFAULT NOW(),
+    FOREIGN KEY (sender) REFERENCES user(id),
+    FOREIGN KEY (recipient) REFERENCES user(id)
+);
+
 CREATE TABLE `category`
 (
     `id`            int PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -109,6 +121,5 @@ CREATE TABLE `task`
     FOREIGN KEY (response_id) REFERENCES response(id),
     FOREIGN KEY (executor_id) REFERENCES user(id)
 );
-
 
 /* https://dbdiagram.io/d/5dbc1917edf08a25543d6630 */
