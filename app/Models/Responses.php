@@ -1,8 +1,10 @@
 <?php
 
+
 namespace Models;
 
-class Users
+
+class Responses
 {
 
 }
