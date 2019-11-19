@@ -3,6 +3,10 @@
     "psr-4": {
       "Services\\": "app/Services/",
       "Models\\": "app/Models/"
+    },
+    "require" : {
+      "php" : "^5.5 || ^7.0",
+      "ext-mysqli": "*"
     }
   }
 }

@@ -1,10 +1,12 @@
 <?php
 
+
 namespace Models;
 
-class Users extends Model
+
+class Roles extends Model
 {
-    protected $name = 'user';
+    protected $name = 'role';
 
     public function __construct()
     {
@@ -15,7 +17,11 @@ class Users extends Model
         return parent::getTable($this->name);
     }
 
-    public function getUser($id) {
+    public function getRole($id) {
         return parent::getID($this->name, $id);
+    }
+
+    public function getRoleByUser($user_id) {
+
     }
 }

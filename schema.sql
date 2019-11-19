@@ -16,6 +16,7 @@ CREATE TABLE `role`
 (
     `id`         int PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `role`       varchar(255) UNIQUE,
+    `actions`    text,
     `created_at` timestamp DEFAULT NOW(),
     `updated_at` timestamp DEFAULT NOW()
 );

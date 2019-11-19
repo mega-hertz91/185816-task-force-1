@@ -2,163 +2,52 @@
 
 namespace Services;
 
+use Models\Roles;
 use Models\Users;
 use Models\Tasks;
 use Models\Responses;
 
 abstract class AvailableActions
 {
-    protected $actions = ['new', 'cancel', 'work', 'complete', 'failed'];
+    protected $statuses = [
+        'public' => ['work, cancel'],
+        'cancel' => null,
+        'work' => ['complete, failed'],
+        'complete' => null,
+        'failed' => null
+    ];
 
     abstract protected function getAction();
     abstract protected function checkPermission($user);
     abstract protected function getName();
 
-    public function getUserActions($id, $role) {
-        $user = Users::find($id);
-        $response = '';
+    public function checkPermissionUser($id, $check_roles) {
+        $users = new Users();
+        $roles = new Roles();
+        $user = $users->getUser($id);
+        $role = $roles->getRole($user->id);
 
-        if(in_array($user->role, $role) === true) {
-            $response = $user->actions; // Вывод из модели действий
+        $result = '';
+
+        if(in_array($role->role, $check_roles) === true) {
+            $result = "У рользователя: " . $user->full_name . " есть права на публикацию." . " Доступные действия: " . $role->actions;
         } else {
-            $response = $user->name . 'у вас не достаточно прав';
+            $result = "У рользователя: " . $user->full_name . " не достаточно прав" ;
         }
 
-        return $response;
+        return $result;
     }
-}
 
-
-class NewAction extends AvailableActions
-{
-    const NAME = 'new';
-    protected $role = ['admin', 'customer'];
-
-    public function getName()
+    public function nextStatus($status)
     {
-        return self::NAME;
-    }
+        $result = '';
 
-    public function getAction()
-    {
-        return lcfirst(self::NAME) . 'Action';
-    }
-
-    public function checkPermission($id)
-    {
-        return $this->getUserActions($id, $this->role);
-    }
-}
-
-class CancelAction extends AvailableActions
-{
-    protected $name = 'cancel';
-    protected $role = ['admin', 'customer'];
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getAction()
-    {
-        return lcfirst($this->name) . 'Action';
-    }
-
-    public function checkPermission($id)
-    {
-        return $this->getUserActions($id, $this->role);
-    }
-}
-
-class WorkAction extends AvailableActions
-{
-    protected $name = 'cancel';
-    protected $role = ['admin', 'customer'];
-    protected $task;
-    protected $customer;
-    protected $executor;
-
-    public function __construct(Tasks $task)
-    {
-        $this->task = $task;
-        $this->customer = $task->user_id;
-        $this->executor = $task->executor_id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getAction()
-    {
-        return lcfirst($this->name) . 'Action';
-    }
-
-    public function checkPermission($id)
-    {
-        return $this->getUserActions($id, $this->role);
-    }
-
-    public function complete($id) {
-        if($this->executor === $id) {
-            $this->task->status = $this->name;
-        } else {
-            return false;
+        if(array_key_exists($status, $this->statuses) === true) {
+            $result = $this->statuses[$status];
+        }  else {
+            $result = 'Статуса ' . $status . ' не найдено';
         }
+
+        return $result;
     }
 }
-
-class CompleteAction extends AvailableActions
-{
-    protected $name = 'complete';
-    protected $role = ['admin', 'customer'];
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getAction()
-    {
-        return lcfirst($this->name) . 'Action';
-    }
-
-    public function checkPermission($id)
-    {
-        return $this->getUserActions($id, $this->role);
-    }
-}
-
-class FailedAction extends AvailableActions
-{
-    protected $name = 'failed';
-    protected $role = ['admin', 'executor'];
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getAction()
-    {
-        return lcfirst($this->name) . 'Action';
-    }
-
-    public function checkPermission($id)
-    {
-        return $this->getUserActions($id, $this->role);
-    }
-}
-
-// Написать абстарктный класс-действие
-
-// Реализовать от абстрактного класса наследников по общему количеству действий
-
-
-// Новое Задание опубликовано, исполнитель ещё не найден
-// Отменено	Заказчик отменил задание
-// В работе	Заказчик выбрал исполнителя для задания
-// Выполнено Заказчик отметил задание как выполненное
-// Провалено Исполнитель отказался от выполнения задания
