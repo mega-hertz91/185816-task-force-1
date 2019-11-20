@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Services;
+namespace App\Services;
 
 
 class CompleteAction extends AvailableActions

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Models;
+namespace App\Models;
 
 
 class Roles extends Model

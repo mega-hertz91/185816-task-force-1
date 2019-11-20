@@ -1,11 +1,11 @@
 <?php
 
-namespace Services;
+namespace App\Services;
 
-use Models\Roles;
-use Models\Users;
-use Models\Tasks;
-use Models\Responses;
+use App\Models\Roles;
+use App\Models\Users;
+use App\Models\Tasks;
+use App\Models\Responses;
 
 abstract class AvailableActions
 {
