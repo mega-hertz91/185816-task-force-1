@@ -6,32 +6,27 @@ namespace App\Services;
 
 class PublicAction extends AvailableActions
 {
-    protected $name = 'public';
     protected $roles = ['admin', 'customer'];
+    protected $statuses = [self::WORK, self::CANCEL];
 
     public function getAction()
     {
-        // TODO: Implement getAction() method.
-
-        return self::class;
+        return ucfirst(self::PUBLIC) . 'Action';
     }
 
     public function getName()
     {
-        // TODO: Implement getName() method.
-
-        return $this->name;
+        return self::PUBLIC;
     }
 
-    public function checkPermission($id)
+    public function checkPermission($user)
     {
-        // TODO: Implement checkPermission() method.
-
-        return $this->checkPermissionUser($id, $this->roles);
-
+        return parent::checkPermissionUser($user, $this->roles);
     }
 
-    public function nextAction() {
-      return parent::nextStatus($this->name);
+    public function getActions($user) {
+        $response = parent::getAvailableActions($user, $this->roles, $this->statuses);
+
+        return 'Текущий класс: ' .$this->getAction() . "<br><br>" . $response;
     }
 }

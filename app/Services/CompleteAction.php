@@ -6,32 +6,26 @@ namespace App\Services;
 
 class CompleteAction extends AvailableActions
 {
-    protected $name = 'complete';
     protected $roles = ['admin', 'executor'];
 
     public function getAction()
     {
-        // TODO: Implement getAction() method.
-
-        return self::class;
+        return ucfirst(self::COMPLETE) . 'Action';
     }
 
     public function getName()
     {
-        // TODO: Implement getName() method.
-
-        return $this->name;
+        return self::COMPLETE;
     }
 
-    public function checkPermission($id)
+    public function checkPermission($user)
     {
-        // TODO: Implement checkPermission() method.
-
-        return $this->checkPermissionUser($id, $this->roles);
-
+       return parent::checkPermissionUser($user, $this->roles);
     }
 
-    public function nextAction() {
-        return parent::nextStatus($this->name);
+    public function getActions($user) {
+        $response = parent::getAvailableActions($user, $this->roles);
+
+        return 'Текущий класс: ' .$this->getAction() . "<br><br>" . $response;
     }
 }

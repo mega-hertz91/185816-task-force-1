@@ -2,50 +2,50 @@
 
 namespace App\Services;
 
-use App\Models\Roles;
-use App\Models\Users;
-use App\Models\Tasks;
-use App\Models\Responses;
-
 abstract class AvailableActions
 {
-    protected $statuses = [
-        'public' => ['work, cancel'],
-        'cancel' => null,
-        'work' => ['complete, failed'],
-        'complete' => null,
-        'failed' => null
-    ];
+    const WORK = 'work';
+    const COMPLETE = 'complete';
+    const FAILED = 'failed';
+    const CANCEL = 'cancel';
+    const PUBLIC = 'public';
 
     abstract protected function getAction();
     abstract protected function checkPermission($user);
     abstract protected function getName();
 
-    public function checkPermissionUser($id, $check_roles) {
-        $users = new Users();
-        $roles = new Roles();
-        $user = $users->getUser($id);
-        $role = $roles->getRole($user->id);
-
+    protected function checkPermissionUser($user, $roles)
+    {
         $result = '';
 
-        if(in_array($role->role, $check_roles) === true) {
-            $result = "У рользователя: " . $user->full_name . " есть права на публикацию." . " Доступные действия: " . $role->actions;
+        if(in_array($user->role, $roles) === true) {
+            $result = true; //'Пользователь <b style="color: #0eeb15">' . $user->name . '</b> имеет права доступа';
         } else {
-            $result = "У рользователя: " . $user->full_name . " не достаточно прав" ;
+            $result = false; // 'У пользователя <b style="color: #eb0e0e">' . $user->name . '</b> нет прав';
         }
 
         return $result;
     }
 
-    public function nextStatus($status)
-    {
+    protected function getAvailableActions($user, $roles, array $statuses = ['null']) {
         $result = '';
 
-        if(array_key_exists($status, $this->statuses) === true) {
-            $result = $this->statuses[$status];
-        }  else {
-            $result = 'Статуса ' . $status . ' не найдено';
+        if($this->checkPermissionUser($user, $roles) === true) {
+            $result = 'Для пользователя ' . $user->name . ' с ролью ' . $user->role .  ' доступны действия: ' . implode(', ', $statuses);
+        } else {
+            $result = 'Для пользователя ' . $user->name . ' с ролью ' . $user->role . ' запрещены действия';
+        }
+
+        return  $result;
+    }
+
+    public static function nextStatus($class) {
+        $target = new $class;
+
+        if(isset($target->statuses)) {
+            $result = 'Текущий класс: ' . $target->getAction() . '<br>' . 'Следующий статус: ' . implode(', ', $target->statuses);
+        } else {
+            $result = 'Текущий класс: ' . $target->getAction() . '<br>' . 'Доступных действий нет';
         }
 
         return $result;
