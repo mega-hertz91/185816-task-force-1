@@ -6,16 +6,16 @@ namespace App\Services;
 
 class FailedAction extends AvailableActions
 {
-    protected $roles = ['admin', 'executor'];
+    protected $roles = [self::ADMIN_ROLE, self::EXECUTOR_ROLE];
 
     public function getAction()
     {
-        return ucfirst(self::FAILED) . 'Action';
+        return $this->getClass(__CLASS__);
     }
 
     public function getName()
     {
-        return self::FAILED;
+        return __CLASS__;
     }
 
     public function checkPermission($user)
@@ -23,9 +23,10 @@ class FailedAction extends AvailableActions
         return parent::checkPermissionUser($user, $this->roles);
     }
 
-    public function getActions($user) {
+    public function getActions($user)
+    {
         $response = parent::getAvailableActions($user, $this->roles);
 
-        return 'Текущий класс: ' .$this->getAction() . "<br><br>" . $response;
+        return 'Текущий класс: ' . $this->getAction() . "<br><br>" . $response;
     }
 }

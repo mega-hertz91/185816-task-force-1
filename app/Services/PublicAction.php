@@ -6,17 +6,17 @@ namespace App\Services;
 
 class PublicAction extends AvailableActions
 {
-    protected $roles = ['admin', 'customer'];
+    protected $roles = [self::ADMIN_ROLE, self::CUSTOMER_ROLE];
     protected $statuses = [self::WORK, self::CANCEL];
 
     public function getAction()
     {
-        return ucfirst(self::PUBLIC) . 'Action';
+        return $this->getClass(__CLASS__);
     }
 
     public function getName()
     {
-        return self::PUBLIC;
+        return __CLASS__;
     }
 
     public function checkPermission($user)
@@ -24,9 +24,10 @@ class PublicAction extends AvailableActions
         return parent::checkPermissionUser($user, $this->roles);
     }
 
-    public function getActions($user) {
+    public function getActions($user)
+    {
         $response = parent::getAvailableActions($user, $this->roles, $this->statuses);
 
-        return 'Текущий класс: ' .$this->getAction() . "<br><br>" . $response;
+        return 'Текущий класс: ' . $this->getAction() . "<br><br>" . $response;
     }
 }

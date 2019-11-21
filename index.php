@@ -9,8 +9,6 @@ use App\Services\PublicAction;
 use App\Services\FailedAction;
 use App\Services\CancelAction;
 
-$names = ['PublicAction', 'FailedAction', 'WorkAction', 'CancelAction', ];
-
 $user = new \stdClass();
 $user->role = 'customer';
 $user->name = 'Jeffry Jones';
@@ -32,11 +30,9 @@ foreach ($actions as $action) {
     echo '<hr>';
 }
 
-$a = 'PublicAction';
-
 /*
   Проверка для следующего статуса и доступных действий
 */
 
-  print_r(AvailableActions::nextStatus(PublicAction::class));
+print_r(AvailableActions::nextStatus(FailedAction::class));
 

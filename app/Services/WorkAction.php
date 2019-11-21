@@ -5,18 +5,17 @@ namespace App\Services;
 
 class WorkAction extends AvailableActions
 {
-    protected $name = 'work';
-    protected $roles = ['admin', 'customer'];
+    protected $roles = [self::ADMIN_ROLE, self::CUSTOMER_ROLE];
     protected $statuses = [self::FAILED, self::COMPLETE];
 
     public function getAction()
     {
-        return ucfirst(self::WORK) . 'Action';
+        return $this->getClass(__CLASS__);
     }
 
     public function getName()
     {
-        return self::WORK;
+        return __CLASS__;
     }
 
     public function checkPermission($user)
@@ -24,9 +23,10 @@ class WorkAction extends AvailableActions
         return parent::checkPermissionUser($user, $this->roles);
     }
 
-    public function getActions($user) {
+    public function getActions($user)
+    {
         $response = parent::getAvailableActions($user, $this->roles, $this->statuses);
 
-        return 'Текущий класс: ' .$this->getAction() . "<br><br>" . $response;
+        return 'Текущий класс: ' . $this->getAction() . "<br><br>" . $response;
     }
 }
