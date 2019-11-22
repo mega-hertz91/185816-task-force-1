@@ -1,7 +1,18 @@
 {
-  "autoload": {
-    "psr-4": {
-      "task-force\\": "app/"
+    "name": "vagrant/task-force",
+    "authors": [
+        {
+            "name": "Igor Babushkin",
+            "email": "mega-hertz@bk.ru"
+        }
+    ],
+    "require": {
+      "php": "^7.1 || ^7.3",
+      "ext-mysqli": "*"
+    },
+    "autoload": {
+      "psr-4": {
+        "App\\": "app/"
+      }
     }
-  }
 }
