@@ -1,16 +1,18 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 use App\Services\CompleteAction;
 use App\Services\AvailableActions;
 use App\Services\WorkAction;
 use App\Services\PublicAction;
 use App\Services\FailedAction;
 use App\Services\CancelAction;
+use App\Exceptions\StatusException;
+
+error_reporting(E_ALL);
+require_once __DIR__ . '/vendor/autoload.php';
 
 $user = new \stdClass();
-$user->role = 'customer';
+$user->role = 'gfhgf';
 $user->name = 'Jeffry Jones';
 
 $action = new FailedAction();
@@ -34,5 +36,8 @@ foreach ($actions as $action) {
   Проверка для следующего статуса и доступных действий
 */
 
-print_r(AvailableActions::nextStatus(FailedAction::class));
-
+try {
+    print_r(AvailableActions::nextStatus('asda'));
+} catch (StatusException $e) {
+    echo 'Такого класса не существует';
+}

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\RoleException;
+use App\Exceptions\StatusException;
+
 abstract class AvailableActions
 {
     const WORK = 'work';
@@ -19,38 +22,61 @@ abstract class AvailableActions
 
     abstract protected function getName();
 
-    protected function getClass($class)
+    protected function getClass(string $class): string
     {
         $result = explode('\\', $class);
         return end($result);
     }
 
-    protected function checkPermissionUser($user, $roles)
+    private function getRoles(): array
     {
-        return in_array($user->role, $roles);
+        $roles = [self::ADMIN_ROLE, self::CUSTOMER_ROLE, self::EXECUTOR_ROLE];
+
+        return $roles;
     }
 
-    protected function getAvailableActions($user, $roles, array $statuses = ['null'])
+    protected function checkPermissionUser($user, array $roles): bool
+    {
+        if (in_array($user->role, $roles)) {
+            return in_array($user->role, $roles);
+        } else {
+            throw new RoleException();
+        }
+    }
+
+    protected function getAvailableActions($user, $roles, array $statuses = ['null']): string
     {
         $result = '';
 
-        if ($this->checkPermissionUser($user, $roles) === true) {
-            $result = 'Для пользователя ' . $user->name . ' с ролью ' . $user->role . ' доступны действия: ' . implode(', ', $statuses);
-        } else {
-            $result = 'Для пользователя ' . $user->name . ' с ролью ' . $user->role . ' запрещены действия';
-        }
+        try {
+            if ($this->checkPermissionUser($user, $roles) === true) {
+                $result = 'Для пользователя ' . $user->name . ' с ролью ' . $user->role . ' доступны действия: ' . implode(', ', $statuses);
+            } else {
+                $result = 'Для пользователя ' . $user->name . ' с ролью ' . $user->role . ' запрещены действия';
+            }
 
+
+        } catch (RoleException $e) {
+            echo 'Такой роли не существует <br>';
+        }
         return $result;
     }
 
-    public static function nextStatus($class)
+    public static function nextStatus(string $class): string
     {
-        $target = new $class;
+        $result = '';
 
-        if (isset($target->statuses)) {
-            $result = 'Текущий класс: ' . $target->getAction() . '<br>' . 'Следующий статус: ' . implode(', ', $target->statuses);
+        if (class_exists($class)) {
+
+            $target  = new $class;
+
+            if (isset($target->statuses)) {
+                $result = 'Текущий класс: ' . $target->getAction() . '<br>' . 'Следующий статус: ' . implode(', ', $target->statuses);
+            } else {
+                $result = 'Текущий класс: ' . $target->getAction() . '<br>' . 'Доступных действий нет';
+            }
         } else {
-            $result = 'Текущий класс: ' . $target->getAction() . '<br>' . 'Доступных действий нет';
+            throw new StatusException();
         }
 
         return $result;
