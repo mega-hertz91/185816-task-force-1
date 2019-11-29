@@ -7,6 +7,7 @@ use App\Services\PublicAction;
 use App\Services\FailedAction;
 use App\Services\CancelAction;
 use App\Exceptions\StatusException;
+use App\Services\ParserCSV;
 
 error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
@@ -41,3 +42,12 @@ try {
 } catch (StatusException $e) {
     echo 'Такого класса не существует';
 }
+
+echo "<br><br>";
+
+$file = __DIR__ . '/data/users.csv';
+
+$parse = new ParserCSV($file);
+var_dump($parse->getArray());
+
+
