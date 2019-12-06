@@ -64,8 +64,9 @@ CREATE TABLE `message`
 
 CREATE TABLE `category`
 (
-    `id`            int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `id` int PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `category_name` varchar(255),
+    `tag` varchar(255),
     `created_at` timestamp DEFAULT NOW(),
     `updated_at` timestamp DEFAULT NOW()
 );
