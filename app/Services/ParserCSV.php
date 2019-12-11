@@ -9,6 +9,18 @@ class ParserCSV extends SplFileObject
 {
     public $header;
 
+    private function generateQuery(string $str_csv): string
+    {
+        $values = str_getcsv($str_csv);
+        $query = [];
+
+        foreach ($values as $value) {
+            array_push($query, "'" . $value . "'");
+        }
+
+        return implode(', ', $query);
+    }
+
     public function getArray(): array
     {
         $data = [];
@@ -45,6 +57,8 @@ class ParserCSV extends SplFileObject
                if ($count === 0) {
                    $into = $elem;
                } else {
+                   $values = $this->generateQuery($values);
+
                    $data[] = "INSERT INTO $table ($into) VALUES ($values)";
                }
 
