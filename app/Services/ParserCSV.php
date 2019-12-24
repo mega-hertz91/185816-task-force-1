@@ -5,67 +5,80 @@ namespace App\Services;
 
 use SplFileObject;
 
-class ParserCSV extends SplFileObject
+abstract class ParserCSV
 {
-    public $header;
+    private $header;
+    private $data = [];
 
-    private function generateQuery(string $str_csv): string
+    public function __construct($file)
     {
-        $values = str_getcsv($str_csv);
-        $query = [];
+        $file = new SplFileObject($file);
 
-        foreach ($values as $value) {
-            array_push($query, "'" . $value . "'");
+        foreach ($file as $str) {
+            if (!$file->eof()) {
+                array_push($this->data, $str);
+            }
         }
 
-        return implode(', ', $query);
+        $this->header = array_shift($this->data);
     }
 
-    public function getArray(): array
+    protected function toString(array $arr): string
     {
-        $data = [];
-        $current = 0;
+        $str = fputcsv($arr);
 
-        foreach ($this as $key) {
-            if (!$this->eof()) {
-                if($current === 0) {
-                    $this->header = $key;
-                } else {
-                    array_push($data, str_getcsv($key));
-                }
+        return $str;
+    }
 
-                $current++;
+    protected function toArray(string $str): array
+    {
+        $arr = str_getcsv($str);
+
+        return $arr;
+    }
+
+    protected function toQuotes()
+    {
+        $result = [];
+
+        foreach ($this->data as $key) {
+            $key = $this->toArray($key);
+            $arr = [];
+
+            foreach($key as $elem => $value) {
+
+                $value = '"' . $value . '"';
+
+                $arr += [$elem => $value];
             }
 
+            array_push($result, $arr);
         }
 
-        return $data;
+        return $result;
     }
 
-    public function getSQL(): void
+    public function getData(): array
     {
-        $into = '';
-        $count = 0;
-        $data = [];
+        return $this->data;
+    }
 
-        $table = explode('.', $this->getFilename());
-        $table = array_shift($table);
+    public function getHeader(): string
+    {
+        return $this->header;
+    }
 
-        foreach ($this as $elem) {
-           if(!$this->eof()) {
-               $values = $elem;
-               if ($count === 0) {
-                   $into = $elem;
-               } else {
-                   $values = $this->generateQuery($values);
+    public function test()
+    {
+        $arr = [];
 
-                   $data[] = "INSERT INTO $table ($into) VALUES ($values)";
-               }
-
-               $count++;
-           }
+        foreach ($this->data as $elem) {
+            $elem = $this->toArray($elem);
+            array_push($arr, $elem);
         }
 
-        file_put_contents("$table.sql", implode(';', $data));
+        return $arr;
     }
+
+    abstract function getSQL();
 }
