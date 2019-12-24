@@ -1,6 +1,12 @@
 <?php
 
 use App\Services\SeedUser;
+use App\Services\SeedCity;
+use App\Services\SeedCategory;
+use App\Services\SeedUserStatus;
+use App\Services\SeedRole;
+use App\Services\SeedStatus;
+use App\Services\SeedResponse;
 
 error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
@@ -12,19 +18,8 @@ $user->name = 'Jeffry Jones';
 
 echo "<br><br>";
 
-$files = [
-    '/data/users.csv',
-    '/data/categories.csv',
-    '/data/cities.csv',
-    '/data/opinions.csv',
-    '/data/profiles.csv',
-    '/data/replies.csv',
-    '/data/tasks.csv',
-];
+$file = __DIR__ . '/data/responses.csv';
 
-$file = __DIR__ . '/data/users.csv';
-
-$csv = new SeedUser($file);
+$csv = new SeedResponse($file);
 echo "<pre>";
 print_r($csv->getSQL());
-

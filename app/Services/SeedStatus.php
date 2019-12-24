@@ -3,14 +3,14 @@
 
 namespace App\Services;
 
-class SeedUser extends ParserCSV
+
+class SeedStatus extends ParserCSV
 {
-    protected $keys = ['email', 'full_name', 'password', 'created_at', 'role_id', 'city_id', 'user_status_id'];
-    protected $table = 'user';
+    protected $keys = ['name'];
+    protected $table = 'status';
 
     public function getSQL()
     {
-
         $results = [];
 
         // TODO: Implement getSQL() method.
@@ -18,12 +18,11 @@ class SeedUser extends ParserCSV
         foreach ($this->toQuotes() as $arr) {
             $values = $this->toString($arr);
             $keys = $this->toString($this->keys);
-            $query = "INSERT INTO $this->table($keys) VALUES($values, 1, 1, 1);";
+            $query = "INSERT INTO $this->table($keys) VALUES($values);";
 
             array_push($results ,$query);
         }
 
-      $this->save($results);
-
+       $this->save($results);
     }
 }

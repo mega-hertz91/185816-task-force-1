@@ -9,6 +9,7 @@ abstract class ParserCSV
 {
     private $header;
     private $data = [];
+    private $file_extension = '.sql';
 
     public function __construct($file)
     {
@@ -25,7 +26,7 @@ abstract class ParserCSV
 
     protected function toString(array $arr): string
     {
-        $str = fputcsv($arr);
+        $str = implode(',', $arr);
 
         return $str;
     }
@@ -47,7 +48,7 @@ abstract class ParserCSV
 
             foreach($key as $elem => $value) {
 
-                $value = '"' . $value . '"';
+                $value = "'" . $value . "'";
 
                 $arr += [$elem => $value];
             }
@@ -58,6 +59,14 @@ abstract class ParserCSV
         return $result;
     }
 
+    protected function getRandomID(int $min, int $max): int {
+        return random_int($min, $max);
+    }
+
+    protected function save(array $content): void {
+        file_put_contents('DataSeed' . $this->file_extension, $content, FILE_APPEND);
+    }
+
     public function getData(): array
     {
         return $this->data;
@@ -66,18 +75,6 @@ abstract class ParserCSV
     public function getHeader(): string
     {
         return $this->header;
-    }
-
-    public function test()
-    {
-        $arr = [];
-
-        foreach ($this->data as $elem) {
-            $elem = $this->toArray($elem);
-            array_push($arr, $elem);
-        }
-
-        return $arr;
     }
 
     abstract function getSQL();
