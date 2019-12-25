@@ -1,13 +1,5 @@
 <?php
 
-use App\Services\SeedUser;
-use App\Services\SeedCity;
-use App\Services\SeedCategory;
-use App\Services\SeedUserStatus;
-use App\Services\SeedRole;
-use App\Services\SeedStatus;
-use App\Services\SeedResponse;
-
 error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -15,11 +7,32 @@ $user = new \stdClass();
 $user->role = 'gfhgf';
 $user->name = 'Jeffry Jones';
 
+$files = [
+    '/data/categories.csv' => 'Category',
+    '/data/cities.csv' => 'City',
+    '/data/roles.csv' => 'Role',
+    '/data/user-status.csv' => 'UserStatus',
+    '/data/statuses.csv' => 'Status',
+    '/data/users.csv' => 'User',
+    '/data/tasks.csv' => 'Task',
+    '/data/comments.csv' => 'Comment',
+    '/data/messages.csv' => 'Message',
+    '/data/responses.csv' => 'Response'
+];
 
 echo "<br><br>";
 
-$file = __DIR__ . '/data/responses.csv';
+foreach ($files as $file => $class) {
+    $file = __DIR__ . $file;
+    $class = "App\Services\Seed$class";
 
-$csv = new SeedResponse($file);
-echo "<pre>";
-print_r($csv->getSQL());
+    try {
+        echo $class . " success seed class <br>";
+
+        $csv = new $class($file);
+        $csv->getSQL();
+    } catch (Exception $e) {
+        echo "<br>";
+       print_r("<p style='margin: 0; border: 1px solid crimson; padding: 2px 5px; display: inline-block'>".$e->getMessage() . "</p><br>");
+    }
+}

@@ -18,7 +18,7 @@ class SeedUser extends ParserCSV
         foreach ($this->toQuotes() as $arr) {
             $values = $this->toString($arr);
             $keys = $this->toString($this->keys);
-            $query = "INSERT INTO $this->table($keys) VALUES($values, 1, 1, 1);";
+            $query = "INSERT INTO $this->table($keys) VALUES($values, {$this->getRandomID(1, 3)}, {$this->getRandomID(1, 200)}, {$this->getRandomID(1, 3)});";
 
             array_push($results ,$query);
         }

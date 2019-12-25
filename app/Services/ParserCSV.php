@@ -13,15 +13,19 @@ abstract class ParserCSV
 
     public function __construct($file)
     {
-        $file = new SplFileObject($file);
+        if($file) {
+            $file = new SplFileObject($file);
 
-        foreach ($file as $str) {
-            if (!$file->eof()) {
-                array_push($this->data, $str);
+            foreach ($file as $str) {
+                if (!$file->eof()) {
+                    array_push($this->data, $str);
+                }
             }
-        }
 
-        $this->header = array_shift($this->data);
+            $this->header = array_shift($this->data);
+        } else {
+            throw new Exception('Такого файла не существует');
+        }
     }
 
     protected function toString(array $arr): string

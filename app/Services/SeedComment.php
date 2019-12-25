@@ -4,10 +4,10 @@
 namespace App\Services;
 
 
-class SeedResponse extends ParserCSV
+class SeedComment extends ParserCSV
 {
-    protected $keys = ['user_id, amount, task_id'];
-    protected $table = 'response';
+    protected $keys = ['user_id, description, task_id'];
+    protected $table = 'comment';
 
     public function getSQL()
     {
