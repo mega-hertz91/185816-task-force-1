@@ -1,13 +1,5 @@
 <?php
 
-use App\Services\CompleteAction;
-use App\Services\AvailableActions;
-use App\Services\WorkAction;
-use App\Services\PublicAction;
-use App\Services\FailedAction;
-use App\Services\CancelAction;
-use App\Exceptions\StatusException;
-
 error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -15,29 +7,32 @@ $user = new \stdClass();
 $user->role = 'gfhgf';
 $user->name = 'Jeffry Jones';
 
-$action = new FailedAction();
-$action1 = new PublicAction();
-$action2 = new WorkAction();
-$action3 = new CompleteAction();
-$action4 = new CancelAction();
-$action5 = new FailedAction();
+$files = [
+    '/data/categories.csv' => 'Category',
+    '/data/cities.csv' => 'City',
+    '/data/roles.csv' => 'Role',
+    '/data/user-status.csv' => 'UserStatus',
+    '/data/statuses.csv' => 'Status',
+    '/data/users.csv' => 'User',
+    '/data/tasks.csv' => 'Task',
+    '/data/comments.csv' => 'Comment',
+    '/data/messages.csv' => 'Message',
+    '/data/responses.csv' => 'Response'
+];
 
-$actions = [$action, $action1, $action2, $action3, $action4, $action5];
+echo "<br><br>";
 
-foreach ($actions as $action) {
-    echo '<pre>';
-    print 'Внутреннее имя: '. $action->getName() . '<br>';
-    print 'Имя действия: ' . $action->getAction() . '<br>';
-    print $action->getActions($user) . '<br>';
-    echo '<hr>';
-}
+foreach ($files as $file => $class) {
+    $file = __DIR__ . $file;
+    $class = "App\Services\Seed$class";
 
-/*
-  Проверка для следующего статуса и доступных действий
-*/
+    try {
+        echo $class . " success seed class <br>";
 
-try {
-    print_r(AvailableActions::nextStatus('asda'));
-} catch (StatusException $e) {
-    echo 'Такого класса не существует';
+        $csv = new $class($file);
+        $csv->getSQL();
+    } catch (Exception $e) {
+        echo "<br>";
+       print_r("<p style='margin: 0; border: 1px solid crimson; padding: 2px 5px; display: inline-block'>".$e->getMessage() . "</p><br>");
+    }
 }
