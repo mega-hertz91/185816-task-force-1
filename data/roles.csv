@@ -1,0 +1,4 @@
+role, actions
+admin, "work, complete, failed, cancel, public"
+customer, "work, cancel, public"
+executor, "failed, complete"
