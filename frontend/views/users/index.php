@@ -1,3 +1,9 @@
+<?php
+
+use yii\helpers\Html;
+
+?>
+
 <div class="main-container page-container">
     <section class="user__search">
         <div class="user__search-link">
@@ -23,7 +29,7 @@
                 <span>6 отзывов</span>
               </div>
               <div class="feedback-card__top--name user__search-card">
-                <p class="link-name"><a href="#" class="link-regular"><?=$user->full_name?></a></p>
+                <p class="link-name"><a href="#" class="link-regular"><?=HTML::encode($user->full_name)?></a></p>
                 <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                 <b>4.25</b>
                 <p class="user__search-content">

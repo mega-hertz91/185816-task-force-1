@@ -1,5 +1,8 @@
 <?php
 /* @var $this yii\web\View */
+
+use yii\helpers\Html;
+
 ?>
 <div class="main-container page-container">
   <section class="new-task">
@@ -9,17 +12,17 @@
         <div class="new-task__card">
           <div class="new-task__title">
             <a href="#" class="link-regular">
-              <h2><?=$task->title?></h2>
+              <h2><?=HTML::encode($task->title)?></h2>
             </a>
-            <a class="new-task__type link-regular" href="#"><p><?=$task->category['category_name']?></p></a>
+            <a class="new-task__type link-regular" href="#"><p><?=HTML::encode($task->category['category_name'])?></p></a>
           </div>
           <div class="new-task__icon new-task__icon--translation"></div>
           <p class="new-task_description">
-              <?=$task->description?>
+              <?=HTML::encode($task->description)?>
           </p>
-          <b class="new-task__price new-task__price--translation"><?=$task->amount?><b> ₽</b></b>
-          <p class="new-task__place"><?=$task->city['name']?></p>
-          <span class="new-task__time"><?=$task->created_at?></span>
+          <b class="new-task__price new-task__price--translation"><?=HTML::encode($task->amount)?><b> ₽</b></b>
+          <p class="new-task__place"><?=HTML::encode($task->city['name'])?></p>
+          <span class="new-task__time"><?=HTML::encode($task->created_at)?></span>
         </div>
       <?php endforeach; ?>
     </div>
