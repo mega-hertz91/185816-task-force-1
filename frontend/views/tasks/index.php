@@ -2,6 +2,8 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\widgets\ActiveField;
 
 ?>
 <div class="main-container page-container">
@@ -71,6 +73,13 @@ use yii\helpers\Html;
         <button class="button" type="submit">Искать</button>
       </form>
     </div>
+    <?php $form = ActiveForm::begin([
+            'options' => ['class' => 'search-task__form']
+    ]) ?>
+      <?php $form->field($model, 'translation')?>
+      <?php $form->field($model, 'clean')?>
+    <?php $form = ActiveForm::end() ?>
+
   </section>
 </div>
 

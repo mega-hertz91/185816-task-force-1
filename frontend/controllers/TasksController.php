@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use frontend\forms\TasksForm;
+use frontend\models\Category;
 use frontend\models\Task;
 use Yii;
 
@@ -17,9 +19,10 @@ class TasksController extends \yii\web\Controller
             $task->created_at = Yii::$app->formatter->asDate($task->created_at);
         }
 
-       return $this->render('index', [
+        return $this->render('index', [
             'title' => $title,
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'model' => new TasksForm()
         ]);
     }
 }
