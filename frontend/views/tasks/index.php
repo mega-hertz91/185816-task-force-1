@@ -73,13 +73,6 @@ use yii\widgets\ActiveField;
         <button class="button" type="submit">Искать</button>
       </form>
     </div>
-    <?php $form = ActiveForm::begin([
-            'options' => ['class' => 'search-task__form']
-    ]) ?>
-      <?php $form->field($model, 'translation')?>
-      <?php $form->field($model, 'clean')?>
-    <?php $form = ActiveForm::end() ?>
-
   </section>
 </div>
 

@@ -8,5 +8,4 @@ class TasksForm extends ActiveRecord
 {
     public $translation;
     public $clean;
-
 }
