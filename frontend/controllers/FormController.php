@@ -4,6 +4,7 @@
 namespace frontend\controllers;
 
 use frontend\forms\TasksForm;
+use frontend\models\Category;
 use yii\web\Controller;
 use Yii;
 
