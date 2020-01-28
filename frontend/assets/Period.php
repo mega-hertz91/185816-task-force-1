@@ -9,30 +9,30 @@ class Period
     const WEEK = 604800;
     const MONTH = 2629743;
 
-    public static function getNow()
+    public static function getNow(): int
     {
         return strtotime('now');
     }
 
-    public static function getDay()
+    public static function getDay(): string
     {
         $diff = self::getNow() - self::DAY;
         return date('Y-m-d H:i:s', $diff);
     }
 
-    public static function getWeek()
+    public static function getWeek(): string
     {
         $diff = self::getNow() - self::WEEK;
         return date('Y-m-d H:i:s', $diff);
     }
 
-    public static function getMonth()
+    public static function getMonth(): string
     {
         $diff = self::getNow() - self::MONTH;
         return date('Y-m-d H:i:s', $diff);
     }
 
-    public static function getAll()
+    public static function getAll(): int
     {
         return 0;
     }
