@@ -1,15 +1,16 @@
 <?php
 
+
 namespace frontend\forms;
+
 
 use frontend\models\Category;
 use yii\base\Model;
 
-class TasksForm extends Model
+class UsersFilter extends Model
 {
     public $categories;
     public $additionally;
-    public $period;
     public $search;
 
     private function getArrayAttr()
@@ -18,7 +19,7 @@ class TasksForm extends Model
         $checkboxes = [];
 
         foreach ($categories as $cat) {
-            $checkboxes += [$cat['tag'] => $cat['category_name']];
+            $checkboxes += [$cat['id'] => $cat['category_name']];
         }
 
         return $checkboxes;
