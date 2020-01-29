@@ -3,7 +3,7 @@
 
 namespace frontend\controllers;
 
-use frontend\forms\TasksFilter;
+use frontend\forms\TasksFilterForm;
 use frontend\models\Category;
 use yii\web\Controller;
 use Yii;
@@ -21,7 +21,7 @@ class FormController extends Controller
 
         return $this->render('index',
             [
-                'model' => new TasksFilter(),
+                'model' => new TasksFilterForm(),
                 'result' => $result
             ]);
     }
