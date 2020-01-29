@@ -1,76 +1,75 @@
 <?php
-/* @var $this yii\web\View */
+/**
+ * @var array $categories frontend\models\Category
+ * @var array $users frontend\models\User
+ **/
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use frontend\helpers\TemplateForm;
 
 ?>
-<div class="main-container page-container">
-  <section class="new-task">
-    <div class="new-task__wrapper">
-      <h1>Новые задания</h1>
-      <?php foreach ($tasks as $task) :?>
-        <div class="new-task__card">
-          <div class="new-task__title">
-            <a href="#" class="link-regular">
-              <h2><?=HTML::encode($task->title)?></h2>
-            </a>
-            <a class="new-task__type link-regular" href="#"><p><?=HTML::encode($task->category['category_name'])?></p></a>
-          </div>
-          <div class="new-task__icon new-task__icon--translation"></div>
-          <p class="new-task_description">
-              <?=HTML::encode($task->description)?>
-          </p>
-          <b class="new-task__price new-task__price--translation"><?=HTML::encode($task->amount)?><b> ₽</b></b>
-          <p class="new-task__place"><?=HTML::encode($task->city['name'])?></p>
-          <span class="new-task__time"><?=HTML::encode($task->created_at)?></span>
-        </div>
-      <?php endforeach; ?>
+    <div class="main-container page-container">
+        <section class="new-task">
+            <div class="new-task__wrapper">
+                <?php if (empty($tasks)) : ?>
+                    <h1><?= 'Задания не найдены' ?></h1>
+                <?php else: ?>
+                    <h1>Новые задания</h1>
+                <?php endif ?>
+                <?php foreach ($tasks as $task) : ?>
+                    <div class="new-task__card">
+                        <div class="new-task__title">
+                            <a href="#" class="link-regular">
+                                <h2><?= HTML::encode($task->title) ?></h2>
+                            </a>
+                            <a class="new-task__type link-regular" href="#"><p><?= HTML::encode($task->category['category_name']) ?></p></a>
+                        </div>
+                        <div class="new-task__icon new-task__icon--translation"></div>
+                        <p class="new-task_description">
+                            <?= HTML::encode($task->description) ?>
+                        </p>
+                        <b class="new-task__price new-task__price--translation"><?= HTML::encode($task->amount) ?><b> ₽</b></b>
+                        <p class="new-task__place"><?= HTML::encode($task->city['name']) ?></p>
+                        <span class="new-task__time"><?= HTML::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <section class="search-task">
+            <div class="search-task__wrapper">
+                <?php $form = ActiveForm::begin([
+                    'options' => ['class' => 'search-task__form']
+                ]) ?>
+                <fieldset class="search-task__categories">
+                    <legend>Категории</legend>
+                    <?= html::activeCheckboxList($model, 'categories', $categories, ['item' =>
+                        function ($index, $label, $name, $checked, $value) {
+                            return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                        }]);
+                    ?>
+                </fieldset>
+                <fieldset class="search-task__categories">
+                    <legend>Дополнительно</legend>
+                    <?= html::activeCheckboxList($model, 'additionally',
+                        ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
+                        ['item' => function ($index, $label, $name, $checked, $value) {
+                            return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                        }]);
+                    ?>
+                </fieldset>
+                <label class="search-task__name" for="8">Период</label>
+                <?php echo html::activeDropDownList($model, 'period', [
+                    'all' => 'За все время',
+                    'day' => 'За день',
+                    'week' => 'За неделю',
+                    'month' => 'За менсяц'], ['class' => 'multiple-select input']);
+                ?>
+                <label class="search-task__name" for="9">Поиск по названию</label>
+                <?= html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
+                <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
+                <?php $form = ActiveForm::end() ?>
+            </div>
+        </section>
     </div>
-    <div class="new-task__pagination">
-      <ul class="new-task__pagination-list">
-        <li class="pagination__item"><a href="#"></a></li>
-        <li class="pagination__item pagination__item--current">
-          <a>1</a></li>
-        <li class="pagination__item"><a href="#">2</a></li>
-        <li class="pagination__item"><a href="#">3</a></li>
-        <li class="pagination__item"><a href="#"></a></li>
-      </ul>
-    </div>
-  </section>
-  <section class="search-task">
-    <div class="search-task__wrapper">
-      <form class="search-task__form" name="test" method="post" action="#">
-        <fieldset class="search-task__categories">
-          <legend>Категории</legend>
-          <input class="visually-hidden checkbox__input" id="1" type="checkbox" name="" value="" checked>
-          <label for="1">Курьерские услуги </label>
-          <input class="visually-hidden checkbox__input" id="2" type="checkbox" name="" value="" checked>
-          <label for="2">Грузоперевозки </label>
-          <input class="visually-hidden checkbox__input" id="3" type="checkbox" name="" value="">
-          <label for="3">Переводы </label>
-          <input class="visually-hidden checkbox__input" id="4" type="checkbox" name="" value="">
-          <label for="4">Строительство и ремонт </label>
-          <input class="visually-hidden checkbox__input" id="5" type="checkbox" name="" value="">
-          <label for="5">Выгул животных </label>
-        </fieldset>
-        <fieldset class="search-task__categories">
-          <legend>Дополнительно</legend>
-          <input class="visually-hidden checkbox__input" id="6" type="checkbox" name="" value="">
-          <label for="6">Без откликов</label>
-          <input class="visually-hidden checkbox__input" id="7" type="checkbox" name="" value="" checked>
-          <label for="7">Удаленная работа </label>
-        </fieldset>
-        <label class="search-task__name" for="8">Период</label>
-        <select class="multiple-select input" id="8" size="1" name="time[]">
-          <option value="day">За день</option>
-          <option selected value="week">За неделю</option>
-          <option value="month">За месяц</option>
-        </select>
-        <label class="search-task__name" for="9">Поиск по названию</label>
-        <input class="input-middle input" id="9" type="search" name="q" placeholder="">
-        <button class="button" type="submit">Искать</button>
-      </form>
-    </div>
-  </section>
-</div>
-
+<?php var_dump($result);
