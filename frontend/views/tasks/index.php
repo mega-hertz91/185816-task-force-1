@@ -1,7 +1,7 @@
 <?php
 /**
  * @var array $categories frontend\models\Category
- * @var array $users frontend\models\User
+ * @var array $tasks frontend\models\Task
  **/
 
 use yii\helpers\Html;
@@ -60,10 +60,10 @@ use frontend\helpers\TemplateForm;
                 </fieldset>
                 <label class="search-task__name" for="8">Период</label>
                 <?php echo html::activeDropDownList($model, 'period', [
-                    'all' => 'За все время',
-                    'day' => 'За день',
-                    'week' => 'За неделю',
-                    'month' => 'За менсяц'], ['class' => 'multiple-select input']);
+                    '0' => 'За все время',
+                    '86000' => 'За день',
+                    '604800' => 'За неделю',
+                    '2419200' => 'За менсяц'], ['class' => 'multiple-select input']);
                 ?>
                 <label class="search-task__name" for="9">Поиск по названию</label>
                 <?= html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
@@ -72,4 +72,5 @@ use frontend\helpers\TemplateForm;
             </div>
         </section>
     </div>
-<?php var_dump($result);
+<?php echo "<pre>";
+print_r($result);

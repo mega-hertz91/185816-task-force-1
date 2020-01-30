@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * @var array $categories frontend\models\Category
+ * @var array $users frontend\models\User
+ **/
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use frontend\helpers\TemplateForm;
 
 ?>
 
@@ -25,7 +31,7 @@ use yii\widgets\ActiveForm;
           <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
               <div class="user__search-icon">
-                <a href="#"><img src="../../../img/man-glasses.jpg" width="65" height="65"></a>
+                <a href="#"><img src="../../../img/man-glasses.jpg" width="65" height="65" alt="unknown"></a>
                 <span>17 заданий</span>
                 <span>6 отзывов</span>
               </div>
@@ -56,27 +62,28 @@ use yii\widgets\ActiveForm;
             ]) ?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <?php
-                echo $form->field($model, 'categories')
-                    ->checkboxList($model->attributeLabels())
-                    ->label(false);
+                <?= html::activeCheckboxList($model, 'categories', $categories, ['item' =>
+                    function ($index, $label, $name, $checked, $value) {
+                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                    }]);
                 ?>
             </fieldset>
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-                <?php
-                echo $form->field($model, 'additionally')->checkboxList([
-                    'free' => 'Сейчас свободен',
-                    'online' => 'Сейчас онлайн',
-                    'responses' => 'Есть отзывы',
-                    'favorites' => 'В избранном'
-                ])->label(false);
+                <?= html::activeCheckboxList($model, 'additionally',
+                    [
+                        'free' => 'Сейчас свободен',
+                        'online' => 'Сейчас онлайн',
+                        'responses' => 'Есть отзывы',
+                        'favorites' => 'В избранном'
+                    ],
+                    ['item' => function ($index, $label, $name, $checked, $value) {
+                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                    }]);
                 ?>
             </fieldset>
-            <?php echo $form->field($model, 'search')
-                ->textInput()
-                ->label('Поиск по названию', ['class' => 'search-task__name']);
-            ?>
+            <label class="search-task__name" for="9">Поиск по названию</label>
+            <?= html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
             <div class="form-group">
                 <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
             </div>
