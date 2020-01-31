@@ -46,6 +46,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'tasks/view/<id:\d+>' => 'tasks/view'
             ],
         ],
     ],

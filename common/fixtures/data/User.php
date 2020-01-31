@@ -6,6 +6,7 @@ $faker = Factory::create();
 $COUNT = 200;
 
 function getUsers($faker) {
+    $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
     return [
         'full_name' => $faker->name,
         'email' => $faker->email,
@@ -17,7 +18,8 @@ function getUsers($faker) {
         'password' => $faker->password,
         'phone' => $faker->tollFreePhoneNumber,
         'skype' => $faker->userName,
-        'messenger' => $faker->domainWord
+        'messenger' => $faker->domainWord,
+        'created_at' => $date->format('Y-m-d H:i:s')
     ];
 }
 

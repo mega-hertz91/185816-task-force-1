@@ -20,7 +20,7 @@ use frontend\helpers\TemplateForm;
                 <?php foreach ($tasks as $task) : ?>
                     <div class="new-task__card">
                         <div class="new-task__title">
-                            <a href="#" class="link-regular">
+                            <a href="view/<?= HTML::encode($task->id) ?>" class="link-regular">
                                 <h2><?= HTML::encode($task->title) ?></h2>
                             </a>
                             <a class="new-task__type link-regular" href="#"><p><?= HTML::encode($task->category['category_name']) ?></p></a>
@@ -34,6 +34,9 @@ use frontend\helpers\TemplateForm;
                         <span class="new-task__time"><?= HTML::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
                     </div>
                 <?php endforeach; ?>
+                <?php echo yii\widgets\ListView::widget([
+                    'dataProvider' => $provider,
+                ]); ?>
             </div>
         </section>
         <section class="search-task">
