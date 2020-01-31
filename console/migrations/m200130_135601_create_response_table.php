@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use frontend\helpers\Date;
 
 /**
  * Handles the creation of table `{{%responce}}`.
@@ -17,6 +18,8 @@ class m200130_135601_create_response_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'amount' => $this->integer()->notNull(),
             'task_id' => $this->integer()->notNull(),
+            'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
+            'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
         ]);
 
         $this->addForeignKey('fkr-user_id', 'response', 'user_id', 'user', 'id');

@@ -15,7 +15,7 @@ class m200130_130326_create_status_table extends Migration
     {
         $this->createTable('status', [
             'id' => $this->primaryKey('255')->unique(),
-            'name' => $this->char()->notNull(),
+            'name' => $this->char('200')->notNull(),
             'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
             'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
         ]);

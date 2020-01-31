@@ -40,9 +40,7 @@ use frontend\helpers\TemplateForm;
                 <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                 <b>4.25</b>
                 <p class="user__search-content">
-                  Сложно сказать, почему элементы политического процесса лишь
-                  добавляют фракционных разногласий и рассмотрены исключительно
-                  в разрезе маркетинговых и финансовых предпосылок.
+                    <?=HTML::encode($user->about)?>
                 </p>
               </div>
               <span class="new-task__time">Был на сайте 25 минут назад</span>

@@ -15,7 +15,8 @@ class m200130_120823_create_role_table extends Migration
     {
         $this->createTable('role', [
             'id' => $this->primaryKey('255')->unique(),
-            'role' => $this->char()->notNull(),
+            'role' => $this->char('200')->notNull(),
+            'actions' => $this->text(),
             'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
             'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
         ]);

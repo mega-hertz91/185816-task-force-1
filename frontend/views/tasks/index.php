@@ -72,5 +72,3 @@ use frontend\helpers\TemplateForm;
             </div>
         </section>
     </div>
-<?php echo "<pre>";
-print_r($result);

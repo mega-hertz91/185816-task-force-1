@@ -22,7 +22,6 @@ class m200130_130421_create_task_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'executor_id' => $this->integer()->notNull(),
             'amount' => $this->integer(),
-            'rating' => $this->double(),
             'status_id' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
             'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
