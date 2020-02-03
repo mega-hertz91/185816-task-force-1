@@ -9,6 +9,7 @@ use frontend\models\Task;
 use yii\web\Controller;
 use Yii;
 use frontend\providers\TasksProvider;
+use yii\web\NotFoundHttpException;
 
 class TasksController extends Controller
 {
@@ -22,8 +23,7 @@ class TasksController extends Controller
         }
 
         return $this->render('index', [
-            'tasks' => TasksProvider::getContent($form->attributes)->getModels(),
-            'provider' => TasksProvider::getContent($form->attributes),
+            'tasks' => TasksProvider::getContent($form->attributes),
             'model' => $form,
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column(),
             'result' => $form->attributes
@@ -32,8 +32,14 @@ class TasksController extends Controller
 
     public function actionView($id)
     {
+        $task = Task::findOne($id);
+
+        if($task === null) {
+            throw new NotFoundHttpException('Такого задания не существует');
+        }
+
         return $this->render('task', [
-            'task' => Task::findOne($id),
+            'task' => $task,
             'responses' => Response::find()->where(['task_id' => $id])->all()
         ]);
     }

@@ -7,6 +7,8 @@ use yii\data\ActiveDataProvider;
 
 class TasksProvider extends Provider
 {
+    const SIZE_ELEMENT = 10;
+
     protected static function getDate($period)
     {
         $now = strtotime('now');
@@ -40,7 +42,7 @@ class TasksProvider extends Provider
         return new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 5
+                'pageSize' => self::SIZE_ELEMENT
             ],
             'sort' => [
                 'defaultOrder' => [

@@ -27,16 +27,20 @@ use frontend\helpers\TemplateForm;
                 </li>
             </ul>
         </div>
-        <?php foreach ($users as $user) :?>
+        <?php foreach ($users->getModels() as $user) :?>
           <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
               <div class="user__search-icon">
-                <a href="#"><img src="../../../img/man-glasses.jpg" width="65" height="65" alt="unknown"></a>
+                <a href="/users/view/<?=HTML::encode($user->id)?>">
+                    <img src="../../../img/man-glasses.jpg" width="65" height="65" alt="unknown">
+                </a>
                 <span>17 заданий</span>
-                <span>6 отзывов</span>
+                <span><?=HTML::encode(count($user->responses))?> отзывов</span>
               </div>
               <div class="feedback-card__top--name user__search-card">
-                <p class="link-name"><a href="#" class="link-regular"><?=HTML::encode($user->full_name)?></a></p>
+                <p class="link-name">
+                    <a href="/users/view/<?=HTML::encode($user->id)?>" class="link-regular"><?=HTML::encode($user->full_name)?></a>
+                </p>
                 <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                 <b>4.25</b>
                 <p class="user__search-content">
@@ -52,6 +56,10 @@ use frontend\helpers\TemplateForm;
             </div>
           </div>
         <?php endforeach; ?>
+        <?= yii\widgets\ListView::widget([
+            'dataProvider' => $users,
+            'layout' => "{pager}"
+        ]); ?>
     </section>
     <section class="search-task">
         <div class="search-task__wrapper">

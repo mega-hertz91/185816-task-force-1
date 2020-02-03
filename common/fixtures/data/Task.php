@@ -13,8 +13,8 @@ function getTask($faker) {
         'title' => $faker->sentence(6, true),
         'description' => $faker->paragraph(3, true),
         'city_id' => rand(1, 100),
-        'user_id' => rand(1, 200),
-        'executor_id' => rand(1, 200),
+        'user_id' => rand(1, 60),
+        'executor_id' => rand(1, 60),
         'amount' => rand(1000, 150000),
         'status_id' => rand(1, 5),
         'created_at' => $date->format('Y-m-d H:i:s')
