@@ -21,7 +21,7 @@ use yii\helpers\Url;
             <?php foreach ($tasks->getModels() as $task) : ?>
                 <div class="new-task__card">
                     <div class="new-task__title">
-                        <a href="<?=Url::to("view/$task->id")?>" class="link-regular">
+                        <a href="<?=Url::to(['tasks/view', 'id' => $task->id])?>" class="link-regular">
                             <h2><?= HTML::encode($task->title) ?></h2>
                         </a>
                         <a class="new-task__type link-regular" href="#"><p><?= HTML::encode($task->category->category_name) ?></p></a>

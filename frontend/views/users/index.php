@@ -32,7 +32,7 @@ use yii\helpers\Url;
           <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
               <div class="user__search-icon">
-                <a href="<?=Url::to("view/$user->id")?>">
+                <a href="<?=Url::to(['users/view', 'id' => $user->id])?>">
                     <img src="../../../img/man-glasses.jpg" width="65" height="65" alt="unknown">
                 </a>
                 <span>17 заданий</span>
@@ -40,7 +40,7 @@ use yii\helpers\Url;
               </div>
               <div class="feedback-card__top--name user__search-card">
                 <p class="link-name">
-                    <a href="<?=Url::to("view/$user->id")?>" class="link-regular"><?=HTML::encode($user->full_name)?></a>
+                    <a href="<?=Url::to(['users/view', 'id' => $user->id])?>" class="link-regular"><?=HTML::encode($user->full_name)?></a>
                 </p>
                 <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                 <b>4.25</b>
