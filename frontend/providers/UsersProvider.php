@@ -9,6 +9,8 @@ use yii\data\ActiveDataProvider;
 
 class UsersProvider extends Provider
 {
+    const SIZE_ELEMENT = 10;
+
     public static function getContent(array $attributes): ActiveDataProvider
     {
         $query = User::find();
@@ -30,7 +32,7 @@ class UsersProvider extends Provider
         return new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 5
+                'pageSize' => self::SIZE_ELEMENT
             ],
             'sort' => [
                 'defaultOrder' => [
