@@ -3,7 +3,7 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$COUNT = 400;
+$count = 400;
 
 function getComment($faker) {
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
@@ -17,7 +17,7 @@ function getComment($faker) {
 
 $comments = [];
 
-for ($i = 0; $i < $COUNT; $i++) {
+for ($i = 0; $i < $count; $i++) {
     $comments[] = getComment($faker);
 }
 

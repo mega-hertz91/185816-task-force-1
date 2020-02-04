@@ -1,10 +1,12 @@
 <?php
 namespace common\fixtures;
 
+use frontend\models\Comment;
+use frontend\models\Task;
 use yii\test\ActiveFixture;
 
 class CommentFixture extends ActiveFixture
 {
-    public $modelClass = 'frontend\models\Comment';
-    public $depends = ['common\fixtures\UserStatusFixture', 'common\fixtures\TaskFixture'];
+    public $modelClass = Comment::class;
+    public $depends = [UserStatusFixture::class, TaskFixture::class];
 }

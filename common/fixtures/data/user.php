@@ -3,7 +3,7 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$COUNT = 60;
+$count = 60;
 
 function getUsers($faker) {
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
@@ -25,7 +25,7 @@ function getUsers($faker) {
 
 $users = [];
 
-for ($i = 0; $i < $COUNT; $i++) {
+for ($i = 0; $i < $count; $i++) {
     $users[] = getUsers($faker);
 }
 

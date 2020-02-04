@@ -3,14 +3,13 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$COUNT = 200;
+$count = 600;
 
-function getResponse($faker) {
-    $faker = Factory::create();
+function getMessage($faker) {
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
     return [
-        'user_id' => rand(1, 60),
-        'amount' => rand(1000, 200000),
+        'sender' => rand(1, 200),
+        'recipient' => rand(1, 200),
         'message' => $faker->paragraph(2, true),
         'task_id' => rand(1, 100),
         'created_at' => $date->format('Y-m-d H:i:s')
@@ -19,8 +18,8 @@ function getResponse($faker) {
 
 $messages = [];
 
-for ($i = 0; $i < $COUNT; $i++) {
-    $messages[] = getResponse($faker);
+for ($i = 0; $i < $count; $i++) {
+    $messages[] = getMessage($faker);
 }
 
 return $messages;

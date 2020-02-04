@@ -3,11 +3,11 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$COUNT = 100;
+$count = 100;
 
 $cities = [];
 
-for ($i = 0; $i < $COUNT; $i++) {
+for ($i = 0; $i < $count; $i++) {
     $cities[] = ['name' => $faker->city];
 }
 

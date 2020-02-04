@@ -48,8 +48,7 @@ return [
                 'tasks/view/<id:\d+>' => 'tasks/view',
                 'users/view/<id:\d+>' => 'users/view'
             ],
-        ],
-        'db' => require __DIR__ . '/db.php'
+        ]
     ],
     'params' => $params,
 ];

@@ -2,9 +2,10 @@
 
 namespace common\fixtures;
 
+use frontend\models\Role;
 use yii\test\ActiveFixture;
 
 class RoleFixture extends ActiveFixture
 {
-    public $modelClass = 'frontend\models\Role';
+    public $modelClass = Role::class;
 }

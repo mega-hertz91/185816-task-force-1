@@ -2,9 +2,10 @@
 namespace common\fixtures;
 
 use yii\test\ActiveFixture;
+use frontend\models\User;
 
 class UserFixture extends ActiveFixture
 {
-    public $modelClass = 'frontend\models\User';
-    public $depends = ['common\fixtures\RoleFixture', 'common\fixtures\UserStatusFixture', 'common\fixtures\CityFixture'];
+    public $modelClass = User::class;
+    public $depends = [RoleFixture::class, UserStatusFixture::class, CityFixture::class];
 }

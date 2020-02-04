@@ -1,7 +1,6 @@
 <?php
 /**
  * @var object $task frontend\model\Task
- * @var array $responses frontend\model\Response
  **/
 
 use yii\helpers\Html;
@@ -56,9 +55,9 @@ use yii\helpers\Html;
             </div>
         </div>
         <div class="content-view__feedback">
-            <h2>Отклики <span><?=count($responses)?></span></h2>
+            <h2>Отклики <span><?=count($task->responses)?></span></h2>
             <div class="content-view__feedback-wrapper">
-                <?php foreach ($responses as $response) :?>
+                <?php foreach ($task->responses as $response) :?>
                 <div class="content-view__feedback-card">
                     <div class="feedback-card__top">
                         <a href="#"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>

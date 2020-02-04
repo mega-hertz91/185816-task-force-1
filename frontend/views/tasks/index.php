@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use frontend\helpers\TemplateForm;
+use yii\helpers\Url;
 
 ?>
 <div class="main-container page-container">
@@ -20,17 +21,17 @@ use frontend\helpers\TemplateForm;
             <?php foreach ($tasks->getModels() as $task) : ?>
                 <div class="new-task__card">
                     <div class="new-task__title">
-                        <a href="view/<?= HTML::encode($task->id) ?>" class="link-regular">
+                        <a href="<?=Url::to("view/$task->id")?>" class="link-regular">
                             <h2><?= HTML::encode($task->title) ?></h2>
                         </a>
-                        <a class="new-task__type link-regular" href="#"><p><?= HTML::encode($task->category['category_name']) ?></p></a>
+                        <a class="new-task__type link-regular" href="#"><p><?= HTML::encode($task->category->category_name) ?></p></a>
                     </div>
                     <div class="new-task__icon new-task__icon--translation"></div>
                     <p class="new-task_description">
                         <?= HTML::encode($task->description) ?>
                     </p>
                     <b class="new-task__price new-task__price--translation"><?= HTML::encode($task->amount) ?><b> ₽</b></b>
-                    <p class="new-task__place"><?= HTML::encode($task->city['name']) ?></p>
+                    <p class="new-task__place"><?= HTML::encode($task->city->name) ?></p>
                     <span class="new-task__time"><?= HTML::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
                 </div>
             <?php endforeach; ?>

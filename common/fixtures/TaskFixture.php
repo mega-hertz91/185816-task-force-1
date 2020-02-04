@@ -1,10 +1,12 @@
 <?php
 namespace common\fixtures;
 
+use frontend\models\Category;
+use frontend\models\Task;
 use yii\test\ActiveFixture;
 
 class TaskFixture extends ActiveFixture
 {
-    public $modelClass = 'frontend\models\Task';
-    public $depends = ['common\fixtures\CategoryFixture', 'common\fixtures\UserFixture', 'common\fixtures\CityFixture'];
+    public $modelClass = Task::class;
+    public $depends = [CategoryFixture::class, UserFixture::class, CityFixture::class];
 }

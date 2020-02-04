@@ -40,7 +40,6 @@ class TasksController extends Controller
 
         return $this->render('task', [
             'task' => $task,
-            'responses' => Response::find()->where(['task_id' => $id])->all()
         ]);
     }
 }

@@ -2,7 +2,6 @@
 
 /**
  * @var object $user frontend\model\User
- * @var array $comment frontend\model\Comment
  **/
 
 use yii\helpers\Html;
@@ -55,12 +54,12 @@ use yii\helpers\Html;
             </div>
         </div>
         <div class="content-view__feedback">
-            <?php if($comments === null) :?>
+            <?php if($user->comments === null) :?>
                 <h2>Отзывов пока нет</h2>
             <?php else:?>
-                <h2>Отзывы<span>(<?=html::encode(count($comments))?>)</span></h2>
+                <h2>Отзывы<span>(<?=html::encode(count($user->comments))?>)</span></h2>
             <?php endif;?>
-            <?php foreach ($comments as $comment): ?>
+            <?php foreach ($user->comments as $comment): ?>
             <div class="content-view__feedback-wrapper reviews-wrapper">
                 <div class="feedback-card__reviews">
                     <p class="link-task link">Задание <a href="#" class="link-regular"><?=html::encode($comment->task->title)?></a></p>

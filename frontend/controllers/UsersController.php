@@ -42,7 +42,6 @@ class UsersController extends Controller
 
         return $this->render('user', [
             'user' => $user,
-            'comments' => Comment::find()->where(['user_id' => $id])->all()
         ]);
     }
 }
