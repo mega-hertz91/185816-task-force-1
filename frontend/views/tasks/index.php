@@ -63,14 +63,15 @@ use yii\helpers\Url;
                         }]);
                     ?>
                 </fieldset>
-                <label class="search-task__name" for="8">Период</label>
-                <?php echo html::activeDropDownList($model, 'period', [
+                <label class="search-task__name" for="tasksform-period">Период</label>
+                <?=html::activeDropDownList($model, 'period', [
                     '0' => 'За все время',
                     '86000' => 'За день',
                     '604800' => 'За неделю',
-                    '2419200' => 'За менсяц'], ['class' => 'multiple-select input']);
+                    '2419200' => 'За менсяц'],
+                    ['class' => 'multiple-select input']);
                 ?>
-                <label class="search-task__name" for="9">Поиск по названию</label>
+                <label class="search-task__name" for="tasksform-search">Поиск по названию</label>
                 <?= html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
                 <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
                 <?php $form = ActiveForm::end() ?>
