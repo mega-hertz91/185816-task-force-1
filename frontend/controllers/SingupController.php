@@ -40,7 +40,7 @@ class SingupController extends Controller
                    echo $e->getMessage();
                }
 
-               $session->setFlash('reg', '<div style="background-color: #00e096;"><p style="padding: 12px 15px; width: 1216px; margin: auto;" class="alert-success">Registration success</p></div>');
+               $session->setFlash('reg', '<div><p style="padding: 12px 15px; width: 1216px; margin: auto;" class="alert-success">Registration success</p></div>');
                return $this->redirect('/');
 
            } else {
