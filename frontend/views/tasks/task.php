@@ -11,18 +11,18 @@ use yii\helpers\Html;
             <div class="content-view__card-wrapper">
                 <div class="content-view__header">
                     <div class="content-view__headline">
-                        <h1><?=html::encode($task->title)?></h1>
+                        <h1><?=Html::encode($task->title)?></h1>
                         <span>Размещено в категории
-                                    <a href="#" class="link-regular"><?=html::encode($task->category->category_name)?></a>
+                                    <a href="#" class="link-regular"><?=Html::encode($task->category->category_name)?></a>
                                     25 минут назад</span>
                     </div>
-                    <b class="new-task__price new-task__price--clean content-view-price"><?=html::encode($task->amount)?><b> ₽</b></b>
+                    <b class="new-task__price new-task__price--clean content-view-price"><?=Html::encode($task->amount)?><b> ₽</b></b>
                     <div class="new-task__icon new-task__icon--clean content-view-icon"></div>
                 </div>
                 <div class="content-view__description">
                     <h3 class="content-view__h3">Общее описание</h3>
                     <p>
-                        <?=html::encode($task->description)?>
+                        <?=Html::encode($task->description)?>
                     </p>
                 </div>
                 <div class="content-view__attach">
@@ -62,7 +62,7 @@ use yii\helpers\Html;
                     <div class="feedback-card__top">
                         <a href="#"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
                         <div class="feedback-card__top--name">
-                            <p><a href="#" class="link-regular"><?=html::encode($response->user->full_name)?></a></p>
+                            <p><a href="#" class="link-regular"><?=Html::encode($response->user->full_name)?></a></p>
                             <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                             <b>4.25</b>
                         </div>
@@ -70,9 +70,9 @@ use yii\helpers\Html;
                     </div>
                     <div class="feedback-card__content">
                         <p>
-                            <?=html::encode($response->message)?>
+                            <?=Html::encode($response->message)?>
                         </p>
-                        <span><?=html::encode($response->amount)?> ₽</span>
+                        <span><?=Html::encode($response->amount)?> ₽</span>
                     </div>
                     <div class="feedback-card__actions">
                         <a class="button__small-color request-button button"
@@ -90,14 +90,14 @@ use yii\helpers\Html;
             <div class="profile-mini__wrapper">
                 <h3>Заказчик</h3>
                 <div class="profile-mini__top">
-                    <img src="../../../img/man-brune.jpg" width="62" height="62" alt="<?=html::encode($task->user->full_name)?>">
+                    <img src="../../../img/man-brune.jpg" width="62" height="62" alt="<?=Html::encode($task->user->full_name)?>">
                     <div class="profile-mini__name five-stars__rate">
-                        <p><?=html::encode($task->user->full_name)?></p>
+                        <p><?=Html::encode($task->user->full_name)?></p>
                     </div>
                 </div>
                 <p class="info-customer">
-                    <span><?=html::encode(count($task->user->tasks))?> заданий</span>
-                    <span class="last-">на сайте c <?=html::encode(date('Y', strtotime($task->user->created_at)))?> года</span></p>
+                    <span><?=Html::encode(count($task->user->tasks))?> заданий</span>
+                    <span class="last-">на сайте c <?=Html::encode(date('Y', strtotime($task->user->created_at)))?> года</span></p>
                 <a href="#" class="link-regular">Смотреть профиль</a>
             </div>
         </div>

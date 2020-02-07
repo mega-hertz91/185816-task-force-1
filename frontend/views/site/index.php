@@ -9,7 +9,11 @@ use yii\helpers\StringHelper;
 $this->title = 'Task-force';
 ?>
 <div class="landing-container">
-    <?php echo Yii::$app->session->getFlash('reg') ?>
+    <?php if(Yii::$app->session->getFlash('reg')) {
+        echo '<div>
+                     <p style="padding: 12px 15px; width: 1216px; margin: auto;" class="alert-success">' . Yii::$app->session->getFlash('reg') . ' </p>
+                   </div>';
+    } ?>
     <div class="landing-top">
         <h1>Работа для всех.<br>
             Найди исполнителя на любую задачу.</h1>
@@ -105,15 +109,15 @@ $this->title = 'Task-force';
             <div class="landing-task">
                 <div class="landing-task-top task-courier"></div>
                 <div class="landing-task-description">
-                    <h3><a href="#" class="link-regular"><?=html::encode(StringHelper::truncate($task->title, 30))?></a></h3>
-                    <p><?=html::encode(StringHelper::truncate($task->description, 30))?></p>
+                    <h3><a href="#" class="link-regular"><?=Html::encode(StringHelper::truncate($task->title, 30))?></a></h3>
+                    <p><?=Html::encode(StringHelper::truncate($task->description, 30))?></p>
                 </div>
                 <div class="landing-task-info">
                     <div class="task-info-left">
-                        <p><a href="#" class="link-regular"><?=html::encode($task->category->category_name)?></a></p>
+                        <p><a href="#" class="link-regular"><?=Html::encode($task->category->category_name)?></a></p>
                         <p>25 минут назад</p>
                     </div>
-                    <span><?=html::encode($task->amount)?> <b>₽</b></span>
+                    <span><?=Html::encode($task->amount)?> <b>₽</b></span>
                 </div>
             </div>
             <?php endforeach; ?>

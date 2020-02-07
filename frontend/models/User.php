@@ -34,8 +34,6 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
-    const DEFAULT_ROLE = 3;
-    const DEFAULT_STATUS = 1;
     /**
      * {@inheritdoc}
      */

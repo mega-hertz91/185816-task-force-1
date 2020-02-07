@@ -25,8 +25,7 @@ class TasksController extends Controller
         return $this->render('index', [
             'tasks' => TasksProvider::getContent($form->attributes),
             'model' => $form,
-            'categories' => Category::find()->select(['category_name'])->indexBy('id')->column(),
-            'result' => $form->attributes
+            'categories' => Category::find()->select(['category_name'])->indexBy('id')->column()
         ]);
     }
 

@@ -36,16 +36,16 @@ use yii\helpers\Url;
                     <img src="../../../img/man-glasses.jpg" width="65" height="65" alt="unknown">
                 </a>
                 <span>17 заданий</span>
-                <span><?=HTML::encode(count($user->responses))?> отзывов</span>
+                <span><?=Html::encode(count($user->responses))?> отзывов</span>
               </div>
               <div class="feedback-card__top--name user__search-card">
                 <p class="link-name">
-                    <a href="<?=Url::to(['users/view', 'id' => $user->id])?>" class="link-regular"><?=HTML::encode($user->full_name)?></a>
+                    <a href="<?=Url::to(['users/view', 'id' => $user->id])?>" class="link-regular"><?=Html::encode($user->full_name)?></a>
                 </p>
                 <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                 <b>4.25</b>
                 <p class="user__search-content">
-                    <?=HTML::encode($user->about)?>
+                    <?=Html::encode($user->about)?>
                 </p>
               </div>
               <span class="new-task__time">Был на сайте 25 минут назад</span>
@@ -69,7 +69,7 @@ use yii\helpers\Url;
             ]) ?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <?= html::activeCheckboxList($model, 'categories', $categories, ['item' =>
+                <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
                     function ($index, $label, $name, $checked, $value) {
                         return TemplateForm::getTemplateFormCategory($label, $value, $name);
                     }]);
@@ -77,7 +77,7 @@ use yii\helpers\Url;
             </fieldset>
             <fieldset class="search-task__categories">
                 <legend>Дополнительно</legend>
-                <?= html::activeCheckboxList($model, 'additionally',
+                <?= Html::activeCheckboxList($model, 'additionally',
                     [
                         'free' => 'Сейчас свободен',
                         'online' => 'Сейчас онлайн',
@@ -90,7 +90,7 @@ use yii\helpers\Url;
                 ?>
             </fieldset>
             <label class="search-task__name" for="9">Поиск по названию</label>
-            <?= html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
+            <?= Html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
             <div class="form-group">
                 <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
             </div>
