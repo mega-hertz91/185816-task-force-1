@@ -2,7 +2,6 @@
 
 /**
  * @var \yii\base\Model $model \frontend\forms\SingupForm
- * @var array $errors \frontend\forms\SingupForm
  */
 
 use yii\widgets\ActiveForm;
