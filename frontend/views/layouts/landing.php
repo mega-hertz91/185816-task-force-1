@@ -1,20 +1,14 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
-
+use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
 
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="ru">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,15 +19,14 @@ AppAsset::register($this);
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
-<body>
+<body class="landing">
 <div class="table-layout">
     <?php $this->beginBody() ?>
-    <header class="page-header">
-        <div class="main-container page-header__container">
-            <div class="page-header__logo">
-                <a href="/">
-                    <svg class="page-header__logo-image" id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1634 646.35">
+    <header class=" page-header--index">
+        <div class="main-container page-header__container page-header__container--index">
+            <div class="page-header__logo--index">
+                <a>
+                    <svg class="logo-image--index" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1634 646.35">
                         <title>taskforce_logo2-01</title>
                         <g>
                             <g>
@@ -58,118 +51,21 @@ AppAsset::register($this);
                         </g>
                     </svg>
                 </a>
+                <p>Работа там, где ты!</p>
             </div>
-            <div class="header__nav">
-                <ul class="header-nav__list site-list">
-                    <li class="site-list__item">
-                        <a href="/tasks/">Задания</a>
-                    </li>
-                    <li class="site-list__item">
-                        <a href="/users/">Исполнители</a>
-                    </li>
-                    <li class="site-list__item">
-                        <a href="#">Создать задание</a>
-                    </li>
-                    <li class="site-list__item">
-                        <a>Мой профиль</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="header__town">
-                <select class="multiple-select input town-select" size="1" name="town[]">
-                    <option value="Moscow">Москва</option>
-                    <option selected value="SPB">Санкт-Петербург</option>
-                    <option value="Krasnodar">Краснодар</option>
-                    <option value="Irkutsk">Иркутск</option>
-                    <option value="Vladivostok">Владивосток</option>
-                </select>
-            </div>
-            <div class="header__lightbulb"></div>
-            <div class="lightbulb__pop-up">
-                <h3>Новые события</h3>
-                <p class="lightbulb__new-task lightbulb__new-task--message">
-                    Новое сообщение в чате
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-                <p class="lightbulb__new-task lightbulb__new-task--executor">
-                    Выбран исполнитель для
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-                <p class="lightbulb__new-task lightbulb__new-task--close">
-                    Завершено задание
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-            </div>
-            <div class="header__account">
-                <a class="header__account-photo">
-                    <img src="/img/user-photo.png"
-                         width="43" height="44"
-                         alt="Аватар пользователя">
+            <div class="header__account--index">
+                <a href="<?=Url::to('/singin')?>" class="header__account-enter open-modal" data-for="enter-form">
+                    <span>Вход</span></a>
+                или
+                <a href="<?=Url::to('/singup')?>" class="header__account-registration">
+                    Регистрация
                 </a>
-                <span class="header__account-name">
-                 Василий
-             </span>
-            </div>
-            <div class="account__pop-up">
-                <ul class="account__pop-up-list">
-                    <li>
-                        <a href="#">Мои задания</a>
-                    </li>
-                    <li>
-                        <a href="#">Настройки</a>
-                    </li>
-                    <li>
-                        <a href="#">Выход</a>
-                    </li>
-                </ul>
             </div>
         </div>
     </header>
-    <!--<div class="wrap">
-    <?php
-    /* NavBar::begin([
-         'brandLabel' => Yii::$app->name,
-         'brandUrl' => Yii::$app->homeUrl,
-         'options' => [
-             'class' => 'navbar-inverse navbar-fixed-top',
-         ],
-     ]);
-     $menuItems = [
-         ['label' => 'Home', 'url' => ['/site/index']],
-         ['label' => 'About', 'url' => ['/site/about']],
-         ['label' => 'Contact', 'url' => ['/site/contact']],
-     ];
-     if (Yii::$app->user->isGuest) {
-         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-     } else {
-         $menuItems[] = '<li>'
-             . Html::beginForm(['/site/logout'], 'post')
-             . Html::submitButton(
-                 'Logout (' . Yii::$app->user->identity->username . ')',
-                 ['class' => 'btn btn-link logout']
-             )
-             . Html::endForm()
-             . '</li>';
-     }
-     echo Nav::widget([
-         'options' => ['class' => 'navbar-nav navbar-right'],
-         'items' => $menuItems,
-     ]);
-     NavBar::end();*/
-    ?>
-    <div class="container">
-        <?= Breadcrumbs::widget([
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-    ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>-->
-    <main class="page-main">
+    <main>
         <?= $content ?>
     </main>
-
     <footer class="page-footer">
         <div class="main-container page-footer__container">
             <div class="page-footer__info">
@@ -205,20 +101,34 @@ AppAsset::register($this);
                 </ul>
             </div>
             <div class="page-footer__copyright">
-                <a>
+                <a href="https://htmlacademy.ru">
                     <img class="copyright-logo"
-                         src="/img/academy-logo.png"
+                         src="../../../img/academy-logo.png"
                          width="185" height="63"
                          alt="Логотип HTML Academy">
                 </a>
             </div>
         </div>
-
     </footer>
-
-
+    <section class="modal enter-form form-modal" id="enter-form">
+        <h2>Вход на сайт</h2>
+        <form action="#" method="post">
+            <p>
+                <label class="form-modal-description" for="enter-email">Email</label>
+                <input class="enter-form-email input input-middle" type="email" name="enter-email" id="enter-email">
+            </p>
+            <p>
+                <label class="form-modal-description" for="enter-password">Пароль</label>
+                <input class="enter-form-email input input-middle" type="password" name="enter-email" id="enter-password">
+            </p>
+            <button class="button" type="submit">Войти</button>
+        </form>
+        <button class="form-modal-close" type="button">Закрыть</button>
+    </section>
+    <?php $this->endBody() ?>
 </div>
-<?php $this->endBody() ?>
+<div class="overlay"></div>
+<script src="/js/main.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

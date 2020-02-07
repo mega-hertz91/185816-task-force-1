@@ -49,7 +49,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             [['full_name', 'password'], 'required'],
-            [['role_id', 'city_id', 'user_status_id', 'tel'], 'integer'],
+            [['role_id', 'city_id', 'user_status_id', 'phone'], 'integer'],
             [['date_birth', 'created_at', 'updated_at'], 'safe'],
             [['about'], 'string'],
             [['full_name', 'email', 'password', 'skype', 'messenger'], 'string', 'max' => 255],
@@ -75,7 +75,7 @@ class User extends \yii\db\ActiveRecord
             'date_birth' => 'Date Birth',
             'about' => 'About',
             'password' => 'Password',
-            'tel' => 'Tel',
+            'phone' => 'Phone',
             'skype' => 'Skype',
             'messenger' => 'Messenger',
             'created_at' => 'Created At',

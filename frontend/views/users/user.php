@@ -14,8 +14,8 @@ use yii\helpers\Html;
             <div class="user__card">
                 <img src="../../../img/man-hat.png" width="120" height="120" alt="Аватар пользователя">
                 <div class="content-view__headline">
-                    <h1><?=html::encode($user->full_name)?></h1>
-                    <p><?=html::encode($user->city->name)?></p>
+                    <h1><?=Html::encode($user->full_name)?></h1>
+                    <p><?=Html::encode($user->city->name)?></p>
                     <div class="profile-mini__name five-stars__rate">
                         <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
                         <b>4.25</b>
@@ -28,7 +28,7 @@ use yii\helpers\Html;
                 </div>
             </div>
             <div class="content-view__description">
-                <p><?=html::encode($user->about)?></p>
+                <p><?=Html::encode($user->about)?></p>
             </div>
             <div class="user__card-general-information">
                 <div class="user__card-info">
@@ -40,9 +40,9 @@ use yii\helpers\Html;
                     </div>
                     <h3 class="content-view__h3">Контакты</h3>
                     <div class="user__card-link">
-                        <a class="user__card-link--tel link-regular" href="tel:<?=html::encode($user->phone)?>"><?=html::encode($user->phone)?></a>
-                        <a class="user__card-link--email link-regular" href="mailto:<?=html::encode($user->email)?>"><?=html::encode($user->email)?></a>
-                        <a class="user__card-link--skype link-regular" href="skype:<?=html::encode($user->skype)?>"><?=html::encode($user->skype)?></a>
+                        <a class="user__card-link--tel link-regular" href="tel:<?=Html::encode($user->phone)?>"><?=Html::encode($user->phone)?></a>
+                        <a class="user__card-link--email link-regular" href="mailto:<?=Html::encode($user->email)?>"><?=Html::encode($user->email)?></a>
+                        <a class="user__card-link--skype link-regular" href="skype:<?=Html::encode($user->skype)?>"><?=Html::encode($user->skype)?></a>
                     </div>
                 </div>
                 <div class="user__card-photo">
@@ -57,20 +57,20 @@ use yii\helpers\Html;
             <?php if($user->comments === null) :?>
                 <h2>Отзывов пока нет</h2>
             <?php else:?>
-                <h2>Отзывы<span>(<?=html::encode(count($user->comments))?>)</span></h2>
+                <h2>Отзывы<span>(<?=Html::encode(count($user->comments))?>)</span></h2>
             <?php endif;?>
             <?php foreach ($user->comments as $comment): ?>
             <div class="content-view__feedback-wrapper reviews-wrapper">
                 <div class="feedback-card__reviews">
-                    <p class="link-task link">Задание <a href="#" class="link-regular"><?=html::encode($comment->task->title)?></a></p>
+                    <p class="link-task link">Задание <a href="#" class="link-regular"><?=Html::encode($comment->task->title)?></a></p>
                     <div class="card__review">
-                        <a href="/users/view/<?=html::encode($comment->user_id)?>">
+                        <a href="/users/view/<?=Html::encode($comment->user_id)?>">
                             <img src="../../../img/man-glasses.jpg" width="55" height="54">
                         </a>
                         <div class="feedback-card__reviews-content">
-                            <p class="link-name link"><a href="/users/view/<?=html::encode($comment->user_id)?>" class="link-regular"><?=html::encode($comment->user->full_name)?></a></p>
+                            <p class="link-name link"><a href="/users/view/<?=Html::encode($comment->user_id)?>" class="link-regular"><?=Html::encode($comment->user->full_name)?></a></p>
                             <p class="review-text">
-                                <?=html::encode($comment->description)?>
+                                <?=Html::encode($comment->description)?>
                             </p>
                         </div>
                         <div class="card__review-rate">

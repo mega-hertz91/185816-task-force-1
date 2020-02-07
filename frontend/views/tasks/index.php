@@ -22,17 +22,17 @@ use yii\helpers\Url;
                 <div class="new-task__card">
                     <div class="new-task__title">
                         <a href="<?=Url::to(['tasks/view', 'id' => $task->id])?>" class="link-regular">
-                            <h2><?= HTML::encode($task->title) ?></h2>
+                            <h2><?= Html::encode($task->title) ?></h2>
                         </a>
-                        <a class="new-task__type link-regular" href="#"><p><?= HTML::encode($task->category->category_name) ?></p></a>
+                        <a class="new-task__type link-regular" href="#"><p><?= Html::encode($task->category->category_name) ?></p></a>
                     </div>
                     <div class="new-task__icon new-task__icon--translation"></div>
                     <p class="new-task_description">
-                        <?= HTML::encode($task->description) ?>
+                        <?= Html::encode($task->description) ?>
                     </p>
-                    <b class="new-task__price new-task__price--translation"><?= HTML::encode($task->amount) ?><b> ₽</b></b>
-                    <p class="new-task__place"><?= HTML::encode($task->city->name) ?></p>
-                    <span class="new-task__time"><?= HTML::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
+                    <b class="new-task__price new-task__price--translation"><?= Html::encode($task->amount) ?><b> ₽</b></b>
+                    <p class="new-task__place"><?= Html::encode($task->city->name) ?></p>
+                    <span class="new-task__time"><?= Html::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
                 </div>
             <?php endforeach; ?>
             <?= yii\widgets\ListView::widget([
@@ -48,7 +48,7 @@ use yii\helpers\Url;
             ]) ?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                    <?= html::activeCheckboxList($model, 'categories', $categories, ['item' =>
+                    <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
                         function ($index, $label, $name, $checked, $value) {
                             return TemplateForm::getTemplateFormCategory($label, $value, $name);
                         }]);
@@ -56,22 +56,23 @@ use yii\helpers\Url;
                 </fieldset>
                 <fieldset class="search-task__categories">
                     <legend>Дополнительно</legend>
-                    <?= html::activeCheckboxList($model, 'additionally',
+                    <?= Html::activeCheckboxList($model, 'additionally',
                         ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
                         ['item' => function ($index, $label, $name, $checked, $value) {
                             return TemplateForm::getTemplateFormCategory($label, $value, $name);
                         }]);
                     ?>
                 </fieldset>
-                <label class="search-task__name" for="8">Период</label>
-                <?php echo html::activeDropDownList($model, 'period', [
+                <label class="search-task__name" for="tasksform-period">Период</label>
+                <?=Html::activeDropDownList($model, 'period', [
                     '0' => 'За все время',
                     '86000' => 'За день',
                     '604800' => 'За неделю',
-                    '2419200' => 'За менсяц'], ['class' => 'multiple-select input']);
+                    '2419200' => 'За менсяц'],
+                    ['class' => 'multiple-select input']);
                 ?>
-                <label class="search-task__name" for="9">Поиск по названию</label>
-                <?= html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
+                <label class="search-task__name" for="tasksform-search">Поиск по названию</label>
+                <?= Html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
                 <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
                 <?php $form = ActiveForm::end() ?>
             </div>

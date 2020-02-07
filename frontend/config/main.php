@@ -48,7 +48,7 @@ return [
                 'tasks/view/<id:\d+>' => 'tasks/view',
                 'users/view/<id:\d+>' => 'users/view'
             ],
-        ]
+        ],
     ],
     'params' => $params,
 ];
