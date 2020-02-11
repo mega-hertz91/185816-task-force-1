@@ -18,6 +18,6 @@ class SingoutController extends Controller
     public function actionIndex()
     {
         Yii::$app->user->logout();
-        $this->goHome();
+        return $this->goHome();
     }
 }

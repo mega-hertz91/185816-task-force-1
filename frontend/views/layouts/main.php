@@ -109,7 +109,7 @@ $user = User::findOne(Yii::$app->user->getId());
                          alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name">
-                 <?= $user->full_name ?>
+                 <?= Html::encode( $user->full_name) ?>
              </span>
             </div>
             <div class="account__pop-up">
