@@ -5,13 +5,21 @@ namespace frontend\controllers;
 
 
 use frontend\forms\SingupForm;
+use frontend\helpers\AccessSettings;
 use frontend\models\City;
 use frontend\models\User;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use Yii;
 
 class SingupController extends Controller
 {
+    public function behaviors()
+    {
+        return AccessSettings::User();
+    }
+
     public function actionIndex ()
     {
         $this->layout = 'landing';
@@ -22,14 +30,11 @@ class SingupController extends Controller
 
         if ($model->load($request)) {
             if ($model->validate()) {
-                try {
-                    $user->attributes = $model->attributes;
-                    $user->save();
-                    $session->setFlash('reg','Вы успешно зарегистрировались');
-                    return $this->redirect('/');
-                } catch (\Exception $e) {
-                    $e->getMessage();
-                }
+                $user->attributes = $model->attributes;
+                $user->setHash();
+                $user->save();
+                $session->setFlash('reg','Вы успешно зарегистрировались');
+                return $this->redirect('/singin');
             }
         }
 

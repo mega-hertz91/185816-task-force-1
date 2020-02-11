@@ -7,7 +7,7 @@ use yii\base\Model;
 
 class SingupForm extends Model
 {
-    const DEFAULT_ROLE = 3;
+    const DEFAULT_ROLE = 2;
     const DEFAULT_STATUS = 1;
     public $email;
     public $full_name;

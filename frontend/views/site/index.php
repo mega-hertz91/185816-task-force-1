@@ -5,15 +5,11 @@
 
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
+use yii\helpers\Url;
 
 $this->title = 'Task-force';
 ?>
 <div class="landing-container">
-    <?php if(Yii::$app->session->getFlash('reg')) {
-        echo '<div>
-                     <p style="padding: 12px 15px; width: 1216px; margin: auto;" class="alert-success">' . Yii::$app->session->getFlash('reg') . ' </p>
-                   </div>';
-    } ?>
     <div class="landing-top">
         <h1>Работа для всех.<br>
             Найди исполнителя на любую задачу.</h1>
@@ -109,7 +105,7 @@ $this->title = 'Task-force';
             <div class="landing-task">
                 <div class="landing-task-top task-courier"></div>
                 <div class="landing-task-description">
-                    <h3><a href="#" class="link-regular"><?=Html::encode(StringHelper::truncate($task->title, 30))?></a></h3>
+                    <h3><a href="<?= Url::to(['tasks/view', 'id' => $task->id])?>" class="link-regular"><?=Html::encode(StringHelper::truncate($task->title, 30))?></a></h3>
                     <p><?=Html::encode(StringHelper::truncate($task->description, 30))?></p>
                 </div>
                 <div class="landing-task-info">

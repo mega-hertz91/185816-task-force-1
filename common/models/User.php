@@ -9,7 +9,6 @@ use yii\web\IdentityInterface;
 
 /**
  * User model
- *
  * @property integer $id
  * @property string $username
  * @property string $password_hash
@@ -24,9 +23,10 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    const STATUS_DELETED = 3;
+    const STATUS_BLOCKED = 2;
+    const STATUS_INACTIVE = 1;
+    const STATUS_ACTIVE = 1;
 
 
     /**
@@ -63,7 +63,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id]);
     }
 
     /**

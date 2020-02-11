@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 
 use frontend\forms\UsersForm;
+use frontend\helpers\AccessSettings;
 use frontend\models\Category;
 use frontend\models\Comment;
 use frontend\models\Response;
@@ -16,6 +17,11 @@ use yii\web\NotFoundHttpException;
 
 class UsersController extends Controller
 {
+    public function behaviors()
+    {
+        return AccessSettings::Guest();
+    }
+
     public function actionIndex()
     {
         $form = new UsersForm();

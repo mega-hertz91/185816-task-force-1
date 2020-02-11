@@ -1,17 +1,19 @@
 <?php
-
 /**
- * @var \yii\base\Model $model \frontend\forms\SingupForm
+ * @var \yii\base\Model $model \frontend\forms\SinginForm
  */
 
 use yii\widgets\ActiveForm;
 
-$this->title = 'Регистрация';
+$this->title = 'Вход';
 ?>
 
 <div class="main-container page-container">
     <section class="registration__user">
-        <h1>Регистрация аккаунта</h1>
+        <?php if(Yii::$app->session->getFlash('reg')) {
+            echo '<p style="padding: 12px 15px; margin: auto;" class="alert-success">' . Yii::$app->session->getFlash('reg') . ' </p>';
+        } ?>
+        <h1>Вход</h1>
         <div class="registration-wrapper">
             <?php $form = ActiveForm::begin(['options' => [
                 'class'=> 'registration__user-form form-create'
@@ -21,22 +23,12 @@ $this->title = 'Регистрация';
                     'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'kumarm@mail.ru', 'style' => 'width: 100%']
                 ]
             ) ?>
-            <?=$form->field($model, 'full_name',
-                [
-                    'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'Мамедов Кумар', 'style' => 'width: 100%']
-                ]
-            ) ?>
-            <?=$form->field($model, 'city_id',
-                [
-                    'inputOptions' => ['class' => 'multiple-select input town-select registration-town', 'style' => 'width: 100%']
-                ]
-            )->dropDownList($cities) ?>
             <?=$form->field($model, 'password',
                 [
                     'inputOptions' => ['class' => 'input textarea', 'style' => 'width: 100%', 'type' => 'password']
                 ]
             ) ?>
-            <button class="button button__registration" type="submit">Cоздать аккаунт</button>
+            <button class="button button__registration" type="submit">Войти</button>
             <?php ActiveForm::end()?>
         </div>
     </section>
