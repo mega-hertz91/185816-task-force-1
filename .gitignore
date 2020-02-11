@@ -5,6 +5,5 @@
 *.pdf
 *.psd
 *.sublime*
-*_test.*
 Thumbs.db
 vendor
