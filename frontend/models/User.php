@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -32,14 +33,50 @@ use Yii;
  * @property City $city
  * @property UserStatus $userStatus
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    public $password_repeat;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'user';
+    }
+
+   public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // TODO: Implement findIdentityByAccessToken() method.
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
+    }
+
+    public function validatePassword($password)
+    {
+        return \Yii::$app->getSecurity()->validatePassword($password, $this->password);
+    }
+
+    public function setHash()
+    {
+        $this->password = \Yii::$app->getSecurity()->generatePasswordHash($this->password);
     }
 
     /**

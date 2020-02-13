@@ -15,7 +15,7 @@ function getUsers($faker) {
         'user_status_id' => rand(1, 3),
         'date_birth' => $faker->date('Y-m-d', '2000-01-01'),
         'about' => $faker->text(300),
-        'password' => $faker->password,
+        'password' => '$2y$13$sPwhAm3eobdmK5Z.oT/LS.fxCN1seTr3qxzz0qXuCHub85HreDl3a',
         'phone' => $faker->tollFreePhoneNumber,
         'skype' => $faker->userName,
         'messenger' => $faker->domainWord,

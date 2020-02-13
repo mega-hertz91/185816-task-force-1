@@ -9,8 +9,10 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\User;
 
 AppAsset::register($this);
+$user = User::findOne(Yii::$app->user->getId());
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -107,7 +109,7 @@ AppAsset::register($this);
                          alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name">
-                 Василий
+                 <?= Html::encode( $user->full_name) ?>
              </span>
             </div>
             <div class="account__pop-up">
@@ -119,7 +121,7 @@ AppAsset::register($this);
                         <a href="#">Настройки</a>
                     </li>
                     <li>
-                        <a href="#">Выход</a>
+                        <a href="<?=\yii\helpers\Url::to('/singout')?>">Выход</a>
                     </li>
                 </ul>
             </div>
@@ -213,10 +215,7 @@ AppAsset::register($this);
                 </a>
             </div>
         </div>
-
     </footer>
-
-
 </div>
 <?php $this->endBody() ?>
 </body>

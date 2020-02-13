@@ -5,22 +5,22 @@
 
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
+use yii\helpers\Url;
 
 $this->title = 'Task-force';
 ?>
+<div style="width: 980px; margin: auto;">
+    <p style="color: green"><?= Yii::$app->session->getFlash('success') ?></p>
+    <p style="color: crimson"><?= Yii::$app->session->getFlash('error') ?></p>
+</div>
 <div class="landing-container">
-    <?php if(Yii::$app->session->getFlash('reg')) {
-        echo '<div>
-                     <p style="padding: 12px 15px; width: 1216px; margin: auto;" class="alert-success">' . Yii::$app->session->getFlash('reg') . ' </p>
-                   </div>';
-    } ?>
     <div class="landing-top">
         <h1>Работа для всех.<br>
             Найди исполнителя на любую задачу.</h1>
         <p>Сломался кран на кухне? Надо отправить документы? Нет времени самому гулять с собакой?
             У нас вы быстро найдёте исполнителя для любой жизненной ситуации?<br>
             Быстро, безопасно и с гарантией. Просто, как раз, два, три. </p>
-        <button class="button">Создать аккаунт</button>
+        <button class="button" style="margin-bottom: 40px;">Создать аккаунт</button>
     </div>
     <div class="landing-center">
         <div class="landing-instruction">
@@ -30,7 +30,7 @@ $this->title = 'Task-force';
                     <h3>Публикация заявки</h3>
                     <p>Создайте новую заявку.</p>
                     <p>Опишите в ней все детали
-                        и  стоимость работы.</p>
+                        и стоимость работы.</p>
                 </div>
             </div>
             <div class="landing-instruction-step">
@@ -109,7 +109,7 @@ $this->title = 'Task-force';
             <div class="landing-task">
                 <div class="landing-task-top task-courier"></div>
                 <div class="landing-task-description">
-                    <h3><a href="#" class="link-regular"><?=Html::encode(StringHelper::truncate($task->title, 30))?></a></h3>
+                    <h3><a href="<?= Url::to(['tasks/view', 'id' => $task->id])?>" class="link-regular"><?=Html::encode(StringHelper::truncate($task->title, 30))?></a></h3>
                     <p><?=Html::encode(StringHelper::truncate($task->description, 30))?></p>
                 </div>
                 <div class="landing-task-info">

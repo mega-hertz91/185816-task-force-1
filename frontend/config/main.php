@@ -21,7 +21,7 @@ return [
             'cookieValidationKey' => 'asdasdas',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \frontend\models\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -48,7 +48,7 @@ return [
                 'tasks/view/<id:\d+>' => 'tasks/view',
                 'users/view/<id:\d+>' => 'users/view'
             ],
-        ],
+        ]
     ],
     'params' => $params,
 ];
