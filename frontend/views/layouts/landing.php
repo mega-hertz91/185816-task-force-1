@@ -3,8 +3,11 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
+
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -54,7 +57,7 @@ AppAsset::register($this);
                 <p>Работа там, где ты!</p>
             </div>
             <div class="header__account--index">
-                <a href="<?=Url::to('/singin')?>" class="header__account-enter open-modal" data-for="enter-form">
+                <a class="header__account-enter open-modal" data-for="enter-form">
                     <span>Вход</span></a>
                 или
                 <a href="<?=Url::to('/singup')?>" class="header__account-registration">
@@ -110,19 +113,21 @@ AppAsset::register($this);
             </div>
         </div>
     </footer>
-    <section class="modal enter-form form-modal" id="enter-form">
+    <section class="modal enter-form form-modal" id="enter-form" style="bottom: auto">
         <h2>Вход на сайт</h2>
-        <form action="#" method="post">
-            <p>
-                <label class="form-modal-description" for="enter-email">Email</label>
-                <input class="enter-form-email input input-middle" type="email" name="enter-email" id="enter-email">
-            </p>
-            <p>
-                <label class="form-modal-description" for="enter-password">Пароль</label>
-                <input class="enter-form-email input input-middle" type="password" name="enter-email" id="enter-password">
-            </p>
-            <button class="button" type="submit">Войти</button>
-        </form>
+        <?php $form = ActiveForm::begin()?>
+        <?=$form->field($this->context->model, 'email',
+            [
+                'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'kumarm@mail.ru', 'style' => 'width: 100%']
+            ]
+        ) ?>
+        <?=$form->field($this->context->model, 'password',
+            [
+                'inputOptions' => ['class' => 'input textarea', 'style' => 'width: 100%', 'type' => 'password']
+            ]
+        ) ?>
+        <button class="button button__registration" type="submit">Войти</button>
+        <?php ActiveForm::end()?>
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
     <?php $this->endBody() ?>

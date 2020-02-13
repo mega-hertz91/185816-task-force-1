@@ -15,6 +15,8 @@ use Yii;
 
 class SingupController extends Controller
 {
+    public $model;
+
     public function behaviors()
     {
         return AccessSettings::User();
@@ -24,6 +26,7 @@ class SingupController extends Controller
     {
         $this->layout = 'landing';
         $model = new SingupForm();
+        $this->model = new SingupForm();
         $request = Yii::$app->request->post();
         $session = Yii::$app->session;
         $user = new User;

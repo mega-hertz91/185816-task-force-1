@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\forms\SinginForm;
 use frontend\helpers\AccessSettings;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\Task;
@@ -23,6 +24,8 @@ use Faker\Factory;
  */
 class SiteController extends Controller
 {
+
+    public $model;
     /**
      * {@inheritdoc}
      */
@@ -55,8 +58,27 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $this->layout = 'landing';
+        $request = Yii::$app->request->post();
+        $session = Yii::$app->session;
+        $model = new SinginForm();
+        $this->model = $model;
+
+        if ($model->load($request)) {
+            if ($model->validate()) {
+                $user = $model->getUser();
+                \Yii::$app->user->login($user);
+                $session->setFlash('success', "Добро пожаловать $user->full_name");
+                return $this->goHome();
+            } else {
+                $session->setFlash('error', "Логин или паротль не совпадают");
+            }
+        }
+
         return $this->render('index',
-            ['tasks' => Task::find()->orderBy(['created_at' => SORT_DESC])->limit(4)->all()]
+            [
+                'tasks' => Task::find()->orderBy(['created_at' => SORT_DESC])->limit(4)->all(),
+                'model' => $model
+            ]
         );
     }
 }

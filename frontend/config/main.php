@@ -21,7 +21,7 @@ return [
             'cookieValidationKey' => 'asdasdas',
         ],
         'user' => [
-            'identityClass' => 'frontend\models\User',
+            'identityClass' => \frontend\models\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],

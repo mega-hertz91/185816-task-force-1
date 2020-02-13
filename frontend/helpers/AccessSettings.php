@@ -3,8 +3,6 @@
 
 namespace frontend\helpers;
 
-
-use yii\web\Controller;
 use Yii;
 
 class AccessSettings
@@ -23,7 +21,7 @@ class AccessSettings
                     ]
                 ],
                 'denyCallback' => function ($rule, $action) {
-                    Yii::$app->response->redirect('/singin');
+                    return Yii::$app->response->redirect('/');
                 }
             ]
         ];
@@ -43,7 +41,7 @@ class AccessSettings
                     ]
                 ],
                 'denyCallback' => function ($rule, $action) {
-                    Yii::$app->response->redirect('tasks');
+                    return Yii::$app->response->redirect('tasks');
                 }
             ]
         ];

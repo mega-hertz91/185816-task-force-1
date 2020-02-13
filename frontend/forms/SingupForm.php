@@ -4,6 +4,7 @@
 namespace frontend\forms;
 
 use yii\base\Model;
+use frontend\models\User;
 
 class SingupForm extends Model
 {
@@ -29,7 +30,7 @@ class SingupForm extends Model
     public function rules()
     {
         return [
-            ['email', 'unique', 'targetClass'=>'frontend\models\User', 'message' => 'Этот email уже занят'],
+            ['email', 'unique', 'targetClass'=> User::className(), 'message' => 'Этот email уже занят'],
             ['email', 'email', 'message' => 'Введите валидный email'],
             ['email', 'required', 'message' => 'Введите валидный email'],
             ['full_name', 'required', 'message' => 'Введите ваше имя и фамилию'],

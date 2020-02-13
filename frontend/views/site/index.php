@@ -9,6 +9,10 @@ use yii\helpers\Url;
 
 $this->title = 'Task-force';
 ?>
+<div style="width: 980px; margin: auto;">
+    <p style="color: green"><?= Yii::$app->session->getFlash('success') ?></p>
+    <p style="color: crimson"><?= Yii::$app->session->getFlash('error') ?></p>
+</div>
 <div class="landing-container">
     <div class="landing-top">
         <h1>Работа для всех.<br>
@@ -16,7 +20,7 @@ $this->title = 'Task-force';
         <p>Сломался кран на кухне? Надо отправить документы? Нет времени самому гулять с собакой?
             У нас вы быстро найдёте исполнителя для любой жизненной ситуации?<br>
             Быстро, безопасно и с гарантией. Просто, как раз, два, три. </p>
-        <button class="button">Создать аккаунт</button>
+        <button class="button" style="margin-bottom: 40px;">Создать аккаунт</button>
     </div>
     <div class="landing-center">
         <div class="landing-instruction">
@@ -26,7 +30,7 @@ $this->title = 'Task-force';
                     <h3>Публикация заявки</h3>
                     <p>Создайте новую заявку.</p>
                     <p>Опишите в ней все детали
-                        и  стоимость работы.</p>
+                        и стоимость работы.</p>
                 </div>
             </div>
             <div class="landing-instruction-step">
