@@ -12,10 +12,10 @@ class AccessSettings
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index'],
+                'only' => ['index', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ]

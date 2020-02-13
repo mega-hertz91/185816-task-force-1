@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\behaviors\AccessBehaviors;
 use frontend\forms\TasksForm;
 use frontend\models\Category;
 use frontend\models\Response;
@@ -17,7 +18,7 @@ class TasksController extends Controller
 {
     public function behaviors()
     {
-      return AccessSettings::Guest();
+        return AccessSettings::Guest();
     }
 
     public function actionIndex()

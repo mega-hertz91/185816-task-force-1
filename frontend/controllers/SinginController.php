@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 
 use frontend\forms\SinginForm;
+use frontend\forms\SingupForm;
 use frontend\helpers\AccessSettings;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -12,6 +13,8 @@ use Yii;
 
 class SinginController extends Controller
 {
+    public $model;
+
     public function behaviors()
     {
         return AccessSettings::User();
@@ -23,6 +26,7 @@ class SinginController extends Controller
         $model = new SinginForm();
         $request = Yii::$app->request->post();
         $session = Yii::$app->session;
+        $this->model = new SingupForm();
 
         if ($model->load($request)) {
             if ($model->validate()) {
