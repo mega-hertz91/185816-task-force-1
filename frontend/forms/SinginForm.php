@@ -25,7 +25,7 @@ class SinginForm extends Model
     {
         return [
             ['email', 'required', 'message' => 'Введите валидный email'],
-            ['email', 'exist', 'targetClass' => 'frontend\Models\User', 'message' => 'Такого пользователя не существует'],
+            ['email', 'exist', 'targetClass' => User::class, 'message' => 'Такого пользователя не существует'],
             ['email', 'email', 'message' => 'Введите валидный email'],
             ['password', 'required', 'message' => 'Введите пароль'],
             ['password', 'validatePassword']
