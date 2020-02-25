@@ -13,14 +13,9 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use Yii;
 
-class SingupController extends Controller
+class SingupController extends BaseController
 {
     public $model;
-
-    public function behaviors()
-    {
-        return AccessSettings::User();
-    }
 
     public function actionIndex ()
     {

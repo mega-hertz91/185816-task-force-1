@@ -2,25 +2,17 @@
 
 namespace frontend\controllers;
 
-use frontend\behaviors\AccessBehaviors;
 use frontend\forms\TasksForm;
 use frontend\models\Category;
-use frontend\models\Response;
 use frontend\models\Task;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
 use frontend\providers\TasksProvider;
 use yii\web\NotFoundHttpException;
 use frontend\helpers\AccessSettings;
 
-class TasksController extends Controller
+class TasksController extends BaseController
 {
-    public function behaviors()
-    {
-        return AccessSettings::Guest();
-    }
-
     public function actionIndex()
     {
         $form = new TasksForm();
@@ -48,5 +40,10 @@ class TasksController extends Controller
         return $this->render('task', [
             'task' => $task,
         ]);
+    }
+
+    public function actionTest()
+    {
+        Yii::$app->on(Controller::EVENT_BEFORE_ACTION);
     }
 }

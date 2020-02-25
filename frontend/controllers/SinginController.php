@@ -11,14 +11,9 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
 
-class SinginController extends Controller
+class SinginController extends BaseController
 {
     public $model;
-
-    public function behaviors()
-    {
-        return AccessSettings::User();
-    }
 
     public function actionIndex()
     {

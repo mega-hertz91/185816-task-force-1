@@ -15,12 +15,8 @@ use yii\web\Controller;
 use Yii;
 use yii\web\NotFoundHttpException;
 
-class UsersController extends Controller
+class UsersController extends BaseController
 {
-    public function behaviors()
-    {
-        return AccessSettings::Guest();
-    }
 
     public function actionIndex()
     {

@@ -22,21 +22,11 @@ use Faker\Factory;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
 
     public $model;
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return AccessSettings::User();
-    }
 
-    /**
-     * {@inheritdoc}
-     */
     public function actions()
     {
         return [
