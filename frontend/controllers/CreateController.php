@@ -4,6 +4,8 @@
 namespace frontend\controllers;
 
 
+use frontend\forms\CreateTask;
+use frontend\models\Category;
 use yii\web\Controller;
 use frontend\models\User;
 use Yii;
@@ -25,6 +27,10 @@ class CreateController extends BaseController
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new CreateTask();
+
+        return $this->render('index', [
+            'model' => $model,
+        ]);
     }
 }
