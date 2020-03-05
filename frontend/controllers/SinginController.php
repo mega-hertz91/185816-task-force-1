@@ -15,6 +15,15 @@ class SinginController extends BaseController
 {
     public $model;
 
+    public function beforeAction($action)
+    {
+        if(Yii::$app->user->isGuest) {
+            return 'you guest';
+        } else {
+            return Yii::$app->response->redirect('/tasks/');
+        }
+    }
+
     public function actionIndex()
     {
         $this->layout = 'landing';

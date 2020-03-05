@@ -41,9 +41,4 @@ class TasksController extends BaseController
             'task' => $task,
         ]);
     }
-
-    public function actionTest()
-    {
-        Yii::$app->on(Controller::EVENT_BEFORE_ACTION);
-    }
 }

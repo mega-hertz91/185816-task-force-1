@@ -10,6 +10,10 @@ use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
 
 ?>
+<div class="main-container page-header__container" style="text-align: left">
+    <p style="color: green"><?php echo Yii::$app->session->getFlash('success') ?></p>
+    <p style="color: crimson"><?php echo Yii::$app->session->getFlash('error') ?></p>
+</div>
 <div class="main-container page-container">
     <section class="new-task">
         <div class="new-task__wrapper">
