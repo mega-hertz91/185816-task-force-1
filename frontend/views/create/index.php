@@ -2,7 +2,7 @@
 
 /**
  * @var $form yii\widgets\ActiveForm
- * @var $model frontend\forms\CreateTask
+ * @var $model frontend\forms\CreateTaskForm
  * @var $categories frontend\models\Category
  */
 
@@ -17,13 +17,11 @@ $this->title = 'Публикация нового задания';
     <section class="create__task">
         <h1>Публикация нового задания</h1>
         <div class="create__task-main">
-            <?php
-            $form = ActiveForm::begin(['options' => [
+            <?php $form = ActiveForm::begin(['options' => [
                 'class' => 'create__task-form form-create',
                 'enctype' => 'multipart/form-data'
-            ]])
-            ?>
-            <?= $form->field($model, 'title',
+            ]]) ?>
+            <?= $form->field($model, 'subject',
                 [
                     'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'Повесить полку', 'style' => 'display: block; width: 100%']
                 ]
@@ -41,15 +39,15 @@ $this->title = 'Публикация нового задания';
                 ]
             )->dropDownList(Category::find()->select(['category_name', 'id'])->indexBy('id')->column()) ?>
             <span>Выберите категорию</span>
-            <label>Файлы</label>
+            <!--<label>Файлы</label>
             <span>Загрузите файлы, которые помогут исполнителю лучше выполнить или оценить работу</span>
             <div class="create__file">
                 <span>Добавить новый файл</span>
-                <!--                          <input type="file" name="files[]" class="dropzone">-->
+                                         <input type="file" name="files[]" class="dropzone">
             </div>
             <label for="13">Локация</label>
             <input class="input-navigation input-middle input" id="13" type="search" name="q" placeholder="Санкт-Петербург, Калининский район">
-            <span>Укажите адрес исполнения, если задание требует присутствия</span>
+            <span>Укажите адрес исполнения, если задание требует присутствия</span>-->
             <div class="create__price-time">
                 <div class="create__price-time--wrapper">
                     <?= $form->field($model, 'budget',
@@ -68,9 +66,8 @@ $this->title = 'Публикация нового задания';
                     <span>Укажите крайний срок исполнения</span>
                 </div>
             </div>
-            <?php
-            ActiveForm::end()
-            ?>
+            <button type="submit">Опубликовать</button>
+            <?php ActiveForm::end() ?>
             <div class="create__warnings">
                 <div class="warning-item warning-item--advice">
                     <h2>Правила хорошего описания</h2>
@@ -92,6 +89,5 @@ $this->title = 'Публикация нового задания';
                 </div>
             </div>
         </div>
-        <button form="task-form" class="button" type="submit">Опубликовать</button>
     </section>
 </div>
