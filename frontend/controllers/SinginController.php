@@ -6,7 +6,6 @@ namespace frontend\controllers;
 
 use frontend\forms\SinginForm;
 use frontend\forms\SingupForm;
-use frontend\helpers\AccessSettings;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
