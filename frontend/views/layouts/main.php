@@ -70,7 +70,7 @@ $user = User::findOne(Yii::$app->user->getId());
                         <a href="/users/">Исполнители</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="#">Создать задание</a>
+                        <a href="<?=\yii\helpers\Url::to('/create/')?>">Создать задание</a>
                     </li>
                     <li class="site-list__item">
                         <a>Мой профиль</a>

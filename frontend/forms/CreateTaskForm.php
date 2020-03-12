@@ -8,18 +8,21 @@ use yii\base\Model;
 
 class CreateTaskForm extends Model
 {
-    public $subject;
+    const DEFAULT_STATUS = 1;
+    const DEFAULT_CITY = 1;
+
+    public $title;
     public $description;
-    public $category;
+    public $category_id;
     public $budget;
     public $deadline;
 
     public function attributeLabels()
     {
         return [
-            'subject' => 'Мне нужно',
+            'title' => 'Мне нужно',
             'description' => 'Подробности задания',
-            'category' => 'Категория',
+            'category_id' => 'Категория',
             'budget' => 'Бюджет',
             'deadline' => 'Срок исполнения'
         ];
@@ -28,9 +31,9 @@ class CreateTaskForm extends Model
     public function rules()
     {
         return [
-            [['title', 'subject', 'description', 'category', 'budget', 'deadline'], 'required'],
-            ['budget', 'integer'],
-            ['deadline', 'date']
+            [['title','description', 'category_id', 'budget', 'deadline'], 'required', 'message' => 'Поле не может быть пустым'],
+            ['budget', 'integer', 'message' => 'Поле должно быть числом'],
+            ['deadline', 'datetime', 'format' => 'php:Y-m-d H:i', 'message' => 'Введите дату в правильном формате YYYY-mm-dd hh:mm']
         ];
     }
 }

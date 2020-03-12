@@ -117,7 +117,7 @@ $this->title = 'Task-force';
                         <p><a href="#" class="link-regular"><?=Html::encode($task->category->category_name)?></a></p>
                         <p>25 минут назад</p>
                     </div>
-                    <span><?=Html::encode($task->amount)?> <b>₽</b></span>
+                    <span><?=Html::encode($task->budget)?> <b>₽</b></span>
                 </div>
             </div>
             <?php endforeach; ?>

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @var $form yii\widgets\ActiveForm
- * @var $model frontend\forms\CreateTaskForm
- * @var $categories frontend\models\Category
+ * @var object $form yii\widgets\ActiveForm
+ * @var object $model frontend\forms\CreateTaskForm
+ * @var array $errors
  */
 
 use yii\widgets\ActiveForm;
@@ -12,7 +12,6 @@ use frontend\models\Category;
 $this->title = 'Публикация нового задания';
 
 ?>
-
 <div class="main-container page-container">
     <section class="create__task">
         <h1>Публикация нового задания</h1>
@@ -21,7 +20,7 @@ $this->title = 'Публикация нового задания';
                 'class' => 'create__task-form form-create',
                 'enctype' => 'multipart/form-data'
             ]]) ?>
-            <?= $form->field($model, 'subject',
+            <?= $form->field($model, 'title',
                 [
                     'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'Повесить полку', 'style' => 'display: block; width: 100%']
                 ]
@@ -33,7 +32,7 @@ $this->title = 'Публикация нового задания';
                 ]
             )->textarea(['rows' => 7, 'cols' => 5]) ?>
             <span>Укажите все пожелания и детали, чтобы исполнителям было проще соориентироваться</span>
-            <?= $form->field($model, 'category',
+            <?= $form->field($model, 'category_id',
                 [
                     'inputOptions' => ['class' => 'multiple-select input multiple-select-big', 'placeholder' => 'Введите текст', 'style' => 'display: block; width: 100%']
                 ]
@@ -60,13 +59,13 @@ $this->title = 'Публикация нового задания';
                 <div class="create__price-time--wrapper">
                     <?= $form->field($model, 'deadline',
                         [
-                            'inputOptions' => ['class' => 'input-middle input input-date', 'placeholder' => '10.11, 15:00', 'style' => 'display: block;', 'type' =>'date']
+                            'inputOptions' => ['class' => 'input-middle input input-date', 'placeholder' => '2020-10-11 15:00', 'style' => 'display: block;']
                         ]
                     ) ?>
                     <span>Укажите крайний срок исполнения</span>
                 </div>
             </div>
-            <button type="submit">Опубликовать</button>
+            <button type="submit" class="button">Опубликовать</button>
             <?php ActiveForm::end() ?>
             <div class="create__warnings">
                 <div class="warning-item warning-item--advice">
@@ -81,12 +80,17 @@ $this->title = 'Публикация нового задания';
                         что всё в фокусе, а фото показывает объект со всех
                         ракурсов.</p>
                 </div>
-                <div class="warning-item warning-item--error">
-                    <h2>Ошибки заполнения формы</h2>
-                    <h3>Категория</h3>
-                    <p>Это поле должно быть выбрано.<br>
-                        Задание должно принадлежать одной из категорий</p>
-                </div>
+                <?php if ($errors) : ?>
+                    <div class="warning-item warning-item--error">
+                        <h2>Ошибки заполнения формы</h2>
+                        <?php foreach ($errors as $error => $value): ?>
+                            <h3><?= $model->attributeLabels()[$error] ?></h3>
+                            <?php foreach ($value as $key): ?>
+                                <p><?= $key ?></p>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>

@@ -16,7 +16,7 @@ use yii\helpers\Html;
                                     <a href="#" class="link-regular"><?=Html::encode($task->category->category_name)?></a>
                                     25 минут назад</span>
                     </div>
-                    <b class="new-task__price new-task__price--clean content-view-price"><?=Html::encode($task->amount)?><b> ₽</b></b>
+                    <b class="new-task__price new-task__price--clean content-view-price"><?=Html::encode($task->budget)?><b> ₽</b></b>
                     <div class="new-task__icon new-task__icon--clean content-view-icon"></div>
                 </div>
                 <div class="content-view__description">
@@ -72,7 +72,7 @@ use yii\helpers\Html;
                         <p>
                             <?=Html::encode($response->message)?>
                         </p>
-                        <span><?=Html::encode($response->amount)?> ₽</span>
+                        <span><?=Html::encode($response->budget)?> ₽</span>
                     </div>
                     <div class="feedback-card__actions">
                         <a class="button__small-color request-button button"
