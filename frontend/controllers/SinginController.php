@@ -6,18 +6,19 @@ namespace frontend\controllers;
 
 use frontend\forms\SinginForm;
 use frontend\forms\SingupForm;
-use frontend\helpers\AccessSettings;
-use yii\filters\AccessControl;
-use yii\web\Controller;
 use Yii;
 
-class SinginController extends Controller
+class SinginController extends BaseController
 {
     public $model;
 
-    public function behaviors()
+    public function beforeAction($action)
     {
-        return AccessSettings::User();
+        if(Yii::$app->user->isGuest) {
+            return 'you guest';
+        } else {
+            return Yii::$app->response->redirect('/tasks/');
+        }
     }
 
     public function actionIndex()

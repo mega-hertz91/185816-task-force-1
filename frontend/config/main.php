@@ -8,6 +8,7 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['gii'],
+    'language' => 'ru-RU',
     'modules' => [
         'gii' => [
             'class' => 'yii\gii\Module',

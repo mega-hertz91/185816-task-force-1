@@ -5,7 +5,6 @@ namespace frontend\controllers;
 
 
 use frontend\forms\SingupForm;
-use frontend\helpers\AccessSettings;
 use frontend\models\City;
 use frontend\models\User;
 use yii\filters\AccessControl;
@@ -13,13 +12,31 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use Yii;
 
-class SingupController extends Controller
+class SingupController extends BaseController
 {
     public $model;
 
     public function behaviors()
     {
-        return AccessSettings::User();
+        $rules = parent::behaviors();
+        $rule = [
+            'actions' => ['index'],
+            'allow' => true,
+            'roles' => ['?'],
+        ];
+
+        array_unshift($rules['access']['rules'], $rule);
+
+        return $rules;
+    }
+
+    public function beforeAction($action)
+    {
+        if(Yii::$app->user->isGuest) {
+            return 'you guest';
+        } else {
+            return Yii::$app->response->redirect('/tasks/');
+        }
     }
 
     public function actionIndex ()

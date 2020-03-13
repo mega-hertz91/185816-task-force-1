@@ -10,6 +10,10 @@ use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
 
 ?>
+<div class="main-container page-header__container" style="text-align: left">
+    <p style="color: green"><?php echo Yii::$app->session->getFlash('success') ?></p>
+    <p style="color: crimson"><?php echo Yii::$app->session->getFlash('error') ?></p>
+</div>
 <div class="main-container page-container">
     <section class="new-task">
         <div class="new-task__wrapper">
@@ -30,7 +34,7 @@ use yii\helpers\Url;
                     <p class="new-task_description">
                         <?= Html::encode($task->description) ?>
                     </p>
-                    <b class="new-task__price new-task__price--translation"><?= Html::encode($task->amount) ?><b> ₽</b></b>
+                    <b class="new-task__price new-task__price--translation"><?= Html::encode($task->budget) ?><b> ₽</b></b>
                     <p class="new-task__place"><?= Html::encode($task->city->name) ?></p>
                     <span class="new-task__time"><?= Html::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
                 </div>

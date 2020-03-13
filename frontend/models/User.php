@@ -35,6 +35,10 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const ADMIN = 1;
+    const CUSTOMER = 2;
+    const EXECUTOR = 3;
+
     public $password_repeat;
     /**
      * {@inheritdoc}

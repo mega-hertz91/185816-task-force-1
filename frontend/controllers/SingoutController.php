@@ -8,12 +8,8 @@ use frontend\helpers\AccessSettings;
 use Yii;
 use yii\web\Controller;
 
-class SingoutController extends Controller
+class SingoutController extends BaseController
 {
-    public function behaviors()
-    {
-        return AccessSettings::Guest();
-    }
 
     public function actionIndex()
     {

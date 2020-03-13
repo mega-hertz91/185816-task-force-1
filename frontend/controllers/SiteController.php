@@ -2,41 +2,45 @@
 namespace frontend\controllers;
 
 use frontend\forms\SinginForm;
-use frontend\helpers\AccessSettings;
-use frontend\models\ResendVerificationEmailForm;
 use frontend\models\Task;
-use frontend\models\VerifyEmailForm;
 use Yii;
-use yii\base\InvalidArgumentException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
-use Faker\Factory;
+
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
 
     public $model;
-    /**
-     * {@inheritdoc}
-     */
+
     public function behaviors()
     {
-        return AccessSettings::User();
+        $rules = parent::behaviors();
+        $rule = [
+            'actions' => ['index'],
+            'allow' => true,
+            'roles' => ['?'],
+            'denyCallback' => function ($rule, $action) {
+                return Yii::$app->response->redirect('/tasks');
+            }
+        ];
+
+        array_unshift($rules['access']['rules'], $rule);
+
+        return $rules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function beforeAction($action)
+    {
+        if(Yii::$app->user->isGuest) {
+            return 'you guest';
+        } else {
+            return Yii::$app->response->redirect('/tasks/');
+        }
+    }
+
     public function actions()
     {
         return [
@@ -70,7 +74,7 @@ class SiteController extends Controller
                 $session->setFlash('success', "Добро пожаловать $user->full_name");
                 return $this->goHome();
             } else {
-                $session->setFlash('error', "Логин или паротль не совпадают");
+                $session->setFlash('error', "Логин или пароль не совпадают");
             }
         }
 
