@@ -16,7 +16,7 @@ function getTask($faker) {
         'user_id' => rand(1, 60),
         'executor_id' => rand(1, 60),
         'budget' => rand(1000, 150000),
-        'deadline' => $date->format('Y-m-d H:i:s'),
+        'deadline' => $date->format('Y-m-d'),
         'status_id' => rand(1, 5),
         'created_at' => $date->format('Y-m-d H:i:s')
     ];

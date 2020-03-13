@@ -1,7 +1,6 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\behaviors\AccessBehavior;
 use frontend\forms\SinginForm;
 use frontend\models\Task;
 use Yii;
@@ -75,7 +74,7 @@ class SiteController extends BaseController
                 $session->setFlash('success', "Добро пожаловать $user->full_name");
                 return $this->goHome();
             } else {
-                $session->setFlash('error', "Логин или паротль не совпадают");
+                $session->setFlash('error', "Логин или пароль не совпадают");
             }
         }
 

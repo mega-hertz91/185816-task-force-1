@@ -2,34 +2,41 @@
 
 namespace frontend\models;
 
+use frontend\behaviors\SaveTaskBehavior;
 use Yii;
 
 /**
  * This is the model class for table "task".
  *
  * @property int $id
- * @property int|null $category_id
- * @property string $title
+ * @property int $category_id
+ * @property string|null $title
  * @property string|null $description
- * @property int|null $city_id
- * @property int|null $user_id
+ * @property int $city_id
+ * @property int $user_id
  * @property int|null $executor_id
  * @property int|null $budget
- * @property string|null $deadline
- * @property int|null $status_id
+ * @property string $deadline
+ * @property int $status_id
+ * @property string|null $file
  * @property string $created_at
  * @property string $updated_at
  *
  * @property Comment[] $comments
  * @property Message[] $messages
+ * @property Message[] $messages0
  * @property Response[] $responses
  * @property Category $category
  * @property City $city
- * @property User $user
  * @property User $executor
+ * @property Status $status
+ * @property User $user
  */
 class Task extends \yii\db\ActiveRecord
 {
+
+    const DEFAULT_STATUS = 5;
+
     /**
      * {@inheritdoc}
      */
@@ -44,16 +51,16 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['category_id', 'city_id', 'user_id', 'status_id'], 'required'],
             [['category_id', 'city_id', 'user_id', 'executor_id', 'budget', 'status_id'], 'integer'],
-            [['title'], 'required'],
             [['description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['title'], 'string', 'max' => 255],
+            [['deadline', 'created_at', 'updated_at'], 'safe'],
+            [['title', 'file'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['executor_id' => 'id']],
-            ['deadline', 'datetime', 'format' => 'php:Y-m-d H:i:s']
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -73,6 +80,7 @@ class Task extends \yii\db\ActiveRecord
             'budget' => 'Budget',
             'deadline' => 'Deadline',
             'status_id' => 'Status ID',
+            'file' => 'File',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -90,6 +98,14 @@ class Task extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getMessages()
+    {
+        return $this->hasMany(Message::className(), ['recipient' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMessages0()
     {
         return $this->hasMany(Message::className(), ['task_id' => 'id']);
     }
@@ -121,16 +137,29 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getExecutor()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'executor_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getExecutor()
+    public function getStatus()
     {
-        return $this->hasOne(User::className(), ['id' => 'executor_id']);
+        return $this->hasOne(Status::className(), ['id' => 'status_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function init()
+    {
+        $this->status_id = self::DEFAULT_STATUS;
     }
 }

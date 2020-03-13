@@ -14,6 +14,6 @@ return [
         'name' => 'cancel'
     ],
     [
-        'name' => 'public'
+        'name' => 'new'
     ]
 ];
