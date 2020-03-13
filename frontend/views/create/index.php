@@ -14,7 +14,6 @@ $this->title = 'Публикация нового задания';
 
 ?>
 
-<?php var_dump($task->getAttributes()); ?>
 <div class="main-container page-container">
     <section class="create__task">
         <h1>Публикация нового задания</h1>
