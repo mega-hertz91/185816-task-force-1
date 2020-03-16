@@ -5,11 +5,10 @@ namespace frontend\controllers;
 use frontend\forms\TasksForm;
 use frontend\models\Category;
 use frontend\models\Task;
-use yii\web\Controller;
+use frontend\models\User;
 use Yii;
 use frontend\providers\TasksProvider;
 use yii\web\NotFoundHttpException;
-use frontend\helpers\AccessSettings;
 
 class TasksController extends BaseController
 {
@@ -32,13 +31,20 @@ class TasksController extends BaseController
     public function actionView($id)
     {
         $task = Task::findOne($id);
+        $user = User::findOne(['id' => Yii::$app->user->id]);
 
         if($task === null) {
             throw new NotFoundHttpException('Такого задания не существует');
+        } elseif ($task->status_id === Task::DEFAULT_STATUS) {
+            return $this->render('task', [
+                'task' => $task,
+            ]);
+        } elseif ($task->executor_id === $user->role->id) {
+            return $this->render('task', [
+                'task' => $task,
+            ]);
         }
 
-        return $this->render('task', [
-            'task' => $task,
-        ]);
+        return $this->redirect('/tasks/');
     }
 }

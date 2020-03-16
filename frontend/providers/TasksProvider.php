@@ -19,10 +19,10 @@ class TasksProvider extends Provider
 
     public static function getContent(array $attributes): ActiveDataProvider
     {
-        $query = Task::find();
+        $query = Task::find()->where(['status_id' => Task::DEFAULT_STATUS]);
 
         if (!empty($attributes['categories'])) {
-            $query->where([
+            $query->andWhere([
                 'category_id' => $attributes['categories'],
             ]);
         }
