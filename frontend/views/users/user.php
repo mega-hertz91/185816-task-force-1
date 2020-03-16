@@ -7,7 +7,6 @@
 use yii\helpers\Html;
 
 ?>
-
 <div class="main-container page-container">
     <section class="content-view">
         <div class="user__card-wrapper">
@@ -28,21 +27,21 @@ use yii\helpers\Html;
                 </div>
             </div>
             <div class="content-view__description">
-                <p><?=Html::encode($user->about)?></p>
+                <p><?= Html::encode($user->about) ?></p>
             </div>
             <div class="user__card-general-information">
                 <div class="user__card-info">
                     <h3 class="content-view__h3">Специализации</h3>
                     <div class="link-specialization">
-                        <a href="#" class="link-regular">Ремонт</a>
-                        <a href="#" class="link-regular">Курьер</a>
-                        <a href="#" class="link-regular">Оператор ПК</a>
+                        <?php foreach ($user->categoryExecutors as $cat): ?>
+                            <a href="#" class="link-regular"><?= Html::encode($cat->category->category_name) ?></a>
+                        <?php endforeach; ?>
                     </div>
                     <h3 class="content-view__h3">Контакты</h3>
                     <div class="user__card-link">
-                        <a class="user__card-link--tel link-regular" href="tel:<?=Html::encode($user->phone)?>"><?=Html::encode($user->phone)?></a>
-                        <a class="user__card-link--email link-regular" href="mailto:<?=Html::encode($user->email)?>"><?=Html::encode($user->email)?></a>
-                        <a class="user__card-link--skype link-regular" href="skype:<?=Html::encode($user->skype)?>"><?=Html::encode($user->skype)?></a>
+                        <a class="user__card-link--tel link-regular" href="tel:<?= Html::encode($user->phone) ?>"><?= Html::encode($user->phone) ?></a>
+                        <a class="user__card-link--email link-regular" href="mailto:<?= Html::encode($user->email) ?>"><?= Html::encode($user->email) ?></a>
+                        <a class="user__card-link--skype link-regular" href="skype:<?= Html::encode($user->skype) ?>"><?= Html::encode($user->skype) ?></a>
                     </div>
                 </div>
                 <div class="user__card-photo">

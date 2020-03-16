@@ -29,6 +29,7 @@ use yii\helpers\Url;
             </ul>
         </div>
         <?php foreach ($users->getModels() as $user) :?>
+        <?php $user = $user->user ?>
           <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
               <div class="user__search-icon">
@@ -51,9 +52,9 @@ use yii\helpers\Url;
               <span class="new-task__time">Был на сайте 25 минут назад</span>
             </div>
             <div class="link-specialization user__search-link--bottom">
-              <a href="#" class="link-regular">Ремонт</a>
-              <a href="#" class="link-regular">Курьер</a>
-              <a href="#" class="link-regular">Оператор ПК</a>
+                <?php foreach ($user->categoryExecutors as $cat): ?>
+                    <a href="#" class="link-regular"><?= Html::encode($cat->category->category_name) ?></a>
+                <?php endforeach; ?>
             </div>
           </div>
         <?php endforeach; ?>

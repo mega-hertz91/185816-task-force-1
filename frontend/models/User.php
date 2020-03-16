@@ -127,6 +127,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCategoryExecutors()
+    {
+        return $this->hasMany(CategoryExecutor::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['user_id' => 'id']);

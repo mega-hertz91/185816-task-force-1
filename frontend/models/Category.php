@@ -57,4 +57,12 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Task::className(), ['category_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoryExecutor()
+    {
+        return $this->hasMany(CategoryExecutor::className(), ['category_id' => 'id']);
+    }
 }

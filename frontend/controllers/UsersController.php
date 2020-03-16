@@ -5,13 +5,10 @@ namespace frontend\controllers;
 
 
 use frontend\forms\UsersForm;
-use frontend\helpers\AccessSettings;
 use frontend\models\Category;
-use frontend\models\Comment;
-use frontend\models\Response;
+use frontend\models\CategoryExecutor;
 use frontend\models\User;
 use frontend\providers\UsersProvider;
-use yii\web\Controller;
 use Yii;
 use yii\web\NotFoundHttpException;
 
@@ -45,5 +42,16 @@ class UsersController extends BaseController
         return $this->render('user', [
             'user' => $user,
         ]);
+    }
+
+    public function actionTest()
+    {
+        $users = CategoryExecutor::find()->joinWith('user')->where(['full_name' => 'Everett Douglas'])->all();
+
+        foreach ($users as $user) {
+            var_dump($user->user->full_name);
+        }
+
+        die;
     }
 }
