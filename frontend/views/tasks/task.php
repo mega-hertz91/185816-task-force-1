@@ -50,15 +50,18 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
             </div>
             <?php if($user->role->id === User::EXECUTOR): ?>
                 <div class="content-view__action-buttons">
-                    <button class=" button button__big-color response-button open-modal"
-                            type="button" data-for="response-form">Откликнуться
-                    </button>
-                    <button class="button button__big-color refusal-button open-modal"
-                            type="button" data-for="refuse-form">Отказаться
-                    </button>
-                    <button class="button button__big-color request-button open-modal"
-                            type="button" data-for="complete-form">Завершить
-                    </button>
+                    <?php if ($task->status_id === $task::DEFAULT_STATUS): ?>
+                        <button class=" button button__big-color response-button open-modal"
+                                type="button" data-for="response-form">Откликнуться
+                        </button>
+                    <?php else : ?>
+                        <button class="button button__big-color refusal-button open-modal"
+                                type="button" data-for="refuse-form">Отказаться
+                        </button>
+                        <button class="button button__big-color request-button open-modal"
+                                type="button" data-for="complete-form">Завершить
+                        </button>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div>
