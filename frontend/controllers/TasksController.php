@@ -39,7 +39,7 @@ class TasksController extends BaseController
             return $this->render('task', [
                 'task' => $task,
             ]);
-        } elseif ($task->executor_id === $user->role->id) {
+        } elseif ($task->executor_id === $user->id || $task->user_id === $user->id) {
             return $this->render('task', [
                 'task' => $task,
             ]);

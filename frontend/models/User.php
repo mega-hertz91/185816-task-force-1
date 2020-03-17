@@ -38,6 +38,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     const ADMIN = 1;
     const CUSTOMER = 2;
     const EXECUTOR = 3;
+    const MAX_RATING = 5;
 
     public $password_repeat;
     /**

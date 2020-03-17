@@ -36,6 +36,7 @@ class Task extends \yii\db\ActiveRecord
 {
 
     const DEFAULT_STATUS = 5;
+    const STATUS_WORK = 4;
 
     /**
      * {@inheritdoc}

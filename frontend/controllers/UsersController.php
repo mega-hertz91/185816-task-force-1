@@ -7,6 +7,7 @@ namespace frontend\controllers;
 use frontend\forms\UsersForm;
 use frontend\models\Category;
 use frontend\models\CategoryExecutor;
+use frontend\models\Comment;
 use frontend\models\User;
 use frontend\providers\UsersProvider;
 use Yii;
@@ -34,6 +35,11 @@ class UsersController extends BaseController
     public function actionView($id)
     {
         $user = User::findOne($id);
+        if (Comment::find()->where(['executor_id' => $id])->exists()) {
+            $comments = Comment::find()->where(['executor_id' => $id])->all();
+        } else {
+            $comments = null;
+        }
 
         if($user === null) {
             throw new NotFoundHttpException('Такого пользователя не существует');
@@ -41,6 +47,7 @@ class UsersController extends BaseController
 
         return $this->render('user', [
             'user' => $user,
+            'comments' => $comments
         ]);
     }
 

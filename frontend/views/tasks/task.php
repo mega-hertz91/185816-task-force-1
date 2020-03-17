@@ -5,6 +5,7 @@
 
 use yii\helpers\Html;
 use frontend\models\User;
+use yii\helpers\Url;
 
 $user = User::findOne(['id' => Yii::$app->user->id]);
 ?>
@@ -58,44 +59,82 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                         <button class="button button__big-color refusal-button open-modal"
                                 type="button" data-for="refuse-form">Отказаться
                         </button>
-                        <button class="button button__big-color request-button open-modal"
-                                type="button" data-for="complete-form">Завершить
-                        </button>
                     <?php endif; ?>
+                </div>
+            <?php elseif ($user->role->id === User::CUSTOMER && $task->status_id === \frontend\models\Task::STATUS_WORK): ?>
+                <div class="content-view__action-buttons">
+                    <button class="button button__big-color request-button open-modal"
+                            type="button" data-for="complete-form">Завершить
+                    </button>
                 </div>
             <?php endif; ?>
         </div>
-        <?php if ($user->role->id !== User::EXECUTOR): ?>
-            <div class="content-view__feedback">
-                <h2>Отклики <span><?= count($task->responses) ?></span></h2>
-                <div class="content-view__feedback-wrapper">
-                    <?php foreach ($task->responses as $response) : ?>
-                        <div class="content-view__feedback-card">
-                            <div class="feedback-card__top">
-                                <a href="#"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
-                                <div class="feedback-card__top--name">
-                                    <p><a href="#" class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
-                                    <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                                    <b>4.25</b>
+        <?php if ($task->status_id === \frontend\models\Task::DEFAULT_STATUS): ?>
+            <?php if ($user->role->id !== User::EXECUTOR): ?>
+                <div class="content-view__feedback">
+                    <h2>Отклики <span><?= count($task->responses) ?></span></h2>
+                    <div class="content-view__feedback-wrapper">
+                        <?php foreach ($task->responses as $response) : ?>
+                            <div class="content-view__feedback-card">
+                                <div class="feedback-card__top">
+                                    <a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
+                                    <div class="feedback-card__top--name">
+                                        <p><a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>" class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
+                                        <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
+                                            <?php if ($user->rating > $i): ?>
+                                                <span></span>
+                                            <?php else: ?>
+                                                <span class="star-disabled"></span>
+                                            <?php endif; ?>
+                                        <?php endfor; ?>
+                                        <b><?=Html::encode($user->rating)?></b>
+                                    </div>
+                                    <span class="new-task__time">25 минут назад</span>
                                 </div>
-                                <span class="new-task__time">25 минут назад</span>
+                                <div class="feedback-card__content">
+                                    <p>
+                                        <?= Html::encode($response->message) ?>
+                                    </p>
+                                    <span><?= Html::encode($response->amount) ?> ₽</span>
+                                </div>
+                                <div class="feedback-card__actions">
+                                    <a href="<?= Url::to(['status/new', 'id' => $task->id, 'executor' => $response->user->id]) ?>"
+                                       class="button__small-color request-button button" type="button">Подтвердить</a>
+                                    <a class="button__small-color refusal-button button"
+                                       type="button">Отказать</a>
+                                </div>
                             </div>
-                            <div class="feedback-card__content">
-                                <p>
-                                    <?= Html::encode($response->message) ?>
-                                </p>
-                                <span><?= Html::encode($response->amount) ?> ₽</span>
-                            </div>
-                            <div class="feedback-card__actions">
-                                <a class="button__small-color request-button button"
-                                   type="button">Подтвердить</a>
-                                <a class="button__small-color refusal-button button"
-                                   type="button">Отказать</a>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
+            <?php else : ?>
+                <div class="content-view__feedback">
+                    <h2>Отклики <span><?= count($task->responses) ?></span></h2>
+                    <div class="content-view__feedback-wrapper">
+                        <?php foreach ($task->responses as $response) : ?>
+                            <div class="content-view__feedback-card">
+                                <div class="feedback-card__top">
+                                    <a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
+                                    <div class="feedback-card__top--name">
+                                        <p><a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>" class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
+                                        <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
+                                        <b>4.25</b>
+                                    </div>
+                                    <span class="new-task__time">25 минут назад</span>
+                                </div>
+                                <div class="feedback-card__content">
+                                    <p>
+                                        <?= Html::encode($response->message) ?>
+                                    </p>
+                                    <span><?= Html::encode($response->amount) ?> ₽</span>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php elseif ($task->status_id === \frontend\models\Task::STATUS_WORK): ?>
+            <p>Задание находится в работе</p>
         <?php endif; ?>
     </section>
     <section class="connect-desk">
@@ -111,7 +150,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 <p class="info-customer">
                     <span><?=Html::encode(count($task->user->tasks))?> заданий</span>
                     <span class="last-">на сайте c <?=Html::encode(date('Y', strtotime($task->user->created_at)))?> года</span></p>
-                <a href="#" class="link-regular">Смотреть профиль</a>
+                <a href="<?=Url::to(['/users/view', 'id' => $user->id])?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>
         <div class="connect-desk__chat">

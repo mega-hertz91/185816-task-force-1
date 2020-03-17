@@ -16,8 +16,14 @@ use yii\helpers\Html;
                     <h1><?=Html::encode($user->full_name)?></h1>
                     <p><?=Html::encode($user->city->name)?></p>
                     <div class="profile-mini__name five-stars__rate">
-                        <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                        <b>4.25</b>
+                        <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
+                            <?php if ($user->rating > $i): ?>
+                                <span></span>
+                            <?php else: ?>
+                                <span class="star-disabled"></span>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                        <b><?=Html::encode($user->rating)?></b>
                     </div>
                     <b class="done-task">Выполнил 5 заказов</b><b class="done-review">Получил 6 отзывов</b>
                 </div>
@@ -58,27 +64,29 @@ use yii\helpers\Html;
             <?php else:?>
                 <h2>Отзывы<span>(<?=Html::encode(count($user->comments))?>)</span></h2>
             <?php endif;?>
-            <?php foreach ($user->comments as $comment): ?>
-            <div class="content-view__feedback-wrapper reviews-wrapper">
-                <div class="feedback-card__reviews">
-                    <p class="link-task link">Задание <a href="#" class="link-regular"><?=Html::encode($comment->task->title)?></a></p>
-                    <div class="card__review">
-                        <a href="/users/view/<?=Html::encode($comment->user_id)?>">
-                            <img src="../../../img/man-glasses.jpg" width="55" height="54">
-                        </a>
-                        <div class="feedback-card__reviews-content">
-                            <p class="link-name link"><a href="/users/view/<?=Html::encode($comment->user_id)?>" class="link-regular"><?=Html::encode($comment->user->full_name)?></a></p>
-                            <p class="review-text">
-                                <?=Html::encode($comment->description)?>
-                            </p>
-                        </div>
-                        <div class="card__review-rate">
-                            <p class="five-rate big-rate">5<span></span></p>
+            <?php if($comments): ?>
+                <?php foreach ($comments as $comment): ?>
+                    <div class="content-view__feedback-wrapper reviews-wrapper">
+                        <div class="feedback-card__reviews">
+                            <p class="link-task link">Задание <a href="#" class="link-regular"><?=Html::encode($comment->task->title)?></a></p>
+                            <div class="card__review">
+                                <a href="/users/view/<?=Html::encode($comment->user_id)?>">
+                                    <img src="../../../img/man-glasses.jpg" width="55" height="54">
+                                </a>
+                                <div class="feedback-card__reviews-content">
+                                    <p class="link-name link"><a href="/users/view/<?=Html::encode($comment->user_id)?>" class="link-regular"><?=Html::encode($comment->user->full_name)?></a></p>
+                                    <p class="review-text">
+                                        <?=Html::encode($comment->description)?>
+                                    </p>
+                                </div>
+                                <div class="card__review-rate">
+                                    <p class="five-rate big-rate"><?=Html::encode($comment->rating)?><span></span></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <?php endforeach;?>
+                <?php endforeach;?>
+            <?php endif?>
         </div>
     </section>
     <section class="connect-desk">

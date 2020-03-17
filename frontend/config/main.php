@@ -47,7 +47,8 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'tasks/view/<id:\d+>' => 'tasks/view',
-                'users/view/<id:\d+>' => 'users/view'
+                'users/view/<id:\d+>' => 'users/view',
+                'status/new/<id:\d+>' => 'status/new'
             ],
         ]
     ],

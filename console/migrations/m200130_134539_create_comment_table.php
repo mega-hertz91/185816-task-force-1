@@ -15,15 +15,17 @@ class m200130_134539_create_comment_table extends Migration
     {
         $this->createTable('{{%comment}}', [
             'id' => $this->primaryKey('255')->unique(),
+            'task_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
             'description' => $this->text(),
-            'task_id' => $this->integer()->notNull(),
+            'executor_id' => $this->integer()->notNull(),
+            'rating' => $this->double()->notNull()->defaultValue(0),
             'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
             'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
         ]);
 
         $this->addForeignKey('fkc-user_id', 'comment', 'user_id', 'user', 'id');
-        $this->addForeignKey('fkc-task_id', 'comment', 'task_id', 'task', 'id');
+        $this->addForeignKey('fkc-task_id', 'comment', 'executor_id', 'user', 'id');
     }
 
     /**
