@@ -14,13 +14,13 @@ $this->title = 'Task-force';
     <p style="color: crimson"><?= Yii::$app->session->getFlash('error') ?></p>
 </div>
 <div class="landing-container">
-    <div class="landing-top">
+    <div class="landing-top" style="margin-bottom: 50px;">
         <h1>Работа для всех.<br>
             Найди исполнителя на любую задачу.</h1>
         <p>Сломался кран на кухне? Надо отправить документы? Нет времени самому гулять с собакой?
             У нас вы быстро найдёте исполнителя для любой жизненной ситуации?<br>
             Быстро, безопасно и с гарантией. Просто, как раз, два, три. </p>
-        <button class="button" style="margin-bottom: 40px;">Создать аккаунт</button>
+        <a href="<?=Url::to(['/singup/'])?>" class="button" style="margin-bottom: 40px;">Создать аккаунт</a>
     </div>
     <div class="landing-center">
         <div class="landing-instruction">

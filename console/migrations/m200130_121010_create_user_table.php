@@ -26,7 +26,7 @@ class m200130_121010_create_user_table extends Migration
             'phone' => $this->char('50'),
             'skype' => $this->char('100'),
             'messenger' => $this->text(),
-            'rating' => $this->double()->notNull()->defaultValue(0),
+            'rating' => $this->float()->notNull()->defaultValue(0),
             'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
             'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
         ]);

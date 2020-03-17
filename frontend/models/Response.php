@@ -13,12 +13,16 @@ use Yii;
  * @property int|null $task_id
  * @property string $created_at
  * @property string $updated_at
+ * @property string $status
  *
  * @property User $user
  * @property Task $task
  */
 class Response extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 'active';
+    const STATUS_DISABLED = 'disabled';
+
     /**
      * {@inheritdoc}
      */
@@ -34,7 +38,7 @@ class Response extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'amount', 'task_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'status'], 'safe'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];

@@ -11,8 +11,10 @@ use Yii;
  * @property int|null $user_id
  * @property string|null $description
  * @property int|null $task_id
+ * @property integer|null $executor_id
  * @property string $created_at
  * @property string $updated_at
+ * @property integer $rating
  *
  * @property User $user
  * @property Task $task
@@ -67,8 +69,33 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getExecutor()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTask()
     {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
+    }
+
+    public function getRating($id)
+    {
+        $rating = $this::find()
+            ->select(['executor_id', 'rating' => 'avg(rating)'])
+            ->groupBy('executor_id')
+            ->where(['executor_id' => $id])
+            ->asArray(true)->all();
+
+        if(!empty($rating)) {
+            return $rating[0]['rating'];
+        } else {
+            return 0;
+        }
+
+
     }
 }

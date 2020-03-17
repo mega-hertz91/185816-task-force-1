@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property int|null $tel
  * @property string|null $skype
  * @property string|null $messenger
+ * @property double $rating
  * @property string $created_at
  * @property string $updated_at
  *
@@ -90,9 +91,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['full_name', 'password'], 'required'],
-            [['role_id', 'city_id', 'user_status_id', 'phone'], 'integer'],
-            [['date_birth', 'created_at', 'updated_at'], 'safe'],
+            [['full_name', 'password', 'rating'], 'required'],
+            [['role_id', 'city_id', 'user_status_id'], 'integer'],
+            [['date_birth', 'created_at', 'updated_at', 'rating'], 'safe'],
             [['about'], 'string'],
             [['full_name', 'email', 'password', 'skype', 'messenger'], 'string', 'max' => 255],
             [['email'], 'unique'],
@@ -119,6 +120,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'password' => 'Password',
             'phone' => 'Phone',
             'skype' => 'Skype',
+            'rating' => 'Rating',
             'messenger' => 'Messenger',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

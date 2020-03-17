@@ -1,5 +1,9 @@
 <?php
 
+/***
+ * @var object $content frontend\View\site\index.php
+ */
+
 use yii\helpers\Url;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;

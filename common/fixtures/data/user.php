@@ -19,6 +19,7 @@ function getUsers($faker) {
         'phone' => $faker->tollFreePhoneNumber,
         'skype' => $faker->userName,
         'messenger' => $faker->domainWord,
+        'rating' => $faker->randomFloat(2, 1, 5),
         'created_at' => $date->format('Y-m-d H:i:s')
     ];
 }

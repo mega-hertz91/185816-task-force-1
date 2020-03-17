@@ -69,66 +69,80 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 </div>
             <?php endif; ?>
         </div>
-        <?php if ($task->status_id === \frontend\models\Task::DEFAULT_STATUS): ?>
-            <?php if ($user->role->id !== User::EXECUTOR): ?>
+        <?php if ($task->isDefalt()): ?>
+            <?php if ($user->role->id !== User::EXECUTOR && $user->id === $task->user_id): ?>
                 <div class="content-view__feedback">
                     <h2>Отклики <span><?= count($task->responses) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <div class="content-view__feedback-card">
-                                <div class="feedback-card__top">
-                                    <a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
-                                    <div class="feedback-card__top--name">
-                                        <p><a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>" class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
-                                        <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
-                                            <?php if ($user->rating > $i): ?>
-                                                <span></span>
-                                            <?php else: ?>
-                                                <span class="star-disabled"></span>
-                                            <?php endif; ?>
-                                        <?php endfor; ?>
-                                        <b><?=Html::encode($user->rating)?></b>
+                            <?php if ($response->status === \frontend\models\Response::STATUS_ACTIVE): ?>
+                                <div class="content-view__feedback-card">
+                                    <div class="feedback-card__top">
+                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>">
+                                            <img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
+                                        <div class="feedback-card__top--name">
+                                            <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
+                                                  class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
+                                            <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
+                                                <?php if ($response->user->rating > $i): ?>
+                                                    <span></span>
+                                                <?php else: ?>
+                                                    <span class="star-disabled"></span>
+                                                <?php endif; ?>
+                                            <?php endfor; ?>
+                                            <b><?= Html::encode($response->user->rating) ?></b>
+                                        </div>
+                                        <span class="new-task__time">25 минут назад</span>
                                     </div>
-                                    <span class="new-task__time">25 минут назад</span>
+                                    <div class="feedback-card__content">
+                                        <p>
+                                            <?= Html::encode($response->message) ?>
+                                        </p>
+                                        <span><?= Html::encode($response->amount) ?> ₽</span>
+                                    </div>
+                                    <div class="feedback-card__actions">
+                                        <a href="<?= Url::to(['status/new', 'id' => $task->id, 'executor' => $response->user->id]) ?>"
+                                           class="button__small-color request-button button" type="button">Подтвердить</a>
+                                        <a href="<?= Url::to(['status/refuse', 'id' => $response->id]) ?>" class="button__small-color refusal-button button"
+                                           type="button">Отказать</a>
+                                    </div>
                                 </div>
-                                <div class="feedback-card__content">
-                                    <p>
-                                        <?= Html::encode($response->message) ?>
-                                    </p>
-                                    <span><?= Html::encode($response->amount) ?> ₽</span>
-                                </div>
-                                <div class="feedback-card__actions">
-                                    <a href="<?= Url::to(['status/new', 'id' => $task->id, 'executor' => $response->user->id]) ?>"
-                                       class="button__small-color request-button button" type="button">Подтвердить</a>
-                                    <a class="button__small-color refusal-button button"
-                                       type="button">Отказать</a>
-                                </div>
-                            </div>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
                 </div>
-            <?php else : ?>
+            <?php else: ?>
                 <div class="content-view__feedback">
                     <h2>Отклики <span><?= count($task->responses) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <div class="content-view__feedback-card">
-                                <div class="feedback-card__top">
-                                    <a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>"><img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
-                                    <div class="feedback-card__top--name">
-                                        <p><a href="<?=Url::to(['/users/view', 'id' => $response->user->id])?>" class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
-                                        <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                                        <b>4.25</b>
+                            <?php if ($response->status === \frontend\models\Response::STATUS_ACTIVE): ?>
+                                <div class="content-view__feedback-card">
+                                    <div class="feedback-card__top">
+                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"><img src="../../../img/man-glasses.jpg"
+                                                                                                                    width="55" height="55"></a>
+                                        <div class="feedback-card__top--name">
+                                            <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
+                                                  class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
+                                            <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
+                                                <?php if ($response->user->rating > $i): ?>
+                                                    <span></span>
+                                                <?php else: ?>
+                                                    <span class="star-disabled"></span>
+                                                <?php endif; ?>
+                                            <?php endfor; ?>
+                                            <b><?= Html::encode($response->user->rating) ?></b>
+                                        </div>
+                                        <span class="new-task__time">25 минут назад</span>
                                     </div>
-                                    <span class="new-task__time">25 минут назад</span>
+                                    <div class="feedback-card__content">
+                                        <p>
+                                            <?= Html::encode($response->message) ?>
+                                        </p>
+                                        <span><?= Html::encode($response->amount) ?> ₽</span>
+                                    </div>
                                 </div>
-                                <div class="feedback-card__content">
-                                    <p>
-                                        <?= Html::encode($response->message) ?>
-                                    </p>
-                                    <span><?= Html::encode($response->amount) ?> ₽</span>
-                                </div>
-                            </div>
+                            <?php endif ?>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -148,34 +162,78 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                     </div>
                 </div>
                 <p class="info-customer">
-                    <span><?=Html::encode(count($task->user->tasks))?> заданий</span>
-                    <span class="last-">на сайте c <?=Html::encode(date('Y', strtotime($task->user->created_at)))?> года</span></p>
-                <a href="<?=Url::to(['/users/view', 'id' => $user->id])?>" class="link-regular">Смотреть профиль</a>
+                    <span><?= Html::encode(count($task->user->tasks)) ?> заданий</span>
+                    <span class="last-">на сайте c <?= Html::encode(date('Y', strtotime($task->user->created_at))) ?> года</span></p>
+                <a href="<?= Url::to(['/users/view', 'id' => $user->id]) ?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>
-        <div class="connect-desk__chat">
-            <h3>Переписка</h3>
-            <div class="chat__overflow">
-                <div class="chat__message chat__message--out">
-                    <p class="chat__message-time">10.05.2019, 14:56</p>
-                    <p class="chat__message-text">Привет. Во сколько сможешь
-                        приступить к работе?</p>
+        <?php if ($user->role->id === $task->executor_id || $user->id === $task->user_id): ?>
+            <div class="connect-desk__chat">
+                <h3>Переписка</h3>
+                <div class="chat__overflow">
+                    <div class="chat__message chat__message--out">
+                        <p class="chat__message-time">10.05.2019, 14:56</p>
+                        <p class="chat__message-text">Привет. Во сколько сможешь
+                            приступить к работе?</p>
+                    </div>
+                    <div class="chat__message chat__message--in">
+                        <p class="chat__message-time">10.05.2019, 14:57</p>
+                        <p class="chat__message-text">На задание
+                            выделены всего сутки, так что через час</p>
+                    </div>
+                    <div class="chat__message chat__message--out">
+                        <p class="chat__message-time">10.05.2019, 14:57</p>
+                        <p class="chat__message-text">Хорошо. Думаю, мы справимся</p>
+                    </div>
                 </div>
-                <div class="chat__message chat__message--in">
-                    <p class="chat__message-time">10.05.2019, 14:57</p>
-                    <p class="chat__message-text">На задание
-                        выделены всего сутки, так что через час</p>
-                </div>
-                <div class="chat__message chat__message--out">
-                    <p class="chat__message-time">10.05.2019, 14:57</p>
-                    <p class="chat__message-text">Хорошо. Думаю, мы справимся</p>
-                </div>
+                <p class="chat__your-message">Ваше сообщение</p>
+                <form class="chat__form">
+                    <textarea class="input textarea textarea-chat" rows="2" name="message-text" placeholder="Текст сообщения"></textarea>
+                    <button class="button chat__button" type="submit">Отправить</button>
+                </form>
             </div>
-            <p class="chat__your-message">Ваше сообщение</p>
-            <form class="chat__form">
-                <textarea class="input textarea textarea-chat" rows="2" name="message-text" placeholder="Текст сообщения"></textarea>
-                <button class="button chat__button" type="submit">Отправить</button>
-            </form>
-        </div>
+        <?php endif; ?>
     </section>
 </div>
+<section class="modal completion-form form-modal" id="complete-form">
+    <h2>Завершение задания</h2>
+    <p class="form-modal-description">Задание выполнено?</p>
+    <form action="#" method="post">
+        <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes" name="completion" value="yes">
+        <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
+        <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet" name="completion"
+               value="difficulties">
+        <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
+        <p>
+            <label class="form-modal-description" for="completion-comment">Комментарий</label>
+            <textarea class="input textarea" rows="4" id="completion-comment" name="completion-comment" placeholder="Place your text"></textarea>
+        </p>
+        <p class="form-modal-description">
+            Оценка
+        <div class="feedback-card__top--name completion-form-star">
+            <span class="star-disabled"></span>
+            <span class="star-disabled"></span>
+            <span class="star-disabled"></span>
+            <span class="star-disabled"></span>
+            <span class="star-disabled"></span>
+        </div>
+        </p>
+        <input type="hidden" name="rating" id="rating">
+        <button class="button modal-button" type="submit">Отправить</button>
+    </form>
+    <button class="form-modal-close" type="button">Закрыть</button>
+</section>
+<section class="modal form-modal refusal-form" id="refuse-form">
+    <h2>Отказ от задания</h2>
+    <p>
+        Вы собираетесь отказаться от выполнения задания.
+        Это действие приведёт к снижению вашего рейтинга.
+        Вы уверены?
+    </p>
+    <button class="button__form-modal button" id="close-modal"
+            type="button">Отмена
+    </button>
+    <a href="<?= \yii\helpers\Url::toRoute(['/status/failed/', 'id' => $task->id]) ?>" class="button__form-modal refusal-button button"
+       type="button">Отказаться</a>
+    <button class="form-modal-close" type="button">Закрыть</button>
+</section>
