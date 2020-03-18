@@ -112,4 +112,13 @@ class Response extends \yii\db\ActiveRecord
 
         return count($result);
     }
+
+    /***
+     * @return bool
+     */
+    public function refuseResponse()
+    {
+        $this->status = self::STATUS_DISABLED;
+        return $this->save();
+    }
 }

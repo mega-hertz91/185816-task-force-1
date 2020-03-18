@@ -3,7 +3,7 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$count = 600;
+$count = 100;
 
 function getMessage($faker) {
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
@@ -11,7 +11,7 @@ function getMessage($faker) {
         'sender' => rand(1, 200),
         'recipient' => rand(1, 200),
         'message' => $faker->paragraph(2, true),
-        'task_id' => rand(1, 100),
+        'task_id' => rand(1, 10),
         'created_at' => $date->format('Y-m-d H:i:s')
     ];
 }

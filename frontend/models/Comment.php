@@ -82,12 +82,17 @@ class Comment extends \yii\db\ActiveRecord
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
 
-    public function getRating($id)
+    /***
+     * @param User $user
+     * @return int|mixed
+     */
+
+    public function getRating(User $user)
     {
         $rating = $this::find()
             ->select(['executor_id', 'rating' => 'avg(rating)'])
             ->groupBy('executor_id')
-            ->where(['executor_id' => $id])
+            ->where(['executor_id' => $user->id])
             ->asArray(true)->all();
 
         if(!empty($rating)) {

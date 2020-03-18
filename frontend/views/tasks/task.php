@@ -157,8 +157,6 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                     </div>
                 </div>
             <?php endif; ?>
-        <?php elseif ($task->isWorkStatus()): ?>
-            <p>Задание находится в работе</p>
         <?php endif; ?>
     </section>
     <section class="connect-desk">
@@ -174,7 +172,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 <p class="info-customer">
                     <span><?= Html::encode(count($task->user->tasks)) ?> заданий</span>
                     <span class="last-">на сайте c <?= Html::encode(date('Y', strtotime($task->user->created_at))) ?> года</span></p>
-                <a href="<?= Url::to(['/users/view', 'id' => $user->id]) ?>" class="link-regular">Смотреть профиль</a>
+                <a href="<?= Url::to(['/users/view', 'id' => $task->user->id]) ?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>
         <?php if ($user->isExecutor() || $user->getId() === $task->getUserId()): ?>

@@ -22,18 +22,17 @@ class StatusController extends BaseController
         $executor = User::findOne(['id' => Yii::$app->request->get()['executor']]);
         $task = Task::findOne(['id' => $id]);
 
-        if ($user->role_id === User::CUSTOMER && $executor->role_id == User::EXECUTOR) {
-            $task->status_id = Task::STATUS_WORK;
-            $task->executor_id = $executor->id;
-            $task->save();
-
-            Yii::$app->session->setFlash('success', "Пользователь $executor->full_name назначен на задание $task->title");
-
-            return $this->redirect('/tasks/');
+        if ($user->isCustomer() && $executor->isExecutor()) {
+            if ($task->changeStatusWork($executor)) {
+                Yii::$app->session->setFlash('success', "Пользователь $executor->full_name назначен на задание $task->title");
+                return $this->redirect('/tasks/');
+            } else {
+                Yii::$app->session->setFlash('error', 'Пользователь не был назначен, ошибка записи');
+                return $this->redirect('/tasks/view/' . $task->id);
+            }
         }
 
         Yii::$app->session->setFlash('error', 'Один из пользователей не является заказчиком или исполнителем');
-
         return $this->redirect('/tasks/view/' . $task->id);
     }
 
@@ -45,18 +44,18 @@ class StatusController extends BaseController
     public function actionRefuse($id)
     {
         $response = Response::findOne(['id' => $id]);
+
         if ($response !== null) {
-            $response = Response::findOne(['id' => $id]);
-            $response->status = Response::STATUS_DISABLED;
-            $response->save();
-
-            Yii::$app->session->setFlash('success', 'В отклике отказано');
-
-            return $this->redirect('/tasks/view/' . $response->task_id);
+            if($response->refuseResponse()) {
+                Yii::$app->session->setFlash('success', 'В отклике отказано');
+                return $this->redirect('/tasks/view/' . $response->task_id);
+            } else {
+                Yii::$app->session->setFlash('error', 'Ошибка при отказе, обратитесь к администратору');
+                return $this->redirect('/tasks/view/' . $response->task_id);
+            }
         }
 
         Yii::$app->session->setFlash('error', 'Отклика с таким id не найдено');
-
         return $this->redirect('/tasks/view/' . $response->task_id);
     }
 
@@ -72,20 +71,13 @@ class StatusController extends BaseController
         $comment = new Comment();
 
         if ($task !== null) {
-            $comment->task_id = $task->id;
-            $comment->user_id = $task->user_id;
-            $comment->executor_id = $executor->id;
-            $comment->description = 'Задание провалено';
-            $comment->rating = 0;
-            $comment->save();
-
-            $executor->rating = $comment->getRating($executor->id);
-            var_dump($executor->save());
-            $task->status_id = Task::STATUS_FAILED;
-            $task->save();
-
-            Yii::$app->session->setFlash('error', 'Вам выставленна оценка 0 за текущее задание');
-            return $this->redirect('/tasks/');
+            if ($task->changeStatusFailed($comment, $executor)) {
+                Yii::$app->session->setFlash('error', 'Вы отказались от задания, это сильно повлияет на общий рейтинг');
+                return $this->redirect('/tasks/');
+            } else {
+                Yii::$app->session->setFlash('error', 'Ошибка отказа, обратитесь к администратору сайта');
+                return $this->redirect('/tasks/view/' . $task->id);
+            }
         }
 
         Yii::$app->session->setFlash('error', 'Такого задания не существует');

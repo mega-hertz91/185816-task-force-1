@@ -2,9 +2,6 @@
 
 namespace frontend\models;
 
-use frontend\behaviors\SaveTaskBehavior;
-use Yii;
-
 /**
  * This is the model class for table "task".
  *
@@ -35,9 +32,11 @@ use Yii;
 class Task extends \yii\db\ActiveRecord
 {
 
-    const DEFAULT_STATUS = 5;
+    const STATUS_DEFAULT = 5;
     const STATUS_WORK = 4;
     const STATUS_FAILED = 3;
+    const MESSAGE_FAILED = 'Задание провалено';
+    const RATING_DEFAULT = 0;
 
     /**
      * {@inheritdoc}
@@ -162,7 +161,7 @@ class Task extends \yii\db\ActiveRecord
 
     public function init()
     {
-        $this->status_id = self::DEFAULT_STATUS;
+        $this->status_id = self::STATUS_DEFAULT;
     }
 
     /**
@@ -188,7 +187,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function isDefaultStatus()
     {
-        return $this->status_id === self::DEFAULT_STATUS;
+        return $this->status_id === self::STATUS_DEFAULT;
     }
 
     /***
@@ -207,5 +206,40 @@ class Task extends \yii\db\ActiveRecord
     public function isFailedStatus()
     {
         return $this->status_id === self::STATUS_FAILED;
+    }
+
+    /***
+     * @param User $executor
+     * @return bool
+     */
+
+    public function changeStatusWork(User $executor)
+    {
+        $this->status_id = Task::STATUS_WORK;
+        $this->executor_id = $executor->id;
+
+        return $this->save();
+    }
+
+    /**
+     * @param Comment $comment
+     * @param User $executor
+     * @return bool
+     */
+    public function changeStatusFailed(Comment $comment, User $executor)
+    {
+        $comment->task_id = $this->id;
+        $comment->user_id = $this->user_id;
+        $comment->executor_id = $executor->id;
+        $comment->description = self::MESSAGE_FAILED;
+        $comment->rating = self::RATING_DEFAULT;
+        $comment->save();
+
+        $executor->rating = $comment->getRating($executor);
+        $executor->save();
+
+        $this->status_id = Task::STATUS_FAILED;
+        $this->executor_id = null;
+        return $this->save();
     }
 }

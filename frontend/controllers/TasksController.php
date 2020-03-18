@@ -35,7 +35,7 @@ class TasksController extends BaseController
 
         if($task === null) {
             throw new NotFoundHttpException('Такого задания не существует');
-        } elseif ($task->status_id === Task::DEFAULT_STATUS) {
+        } elseif ($task->status_id === Task::STATUS_DEFAULT) {
             return $this->render('task', [
                 'task' => $task,
             ]);

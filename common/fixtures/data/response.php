@@ -3,7 +3,7 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$count = 200;
+$count = 50;
 
 function getResponse($faker) {
     $faker = Factory::create();
@@ -12,7 +12,7 @@ function getResponse($faker) {
         'user_id' => rand(1, 60),
         'amount' => rand(1000, 200000),
         'message' => $faker->paragraph(2, true),
-        'task_id' => rand(1, 100),
+        'task_id' => rand(1, 10),
         'created_at' => $date->format('Y-m-d H:i:s')
     ];
 }
