@@ -16,12 +16,11 @@ class StatusController extends BaseController
      * @param integer $id
      * @return \yii\web\Response
      */
-    public function actionNew($id)
+    public function actionWork($id)
     {
         $user = User::findOne(['id' => Yii::$app->user->id]);
         $executor = User::findOne(['id' => Yii::$app->request->get()['executor']]);
         $task = Task::findOne(['id' => $id]);
-
 
         if ($user->role_id === User::CUSTOMER && $executor->role_id == User::EXECUTOR) {
             $task->status_id = Task::STATUS_WORK;
@@ -35,7 +34,7 @@ class StatusController extends BaseController
 
         Yii::$app->session->setFlash('error', 'Один из пользователей не является заказчиком или исполнителем');
 
-        return $this->redirect('/tasks/');
+        return $this->redirect('/tasks/view/' . $task->id);
     }
 
 
@@ -48,18 +47,17 @@ class StatusController extends BaseController
         $response = Response::findOne(['id' => $id]);
         if ($response !== null) {
             $response = Response::findOne(['id' => $id]);
-
             $response->status = Response::STATUS_DISABLED;
             $response->save();
 
             Yii::$app->session->setFlash('success', 'В отклике отказано');
 
-            return $this->redirect('/tasks/');
+            return $this->redirect('/tasks/view/' . $response->task_id);
         }
 
         Yii::$app->session->setFlash('error', 'Отклика с таким id не найдено');
 
-        return $this->redirect('/tasks/');
+        return $this->redirect('/tasks/view/' . $response->task_id);
     }
 
 

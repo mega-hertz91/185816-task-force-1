@@ -206,4 +206,31 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(UserStatus::className(), ['id' => 'user_status_id']);
     }
+
+    /**
+     * @return bool
+     */
+
+    public function isAdmin()
+    {
+        return $this->role_id === self::ADMIN;
+    }
+
+    /**
+     * @return bool
+     */
+
+    public function isCustomer()
+    {
+        return $this->role_id === self::CUSTOMER;
+    }
+
+    /**
+     * @return bool
+     */
+
+    public function isExecutor()
+    {
+        return $this->role_id === self::EXECUTOR;
+    }
 }

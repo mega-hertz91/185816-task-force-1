@@ -164,4 +164,48 @@ class Task extends \yii\db\ActiveRecord
     {
         $this->status_id = self::DEFAULT_STATUS;
     }
+
+    /**
+     * @return int
+     */
+
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @return int
+     */
+
+    public function getStatusId()
+    {
+        return $this->status_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultStatus()
+    {
+        return $this->status_id === self::DEFAULT_STATUS;
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function isWorkStatus()
+    {
+        return $this->status_id === self::STATUS_WORK;
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function isFailedStatus()
+    {
+        return $this->status_id === self::STATUS_FAILED;
+    }
 }

@@ -1,32 +1,42 @@
 <?php
 /**
- * @var object $task frontend\model\Task
+ * @var \frontend\models\Task $task
  **/
 
 use yii\helpers\Html;
 use frontend\models\User;
 use yii\helpers\Url;
+use frontend\models\Response;
 
 $user = User::findOne(['id' => Yii::$app->user->id]);
 ?>
+<div style="width: 1098px; margin: auto;">
+    <?php if (Yii::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success" role="alert"><?php echo Yii::$app->session->getFlash('success') ?></div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->getFlash('error')): ?>
+        <div class="alert alert-danger" role="alert"><?php echo Yii::$app->session->getFlash('error') ?></div>
+    <?php endif; ?>
+</div>
 <div class="main-container page-container">
     <section class="content-view">
         <div class="content-view__card">
             <div class="content-view__card-wrapper">
                 <div class="content-view__header">
                     <div class="content-view__headline">
-                        <h1><?=Html::encode($task->title)?></h1>
+                        <h1><?= Html::encode($task->title) ?></h1>
                         <span>Размещено в категории
-                                    <a href="#" class="link-regular"><?=Html::encode($task->category->category_name)?></a>
-                                    25 минут назад</span>
+                            <a href="#" class="link-regular"><?= Html::encode($task->category->category_name) ?></a>
+                            25 минут назад
+                        </span>
                     </div>
-                    <b class="new-task__price new-task__price--clean content-view-price"><?=Html::encode($task->budget)?><b> ₽</b></b>
+                    <b class="new-task__price new-task__price--clean content-view-price"><?= Html::encode($task->budget) ?><b> ₽</b></b>
                     <div class="new-task__icon new-task__icon--clean content-view-icon"></div>
                 </div>
                 <div class="content-view__description">
                     <h3 class="content-view__h3">Общее описание</h3>
                     <p>
-                        <?=Html::encode($task->description)?>
+                        <?= Html::encode($task->description) ?>
                     </p>
                 </div>
                 <div class="content-view__attach">
@@ -49,9 +59,9 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                     </div>
                 </div>
             </div>
-            <?php if($user->role->id === User::EXECUTOR): ?>
+            <?php if ($user->isExecutor()): ?>
                 <div class="content-view__action-buttons">
-                    <?php if ($task->status_id === $task::DEFAULT_STATUS): ?>
+                    <?php if ($task->isDefaultStatus()): ?>
                         <button class=" button button__big-color response-button open-modal"
                                 type="button" data-for="response-form">Откликнуться
                         </button>
@@ -61,7 +71,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                         </button>
                     <?php endif; ?>
                 </div>
-            <?php elseif ($user->role->id === User::CUSTOMER && $task->status_id === \frontend\models\Task::STATUS_WORK): ?>
+            <?php elseif ($user->isCustomer() && $task->isWorkStatus()): ?>
                 <div class="content-view__action-buttons">
                     <button class="button button__big-color request-button open-modal"
                             type="button" data-for="complete-form">Завершить
@@ -69,13 +79,13 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 </div>
             <?php endif; ?>
         </div>
-        <?php if ($task->isDefalt()): ?>
-            <?php if ($user->role->id !== User::EXECUTOR && $user->id === $task->user_id): ?>
+        <?php if ($task->isDefaultStatus()): ?>
+            <?php if (!$user->isExecutor() && $user->getId() === $task->getUserId()): ?>
                 <div class="content-view__feedback">
-                    <h2>Отклики <span><?= count($task->responses) ?></span></h2>
+                    <h2>Отклики <span><?= Response::getActiveCountResponses($task->id) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <?php if ($response->status === \frontend\models\Response::STATUS_ACTIVE): ?>
+                            <?php if ($response->isActive()): ?>
                                 <div class="content-view__feedback-card">
                                     <div class="feedback-card__top">
                                         <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>">
@@ -101,7 +111,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                                         <span><?= Html::encode($response->amount) ?> ₽</span>
                                     </div>
                                     <div class="feedback-card__actions">
-                                        <a href="<?= Url::to(['status/new', 'id' => $task->id, 'executor' => $response->user->id]) ?>"
+                                        <a href="<?= Url::to(['status/work', 'id' => $task->id, 'executor' => $response->user->id]) ?>"
                                            class="button__small-color request-button button" type="button">Подтвердить</a>
                                         <a href="<?= Url::to(['status/refuse', 'id' => $response->id]) ?>" class="button__small-color refusal-button button"
                                            type="button">Отказать</a>
@@ -113,10 +123,10 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 </div>
             <?php else: ?>
                 <div class="content-view__feedback">
-                    <h2>Отклики <span><?= count($task->responses) ?></span></h2>
+                    <h2>Отклики <span><?= Response::getActiveCountResponses($task->id) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <?php if ($response->status === \frontend\models\Response::STATUS_ACTIVE): ?>
+                            <?php if ($response->isActive()): ?>
                                 <div class="content-view__feedback-card">
                                     <div class="feedback-card__top">
                                         <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"><img src="../../../img/man-glasses.jpg"
@@ -147,7 +157,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                     </div>
                 </div>
             <?php endif; ?>
-        <?php elseif ($task->status_id === \frontend\models\Task::STATUS_WORK): ?>
+        <?php elseif ($task->isWorkStatus()): ?>
             <p>Задание находится в работе</p>
         <?php endif; ?>
     </section>
@@ -167,7 +177,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 <a href="<?= Url::to(['/users/view', 'id' => $user->id]) ?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>
-        <?php if ($user->role->id === $task->executor_id || $user->id === $task->user_id): ?>
+        <?php if ($user->isExecutor() || $user->getId() === $task->getUserId()): ?>
             <div class="connect-desk__chat">
                 <h3>Переписка</h3>
                 <div class="chat__overflow">

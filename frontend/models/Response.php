@@ -74,4 +74,42 @@ class Response extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
+
+    /***
+     * @return string
+     */
+
+    public function isActive()
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    /***
+     * @return string
+     */
+
+    public function isDisabled()
+    {
+        return $this->status;
+    }
+
+    /***
+     * @param $id
+     * @return int
+     */
+
+    public static function getActiveCountResponses($id)
+    {
+        $result = [];
+
+        $responses =  Response::find()->where(['task_id'=> $id])->all();
+
+        foreach ($responses as $item) {
+            if ($item->isActive()) {
+                array_push($result, $item);
+            }
+        }
+
+        return count($result);
+    }
 }

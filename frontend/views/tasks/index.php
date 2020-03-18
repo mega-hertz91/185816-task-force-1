@@ -8,11 +8,16 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
+use frontend\models\Response;
 
 ?>
-<div class="main-container page-header__container" style="text-align: left">
-    <p style="color: green"><?php echo Yii::$app->session->getFlash('success') ?></p>
-    <p style="color: crimson"><?php echo Yii::$app->session->getFlash('error') ?></p>
+<div style="width: 1098px; margin: auto;">
+    <?php if (Yii::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success" role="alert"><?php echo Yii::$app->session->getFlash('success') ?></div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->getFlash('error')): ?>
+        <div class="alert alert-danger" role="alert"><?php echo Yii::$app->session->getFlash('error') ?></div>
+    <?php endif; ?>
 </div>
 <div class="main-container page-container">
     <section class="new-task">

@@ -95,7 +95,5 @@ class Comment extends \yii\db\ActiveRecord
         } else {
             return 0;
         }
-
-
     }
 }

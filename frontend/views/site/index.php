@@ -9,9 +9,13 @@ use yii\helpers\Url;
 
 $this->title = 'Task-force';
 ?>
-<div style="width: 980px; margin: auto;">
-    <p style="color: green"><?= Yii::$app->session->getFlash('success') ?></p>
-    <p style="color: crimson"><?= Yii::$app->session->getFlash('error') ?></p>
+<div style="width: 1098px; margin: auto;">
+    <?php if (Yii::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success" role="alert"><?php echo Yii::$app->session->getFlash('success') ?></div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->getFlash('error')): ?>
+        <div class="alert alert-danger" role="alert"><?php echo Yii::$app->session->getFlash('error') ?></div>
+    <?php endif; ?>
 </div>
 <div class="landing-container">
     <div class="landing-top" style="margin-bottom: 50px;">
@@ -20,7 +24,7 @@ $this->title = 'Task-force';
         <p>Сломался кран на кухне? Надо отправить документы? Нет времени самому гулять с собакой?
             У нас вы быстро найдёте исполнителя для любой жизненной ситуации?<br>
             Быстро, безопасно и с гарантией. Просто, как раз, два, три. </p>
-        <a href="<?=Url::to(['/singup/'])?>" class="button" style="margin-bottom: 40px;">Создать аккаунт</a>
+        <a href="<?= Url::to(['/singup/']) ?>" class="button" style="margin-bottom: 40px;">Создать аккаунт</a>
     </div>
     <div class="landing-center">
         <div class="landing-instruction">

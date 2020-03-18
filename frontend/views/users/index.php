@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @var array $categories frontend\models\Category
- * @var array $users frontend\models\User
+ * @var frontend\models\Category $categories
+ * @var frontend\models\User $users
  **/
 
 use yii\helpers\Html;

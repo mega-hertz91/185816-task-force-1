@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var object $user frontend\model\User
+ * @var \frontend\models\User $user
  **/
 
 use yii\helpers\Html;
