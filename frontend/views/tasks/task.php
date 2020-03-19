@@ -175,7 +175,7 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 <a href="<?= Url::to(['/users/view', 'id' => $task->user->id]) ?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>
-        <?php if ($user->isExecutor() || $user->getId() === $task->getUserId()): ?>
+        <?php if ($user->getId() === $task->getUserId() || $user->getId() === $task->getExecutorId()): ?>
             <div class="connect-desk__chat">
                 <h3>Переписка</h3>
                 <div class="chat__overflow">

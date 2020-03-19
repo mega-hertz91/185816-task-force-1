@@ -173,6 +173,11 @@ class Task extends \yii\db\ActiveRecord
         return $this->user_id;
     }
 
+    public function getExecutorId()
+    {
+        return $this->executor_id;
+    }
+
     /**
      * @return int
      */
