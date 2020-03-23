@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int|null $user_id
  * @property int|null $amount
+ * @property string|null $message
  * @property int|null $task_id
  * @property string $created_at
  * @property string $updated_at
@@ -120,5 +121,10 @@ class Response extends \yii\db\ActiveRecord
     {
         $this->status = self::STATUS_DISABLED;
         return $this->save();
+    }
+
+    public function addNewResponse($task, $message, $amount)
+    {
+
     }
 }
