@@ -47,12 +47,9 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'tasks/view/<id:\d+>' => 'tasks/view',
+                'tasks/cancel/<id:\d+>' => 'tasks/cancel',
                 'users/view/<id:\d+>' => 'users/view',
-                'status/new/<id:\d+>' => 'status/new',
-                'status/refuse/<id:\d+>' => 'status/refuse',
-                'status/canceled/<id:\d+>' => 'status/cancel',
-                'status/complete/<id:\d+>' => 'status/complete',
-                'response/new/<task_id:\d+>' => 'response/new'
+                'response/new/<task_id:\d+>' => 'response/new',
             ],
         ]
     ],

@@ -6,6 +6,8 @@ use frontend\forms\TasksForm;
 use frontend\models\Category;
 use frontend\models\Task;
 use frontend\models\User;
+use frontend\src\exceptions\StatusException;
+use frontend\src\status\CancelAction;
 use Yii;
 use frontend\providers\TasksProvider;
 use yii\web\NotFoundHttpException;
@@ -46,5 +48,26 @@ class TasksController extends BaseController
         }
 
         return $this->redirect('/tasks/');
+    }
+
+    public function actionCancel($id)
+    {
+        $task = Task::findOne(['id' => $id]);
+
+        if($task !== null) {
+            $cancel = new CancelAction($task);
+
+            try {
+                $cancel->apply();
+                Yii::$app->session->setFlash('success', 'Задание успешно отменено');
+                $this->redirect('/tasks/');
+            } catch (StatusException $e) {
+                Yii::$app->session->setFlash('error', $e->getMessage());
+                $this->redirect('/tasks/');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Задание не найдено');
+            $this->redirect('/tasks/');
+        }
     }
 }
