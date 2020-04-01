@@ -39,7 +39,8 @@ class Response extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'amount', 'task_id'], 'integer'],
-            [['created_at', 'updated_at', 'status'], 'safe'],
+            ['message', 'string'],
+            [['created_at', 'updated_at', 'status', 'message'], 'safe'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
@@ -60,6 +61,11 @@ class Response extends \yii\db\ActiveRecord
         ];
     }
 
+    public function init()
+    {
+        $this->status = self::STATUS_ACTIVE;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -77,7 +83,7 @@ class Response extends \yii\db\ActiveRecord
     }
 
     /***
-     * @return string
+     * @return bool
      */
 
     public function isActive()
@@ -86,12 +92,12 @@ class Response extends \yii\db\ActiveRecord
     }
 
     /***
-     * @return string
+     * @return bool
      */
 
     public function isDisabled()
     {
-        return $this->status;
+        return $this->status === self::STATUS_DISABLED;
     }
 
     /***
@@ -123,8 +129,17 @@ class Response extends \yii\db\ActiveRecord
         return $this->save();
     }
 
-    public function addNewResponse($task, $message, $amount)
-    {
+    /***
+     * @param Task $task
+     * @param int $target_user_id
+     * @return bool
+     */
 
+    public function addNewResponse(Task $task, $target_user_id)
+    {
+        $this->task_id = $task->id;
+        $this->user_id = $target_user_id;
+
+        return $this->save();
     }
 }

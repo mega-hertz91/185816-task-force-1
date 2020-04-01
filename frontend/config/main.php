@@ -49,7 +49,10 @@ return [
                 'tasks/view/<id:\d+>' => 'tasks/view',
                 'users/view/<id:\d+>' => 'users/view',
                 'status/new/<id:\d+>' => 'status/new',
-                'status/refuse/<id:\d+>' => 'status/refuse'
+                'status/refuse/<id:\d+>' => 'status/refuse',
+                'status/canceled/<id:\d+>' => 'status/cancel',
+                'status/complete/<id:\d+>' => 'status/complete',
+                'response/new/<task_id:\d+>' => 'response/new'
             ],
         ]
     ],

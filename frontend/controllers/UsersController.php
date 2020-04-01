@@ -50,15 +50,4 @@ class UsersController extends BaseController
             'comments' => $comments
         ]);
     }
-
-    public function actionTest()
-    {
-        $users = CategoryExecutor::find()->joinWith('user')->where(['full_name' => 'Everett Douglas'])->all();
-
-        foreach ($users as $user) {
-            var_dump($user->user->full_name);
-        }
-
-        die;
-    }
 }

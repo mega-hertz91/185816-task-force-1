@@ -7,8 +7,14 @@ use yii\helpers\Html;
 use frontend\models\User;
 use yii\helpers\Url;
 use frontend\models\Response;
+use frontend\forms\NewResponseForm;
+use yii\widgets\ActiveForm;
+use frontend\forms\CompleteTaskForm;
+use frontend\helpers\TemplateForm;
 
 $user = User::findOne(['id' => Yii::$app->user->id]);
+$form_response_model = new NewResponseForm();
+$form_complete_model = new CompleteTaskForm();
 ?>
 <div style="width: 1098px; margin: auto;">
     <?php if (Yii::$app->session->getFlash('success')): ?>
@@ -30,7 +36,9 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                             25 минут назад
                         </span>
                     </div>
-                    <b class="new-task__price new-task__price--clean content-view-price"><?= Html::encode($task->budget) ?><b> ₽</b></b>
+                    <b class="new-task__price new-task__price--clean content-view-price"><?= Html::encode(
+                            $task->budget
+                        ) ?><b> ₽</b></b>
                     <div class="new-task__icon new-task__icon--clean content-view-icon"></div>
                 </div>
                 <div class="content-view__description">
@@ -77,6 +85,13 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                             type="button" data-for="complete-form">Завершить
                     </button>
                 </div>
+            <?php elseif ($user->isCustomer() && $task->isNewStatus()): ?>
+                <div class="content-view__action-buttons">
+                    <a href="<?= Url::to(['/status/cancel/', 'id' => $task->id]) ?>"
+                       class="button button__big-color request-button open-modal"
+                       type="button">Отменить задание
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
         <?php if ($task->isDefaultStatus()): ?>
@@ -92,7 +107,9 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                                             <img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
                                         <div class="feedback-card__top--name">
                                             <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
-                                                  class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
+                                                  class="link-regular"><?= Html::encode(
+                                                        $response->user->full_name
+                                                    ) ?></a></p>
                                             <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
                                                 <?php if ($response->user->rating > $i): ?>
                                                     <span></span>
@@ -111,9 +128,13 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                                         <span><?= Html::encode($response->amount) ?> ₽</span>
                                     </div>
                                     <div class="feedback-card__actions">
-                                        <a href="<?= Url::to(['status/work', 'id' => $task->id, 'executor' => $response->user->id]) ?>"
-                                           class="button__small-color request-button button" type="button">Подтвердить</a>
-                                        <a href="<?= Url::to(['status/refuse', 'id' => $response->id]) ?>" class="button__small-color refusal-button button"
+                                        <a href="<?= Url::to(
+                                            ['status/work', 'id' => $task->id, 'executor' => $response->user->id]
+                                        ) ?>"
+                                           class="button__small-color request-button button"
+                                           type="button">Подтвердить</a>
+                                        <a href="<?= Url::to(['status/refuse', 'id' => $response->id]) ?>"
+                                           class="button__small-color refusal-button button"
                                            type="button">Отказать</a>
                                     </div>
                                 </div>
@@ -129,11 +150,14 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                             <?php if ($response->isActive()): ?>
                                 <div class="content-view__feedback-card">
                                     <div class="feedback-card__top">
-                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"><img src="../../../img/man-glasses.jpg"
-                                                                                                                    width="55" height="55"></a>
+                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"><img
+                                                src="../../../img/man-glasses.jpg"
+                                                width="55" height="55"></a>
                                         <div class="feedback-card__top--name">
                                             <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
-                                                  class="link-regular"><?= Html::encode($response->user->full_name) ?></a></p>
+                                                  class="link-regular"><?= Html::encode(
+                                                        $response->user->full_name
+                                                    ) ?></a></p>
                                             <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
                                                 <?php if ($response->user->rating > $i): ?>
                                                     <span></span>
@@ -164,15 +188,18 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
             <div class="profile-mini__wrapper">
                 <h3>Заказчик</h3>
                 <div class="profile-mini__top">
-                    <img src="../../../img/man-brune.jpg" width="62" height="62" alt="<?= Html::encode($task->user->full_name) ?>">
+                    <img src="../../../img/man-brune.jpg" width="62" height="62"
+                         alt="<?= Html::encode($task->user->full_name) ?>">
                     <div class="profile-mini__name five-stars__rate">
                         <p><?= Html::encode($task->user->full_name) ?></p>
                     </div>
                 </div>
                 <p class="info-customer">
                     <span><?= Html::encode(count($task->user->tasks)) ?> заданий</span>
-                    <span class="last-">на сайте c <?= Html::encode(date('Y', strtotime($task->user->created_at))) ?> года</span></p>
-                <a href="<?= Url::to(['/users/view', 'id' => $task->user->id]) ?>" class="link-regular">Смотреть профиль</a>
+                    <span class="last-">на сайте c <?= Html::encode(date('Y', strtotime($task->user->created_at))) ?> года</span>
+                </p>
+                <a href="<?= Url::to(['/users/view', 'id' => $task->user->id]) ?>" class="link-regular">Смотреть
+                    профиль</a>
             </div>
         </div>
         <?php if ($user->getId() === $task->getUserId() || $user->getId() === $task->getExecutorId()): ?>
@@ -196,39 +223,68 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
                 </div>
                 <p class="chat__your-message">Ваше сообщение</p>
                 <form class="chat__form">
-                    <textarea class="input textarea textarea-chat" rows="2" name="message-text" placeholder="Текст сообщения"></textarea>
+                    <textarea class="input textarea textarea-chat" rows="2" name="message-text"
+                              placeholder="Текст сообщения"></textarea>
                     <button class="button chat__button" type="submit">Отправить</button>
                 </form>
             </div>
         <?php endif; ?>
     </section>
 </div>
+<section class="modal response-form form-modal" id="response-form">
+    <h2>Отклик на задание</h2>
+    <?php $form_response = ActiveForm::begin(
+        ['action' => \yii\helpers\Url::toRoute(['/response/new/', 'task_id' => $task->id])]
+    ) ?>
+    <p>
+        <?= $form_response->field($form_response_model, 'amount')->textInput(
+            ['class' => 'response-form-payment input input-middle input-money']
+        )->label(null, ['class' => 'form-modal-description', 'style' => 'display: block']) ?>
+    </p>
+    <p>
+        <?= $form_response->field($form_response_model, 'message')->textarea(
+            [
+                'class' => 'input textarea',
+                'style' => 'display: block; width: 100%',
+                'rows' => 4,
+                'placeholder' => 'Place you text'
+            ]
+        )->label(null, ['class' => 'form-modal-description', 'style' => 'display: block']) ?>
+    </p>
+    <?php echo Html::submitInput('Отправить', ['class' => 'button modal-button']) ?>
+    <?php $form_response::end() ?>
+    <button class="form-modal-close" type="button">Закрыть</button>
+</section>
 <section class="modal completion-form form-modal" id="complete-form">
     <h2>Завершение задания</h2>
     <p class="form-modal-description">Задание выполнено?</p>
-    <form action="#" method="post">
-        <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes" name="completion" value="yes">
-        <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
-        <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet" name="completion"
-               value="difficulties">
-        <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
-        <p>
-            <label class="form-modal-description" for="completion-comment">Комментарий</label>
-            <textarea class="input textarea" rows="4" id="completion-comment" name="completion-comment" placeholder="Place your text"></textarea>
-        </p>
-        <p class="form-modal-description">
-            Оценка
-        <div class="feedback-card__top--name completion-form-star">
-            <span class="star-disabled"></span>
-            <span class="star-disabled"></span>
-            <span class="star-disabled"></span>
-            <span class="star-disabled"></span>
-            <span class="star-disabled"></span>
-        </div>
-        </p>
-        <input type="hidden" name="rating" id="rating">
-        <button class="button modal-button" type="submit">Отправить</button>
-    </form>
+    <?php $form_complete = ActiveForm::begin([
+            'action' => Url::to(['status/complete', 'id' => $task->id])
+        ]) ?>
+    <?=$form_complete->field($form_complete_model, 'completed')->radioList([1 => 'Да', 0 => 'Возникли проблемы']) ?>
+    <?=$form_complete->field($form_complete_model, 'description')
+        ->textarea([
+            'class' => 'input textarea',
+            'style'=> 'display: block; width: 100%',
+            'placeholder' => 'Place you text',
+            'rows' => 4
+        ])
+        ->label(null, [
+            'class'=> 'form-modal-description',
+            'style' => 'display: block; width: 100%',
+        ])?>
+    <p class="form-modal-description">
+        <?=$form_complete->field($form_complete_model, 'rating')->input('hidden', ['id' => 'rating']) ?>
+    <div class="feedback-card__top--name completion-form-star">
+        <span class="star-disabled"></span>
+        <span class="star-disabled"></span>
+        <span class="star-disabled"></span>
+        <span class="star-disabled"></span>
+        <span class="star-disabled"></span>
+    </div>
+    </p>
+    <?php echo Html::submitInput('Отправить', ['class' => 'button modal-button']) ?>
+    <?php $form_complete::end() ?>
     <button class="form-modal-close" type="button">Закрыть</button>
 </section>
 <section class="modal form-modal refusal-form" id="refuse-form">
@@ -241,7 +297,8 @@ $user = User::findOne(['id' => Yii::$app->user->id]);
     <button class="button__form-modal button" id="close-modal"
             type="button">Отмена
     </button>
-    <a href="<?= \yii\helpers\Url::toRoute(['/status/failed/', 'id' => $task->id]) ?>" class="button__form-modal refusal-button button"
+    <a href="<?= \yii\helpers\Url::toRoute(['/status/failed/', 'id' => $task->id]) ?>"
+       class="button__form-modal refusal-button button"
        type="button">Отказаться</a>
     <button class="form-modal-close" type="button">Закрыть</button>
 </section>

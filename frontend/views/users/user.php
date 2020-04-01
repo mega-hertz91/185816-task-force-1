@@ -23,9 +23,18 @@ use yii\helpers\Html;
                                 <span class="star-disabled"></span>
                             <?php endif; ?>
                         <?php endfor; ?>
-                        <b><?=Html::encode($user->rating)?></b>
+                        <b><?=Html::encode(Yii::$app->formatter->asDecimal($user->rating, ['max' => 1]))?></b>
                     </div>
-                    <b class="done-task">Выполнил 5 заказов</b><b class="done-review">Получил 6 отзывов</b>
+                    <?php if ($user->tasks) :?>
+                        <b class="done-task">Выполнил <?=count($user->tasks)?> заказов</b>
+                    <?php else: ?>
+                        <b class="done-task">Пока не выполнял заказов</b>
+                    <?php endif ?>
+                    <?php if ($comments) :?>
+                        <b class="done-review">Получил <?=count($comments)?> отзывов</b>
+                    <?php else: ?>
+                        <b class="done-review">Отзывов пока нет</b>
+                    <?php endif ?>
                 </div>
                 <div class="content-view__headline user__card-bookmark user__card-bookmark--current">
                     <span>Был на сайте 25 минут назад</span>
@@ -59,10 +68,10 @@ use yii\helpers\Html;
             </div>
         </div>
         <div class="content-view__feedback">
-            <?php if($user->comments === null) :?>
+            <?php if($comments === null) :?>
                 <h2>Отзывов пока нет</h2>
             <?php else:?>
-                <h2>Отзывы<span>(<?=Html::encode(count($user->comments))?>)</span></h2>
+                <h2>Отзывы<span>(<?=Html::encode(count($comments))?>)</span></h2>
             <?php endif;?>
             <?php if($comments): ?>
                 <?php foreach ($comments as $comment): ?>

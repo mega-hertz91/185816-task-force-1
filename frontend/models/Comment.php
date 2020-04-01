@@ -21,6 +21,10 @@ use Yii;
  */
 class Comment extends \yii\db\ActiveRecord
 {
+
+    const MESSAGE_FAILED = 'Задание провалено';
+    const RATING_DEFAULT = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +41,7 @@ class Comment extends \yii\db\ActiveRecord
         return [
             [['user_id', 'task_id'], 'integer'],
             [['description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'rating'], 'safe'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
@@ -82,7 +86,41 @@ class Comment extends \yii\db\ActiveRecord
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
 
-    /***
+    /**
+     * @param User $user
+     * @return int|mixed
+     */
+
+    /**
+     * @param Task $task
+     * @return bool
+     */
+
+    public function addNewFailedComment(Task $task)
+    {
+        $this->task_id = $task->id;
+        $this->user_id = $task->user_id;
+        $this->executor_id = $task->id;
+        $this->description = self::MESSAGE_FAILED;
+        $this->rating = self::RATING_DEFAULT;
+        return $this->save();
+    }
+
+    /**
+     * @param Task $task
+     * @return bool
+     */
+
+    public function addNewCompleteComment(Task $task)
+    {
+        $this->task_id = $task->id;
+        $this->user_id = $task->user_id;
+        $this->executor_id = $task->executor_id;
+
+        return $this->save();
+    }
+
+    /**
      * @param User $user
      * @return int|mixed
      */

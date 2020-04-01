@@ -33,10 +33,10 @@ class Task extends \yii\db\ActiveRecord
 {
 
     const STATUS_DEFAULT = 5;
-    const STATUS_WORK = 4;
+    const STATUS_WORK = 1;
     const STATUS_FAILED = 3;
-    const MESSAGE_FAILED = 'Задание провалено';
-    const RATING_DEFAULT = 0;
+    const STATUS_COMPLETE = 2;
+    const STATUS_CANCELED = 4;
 
     /**
      * {@inheritdoc}
@@ -208,6 +208,15 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
+    public function isNewStatus()
+    {
+        return $this->status_id === self::STATUS_DEFAULT;
+    }
+
+    /***
+     * @return bool
+     */
+
     public function isFailedStatus()
     {
         return $this->status_id === self::STATUS_FAILED;
@@ -227,24 +236,43 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param Comment $comment
-     * @param User $executor
      * @return bool
      */
-    public function changeStatusFailed(Comment $comment, User $executor)
+    public function changeStatusFailed()
     {
-        $comment->task_id = $this->id;
-        $comment->user_id = $this->user_id;
-        $comment->executor_id = $executor->id;
-        $comment->description = self::MESSAGE_FAILED;
-        $comment->rating = self::RATING_DEFAULT;
-        $comment->save();
-
-        $executor->rating = $comment->getRating($executor);
-        $executor->save();
-
         $this->status_id = Task::STATUS_FAILED;
-        $this->executor_id = null;
         return $this->save();
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function changeStatusCanceled()
+    {
+        $this->status_id = Task::STATUS_CANCELED;
+
+        return $this->save();
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function changeStatusCompleted()
+    {
+        $this->status_id = Task::STATUS_COMPLETE;
+
+        return $this->save();
+    }
+
+    /****
+     * @param User $user
+     * @return bool
+     */
+
+    public function isUserOwner(User $user)
+    {
+        return $this->user_id === $user->id;
     }
 }
