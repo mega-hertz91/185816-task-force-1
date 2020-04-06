@@ -11,7 +11,7 @@ class CancelAction extends AvailableActions
 {
     protected $roles = [self::ROLE_ADMIN, self::ROLE_CUSTOMER];
     protected $next_status = self::STATUS_CANCEL;
-    protected $access_statuses = [self::STATUS_WORK];
+    protected $access_statuses = [self::STATUS_PUBLIC];
 
     public function apply(): void
     {

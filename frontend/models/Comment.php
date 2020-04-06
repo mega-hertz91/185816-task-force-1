@@ -21,10 +21,6 @@ use Yii;
  */
 class Comment extends \yii\db\ActiveRecord
 {
-
-    const MESSAGE_FAILED = 'Задание провалено';
-    const RATING_DEFAULT = 1;
-
     /**
      * {@inheritdoc}
      */
@@ -84,59 +80,5 @@ class Comment extends \yii\db\ActiveRecord
     public function getTask()
     {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
-    }
-
-    /**
-     * @param User $user
-     * @return int|mixed
-     */
-
-    /**
-     * @param Task $task
-     * @return bool
-     */
-
-    public function addNewFailedComment(Task $task)
-    {
-        $this->task_id = $task->id;
-        $this->user_id = $task->user_id;
-        $this->executor_id = $task->id;
-        $this->description = self::MESSAGE_FAILED;
-        $this->rating = self::RATING_DEFAULT;
-        return $this->save();
-    }
-
-    /**
-     * @param Task $task
-     * @return bool
-     */
-
-    public function addNewCompleteComment(Task $task)
-    {
-        $this->task_id = $task->id;
-        $this->user_id = $task->user_id;
-        $this->executor_id = $task->executor_id;
-
-        return $this->save();
-    }
-
-    /**
-     * @param User $user
-     * @return int|mixed
-     */
-
-    public function getRating(User $user)
-    {
-        $rating = $this::find()
-            ->select(['executor_id', 'rating' => 'avg(rating)'])
-            ->groupBy('executor_id')
-            ->where(['executor_id' => $user->id])
-            ->asArray(true)->all();
-
-        if(!empty($rating)) {
-            return $rating[0]['rating'];
-        } else {
-            return 0;
-        }
     }
 }

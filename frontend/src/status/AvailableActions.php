@@ -3,9 +3,8 @@
 namespace frontend\src\status;
 
 use frontend\models\Task;
+use frontend\models\User;
 use frontend\src\exceptions\StatusException;
-use yii\base\Exception;
-use yii\web\NotFoundHttpException;
 
 abstract class AvailableActions
 {
@@ -19,26 +18,19 @@ abstract class AvailableActions
     const ROLE_EXECUTOR = 3;
 
     public $task;
+    public $target_user;
     protected $next_status = 0;
     protected $access_statuses = [];
-
-    //1. Загружаем необходимые данные (user, task)
-    //2. Проверяем статус задания
-    //3. Проверяем доступные действия
-    //4. Выполняем переход на следующий статус
-
-    //Локальные методы:
-    //1. Проверка текущего статуса
-    //2. Проверка текущей роли
-    //3. Проверка следующего статуса
 
     /***
      * AvailableActions constructor.
      * @param Task $task
+     * @param User $target_user
      */
-    public function __construct(Task $task)
+    public function __construct(Task $task, User $target_user)
     {
         $this->task = $task;
+        $this->target_user = $target_user;
     }
 
     /**
@@ -94,6 +86,14 @@ abstract class AvailableActions
 
     public function setNextStatus()
     {
+        if (!self::checkRole($this->target_user->role_id, $this->roles)) {
+            throw new StatusException('У вас недостаточно прав');
+        }
+
+        if ($this->task->status_id === $this->next_status) {
+            throw new StatusException('Статус задания уже обновлен');
+        }
+
         if (!self::checkAccessStatus($this->getCurrentStatus(), $this->access_statuses)) {
             throw new StatusException('Ошибка смены статуса');
         } else {

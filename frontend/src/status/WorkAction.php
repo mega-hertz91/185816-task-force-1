@@ -1,32 +1,29 @@
 <?php
 
 
-namespace src\status;
+namespace frontend\src\status;
+
+use frontend\models\Task;
+use frontend\models\User;
+use frontend\src\status\AvailableActions;
 
 class WorkAction extends AvailableActions
 {
-    protected $roles = [self::ADMIN_ROLE, self::CUSTOMER_ROLE];
-    protected $statuses = [self::FAILED, self::COMPLETE];
+    protected $roles = [self::ROLE_ADMIN, self::ROLE_CUSTOMER];
+    protected $next_status = self::STATUS_WORK;
+    protected $access_statuses = [self::STATUS_PUBLIC];
+    protected $executor;
 
-    public function getAction()
+    public function __construct(Task $task, User $target_user, User $executor)
     {
-        return $this->getClass(__CLASS__);
+        $this->executor = $executor;
+        parent::__construct($task, $target_user);
     }
 
-    public function getName()
+    public function apply(): void
     {
-        return __CLASS__;
-    }
-
-    public function checkPermission($user)
-    {
-        return parent::checkPermissionUser($user, $this->roles);
-    }
-
-    public function getActions($user)
-    {
-        $response = parent::getAvailableActions($user, $this->roles, $this->statuses);
-
-        return 'Текущий класс: ' . $this->getAction() . "<br><br>" . $response;
+        $this->setNextStatus();
+        $this->task->executor_id = $this->executor->id;
+        $this->task->save();
     }
 }

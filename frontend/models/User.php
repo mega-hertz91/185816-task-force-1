@@ -234,14 +234,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->role_id === self::EXECUTOR;
     }
 
-    /****
-     * @param Comment $comment
-     * @return bool
-     */
+   public function setRating($rating)
+   {
+       $this->rating = $rating;
 
-    public function setRecountRating(Comment $comment)
-    {
-        $this->rating = $comment->getRating($this);
-        return $this->save();
-    }
+       if (!$this->save()) {
+           throw new \Exception('Рейтинг не обновлен');
+       }
+   }
 }

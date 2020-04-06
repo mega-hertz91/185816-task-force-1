@@ -73,7 +73,7 @@ $form_complete_model = new CompleteTaskForm();
                         <button class=" button button__big-color response-button open-modal"
                                 type="button" data-for="response-form">Откликнуться
                         </button>
-                    <?php else : ?>
+                    <?php elseif ($task->isWorkStatus()) : ?>
                         <button class="button button__big-color refusal-button open-modal"
                                 type="button" data-for="refuse-form">Отказаться
                         </button>
@@ -87,7 +87,7 @@ $form_complete_model = new CompleteTaskForm();
                 </div>
             <?php elseif ($user->isCustomer() && $task->isNewStatus()): ?>
                 <div class="content-view__action-buttons">
-                    <a href="<?= Url::to(['/status/cancel/', 'id' => $task->id]) ?>"
+                    <a href="<?= Url::to(['/task/cancel/', 'id' => $task->id]) ?>"
                        class="button button__big-color request-button open-modal"
                        type="button">Отменить задание
                     </a>
@@ -129,7 +129,7 @@ $form_complete_model = new CompleteTaskForm();
                                     </div>
                                     <div class="feedback-card__actions">
                                         <a href="<?= Url::to(
-                                            ['status/work', 'id' => $task->id, 'executor' => $response->user->id]
+                                            ['task/work', 'id' => $task->id, 'executor' => $response->user->id]
                                         ) ?>"
                                            class="button__small-color request-button button"
                                            type="button">Подтвердить</a>
@@ -259,9 +259,12 @@ $form_complete_model = new CompleteTaskForm();
     <h2>Завершение задания</h2>
     <p class="form-modal-description">Задание выполнено?</p>
     <?php $form_complete = ActiveForm::begin([
-            'action' => Url::to(['status/complete', 'id' => $task->id])
+            'action' => Url::to(['task/complete', 'id' => $task->id])
         ]) ?>
-    <?=$form_complete->field($form_complete_model, 'completed')->radioList([1 => 'Да', 0 => 'Возникли проблемы']) ?>
+    <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes" name="complete" value="1">
+    <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
+    <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet" name="complete" value="0">
+    <label  class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
     <?=$form_complete->field($form_complete_model, 'description')
         ->textarea([
             'class' => 'input textarea',
@@ -297,7 +300,7 @@ $form_complete_model = new CompleteTaskForm();
     <button class="button__form-modal button" id="close-modal"
             type="button">Отмена
     </button>
-    <a href="<?= \yii\helpers\Url::toRoute(['/status/failed/', 'id' => $task->id]) ?>"
+    <a href="<?= \yii\helpers\Url::toRoute(['/task/refuse/', 'id' => $task->id]) ?>"
        class="button__form-modal refusal-button button"
        type="button">Отказаться</a>
     <button class="form-modal-close" type="button">Закрыть</button>
