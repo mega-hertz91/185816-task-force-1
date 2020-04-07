@@ -8,7 +8,6 @@ use frontend\models\Response;
 use frontend\models\Task;
 use frontend\models\User;
 use frontend\services\CreateResponse;
-use yii\web\Controller;
 use Yii;
 
 class ResponseController extends BaseController
