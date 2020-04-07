@@ -85,7 +85,7 @@ $form_complete_model = new CompleteTaskForm();
                             type="button" data-for="complete-form">Завершить
                     </button>
                 </div>
-            <?php elseif ($user->isCustomer() && $task->isNewStatus()): ?>
+            <?php elseif ($task->isNewStatus() && $task->isUserOwner($user)) : ?>
                 <div class="content-view__action-buttons">
                     <a href="<?= Url::to(['/task/cancel/', 'id' => $task->id]) ?>"
                        class="button button__big-color request-button open-modal"
@@ -133,7 +133,7 @@ $form_complete_model = new CompleteTaskForm();
                                         ) ?>"
                                            class="button__small-color request-button button"
                                            type="button">Подтвердить</a>
-                                        <a href="<?= Url::to(['status/refuse', 'id' => $response->id]) ?>"
+                                        <a href="<?= Url::to(['response/cancel', 'id' => $response->id]) ?>"
                                            class="button__small-color refusal-button button"
                                            type="button">Отказать</a>
                                     </div>
@@ -234,7 +234,7 @@ $form_complete_model = new CompleteTaskForm();
 <section class="modal response-form form-modal" id="response-form">
     <h2>Отклик на задание</h2>
     <?php $form_response = ActiveForm::begin(
-        ['action' => \yii\helpers\Url::toRoute(['/response/new/', 'task_id' => $task->id])]
+        ['action' => \yii\helpers\Url::toRoute(['/response/new/','id' => $task->id])]
     ) ?>
     <p>
         <?= $form_response->field($form_response_model, 'amount')->textInput(

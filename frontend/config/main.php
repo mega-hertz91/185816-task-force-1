@@ -52,7 +52,8 @@ return [
                 'task/refuse/<id:\d+>' => 'task/refuse',
                 'task/complete/<id:\d+>' => 'task/complete',
                 'users/view/<id:\d+>' => 'users/view',
-                'response/new/<task_id:\d+>' => 'response/new',
+                'response/new/<id:\d+>' => 'response/new',
+                'response/cancel/<id:\d+>' => 'response/cancel',
             ],
         ]
     ],

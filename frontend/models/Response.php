@@ -119,27 +119,4 @@ class Response extends \yii\db\ActiveRecord
 
         return count($result);
     }
-
-    /***
-     * @return bool
-     */
-    public function refuseResponse()
-    {
-        $this->status = self::STATUS_DISABLED;
-        return $this->save();
-    }
-
-    /***
-     * @param Task $task
-     * @param int $target_user_id
-     * @return bool
-     */
-
-    public function addNewResponse(Task $task, $target_user_id)
-    {
-        $this->task_id = $task->id;
-        $this->user_id = $target_user_id;
-
-        return $this->save();
-    }
 }
