@@ -26,18 +26,14 @@ class CreateController extends BaseController
             return $this->redirect('/tasks/');
         }
 
-        if ($model->load($request)) {
-            if ($model->validate()) {
-                $task->attributes = $request['CreateTaskForm'];
-                $task->user_id = $user->id;
-                $task->deadline = Yii::$app->formatter->asDate($task->deadline, 'php:Y-m-d');
-                $task->file = $model->upload();
-                $task->save();
-                $this->redirect('/tasks/');
-
-            } else {
-                $errors = $model->errors;
-            }
+        if ($model->load($request) && $model->validate()) {
+            $task->attributes = $request['CreateTaskForm'];
+            $task->user_id = $user->id;
+            $task->city_id = $user->city->id;
+            $task->deadline = Yii::$app->formatter->asDate($task->deadline, 'php:Y-m-d');
+            $task->file = $model->upload();
+            $task->save();
+            $this->redirect('/tasks/');
         }
 
 
@@ -45,7 +41,7 @@ class CreateController extends BaseController
             'index',
             [
                 'model' => $model,
-                'errors' => $errors,
+                'errors' => $model->getErrors(),
                 'task' => $task
             ]
         );

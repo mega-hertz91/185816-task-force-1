@@ -32,11 +32,11 @@ namespace frontend\models;
 class Task extends \yii\db\ActiveRecord
 {
 
-    const STATUS_DEFAULT = 5;
-    const STATUS_WORK = 1;
-    const STATUS_FAILED = 3;
-    const STATUS_COMPLETE = 2;
-    const STATUS_CANCELED = 4;
+    public const STATUS_DEFAULT = 5;
+    public const STATUS_WORK = 1;
+    public const STATUS_FAILED = 3;
+    public const STATUS_COMPLETE = 2;
+    public const STATUS_CANCELED = 4;
 
     /**
      * {@inheritdoc}
@@ -53,7 +53,7 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['category_id', 'city_id', 'user_id', 'status_id'], 'required'],
-            [['category_id', 'city_id', 'user_id', 'executor_id', 'budget', 'status_id'], 'integer'],
+            [['category_id', 'user_id', 'executor_id', 'budget', 'status_id'], 'integer'],
             [['description'], 'string'],
             [['deadline', 'created_at', 'updated_at'], 'safe'],
             [['title', 'file'], 'string', 'max' => 255],
@@ -68,7 +68,7 @@ class Task extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -168,7 +168,7 @@ class Task extends \yii\db\ActiveRecord
      * @return int
      */
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user_id;
     }
@@ -182,7 +182,7 @@ class Task extends \yii\db\ActiveRecord
      * @return int
      */
 
-    public function getStatusId()
+    public function getStatusId(): int
     {
         return $this->status_id;
     }
@@ -190,7 +190,7 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return bool
      */
-    public function isDefaultStatus()
+    public function isDefaultStatus(): bool
     {
         return $this->status_id === self::STATUS_DEFAULT;
     }
@@ -199,7 +199,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function isWorkStatus()
+    public function isWorkStatus(): bool
     {
         return $this->status_id === self::STATUS_WORK;
     }
@@ -208,7 +208,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function isNewStatus()
+    public function isNewStatus(): bool
     {
         return $this->status_id === self::STATUS_DEFAULT;
     }
@@ -217,7 +217,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function isFailedStatus()
+    public function isFailedStatus(): bool
     {
         return $this->status_id === self::STATUS_FAILED;
     }
@@ -227,7 +227,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function changeStatusWork(User $executor)
+    public function changeStatusWork(User $executor): bool
     {
         $this->status_id = Task::STATUS_WORK;
         $this->executor_id = $executor->id;
@@ -238,7 +238,7 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return bool
      */
-    public function changeStatusFailed()
+    public function changeStatusFailed(): bool
     {
         $this->status_id = Task::STATUS_FAILED;
         return $this->save();
@@ -248,7 +248,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function changeStatusCanceled()
+    public function changeStatusCanceled(): bool
     {
         $this->status_id = Task::STATUS_CANCELED;
 
@@ -259,7 +259,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function changeStatusCompleted()
+    public function changeStatusCompleted(): bool
     {
         $this->status_id = Task::STATUS_COMPLETE;
 
@@ -271,7 +271,7 @@ class Task extends \yii\db\ActiveRecord
      * @return bool
      */
 
-    public function isUserOwner(User $user)
+    public function isUserOwner(User $user): bool
     {
         return $this->user_id === $user->id;
     }

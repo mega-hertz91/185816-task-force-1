@@ -70,7 +70,7 @@ $this->title = 'Публикация нового задания';
             </div>
             <?= $form->field(
                 $model,
-                'city_id',
+                'location',
                 [
                     'inputOptions' => [
                         'class' => 'input-navigation input-middle input',

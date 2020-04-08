@@ -26,7 +26,8 @@ class CreateTaskForm extends Model
             'title' => 'Мне нужно',
             'description' => 'Подробности задания',
             'category_id' => 'Категория',
-            'city_id' => 'Локация',
+            'city_id' => 'Город',
+            'location' => 'Локация',
             'budget' => 'Бюджет',
             'deadline' => 'Срок исполнения',
             'file' => 'Изображение'
@@ -37,7 +38,7 @@ class CreateTaskForm extends Model
     {
         return [
             [['title', 'description', 'category_id', 'deadline'], 'required', 'message' => 'Поле не может быть пустым'],
-            ['budget', 'integer', 'min' => 0, 'message' => 'Поле должно быть числом, не меньше нуля'],
+            ['budget', 'integer', 'min' => 1, 'message' => 'Поле должно быть числом, не меньше нуля'],
             [
                 'category_id',
                 'exist',
