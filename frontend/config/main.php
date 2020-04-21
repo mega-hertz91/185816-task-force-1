@@ -1,4 +1,5 @@
 <?php
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/params.php'
@@ -12,6 +13,10 @@ return [
     'modules' => [
         'gii' => [
             'class' => 'yii\gii\Module',
+            'allowedIPs' => ['192.168.10.10', '::1', '192.168.10.*', '192.168.10.10']
+        ],
+        'debug' => [
+            'class' => 'yii\debug\Module',
             'allowedIPs' => ['192.168.10.10', '::1', '192.168.10.*', '192.168.10.10']
         ],
     ],
