@@ -2,6 +2,10 @@
 
 namespace frontend\models;
 
+use common\models\TaskModelTrait;
+use frontend\forms\CreateTaskForm;
+use Yii;
+
 /**
  * This is the model class for table "task".
  *
@@ -32,6 +36,8 @@ namespace frontend\models;
 class Task extends \yii\db\ActiveRecord
 {
 
+    use TaskModelTrait;
+
     public const STATUS_DEFAULT = 5;
     public const STATUS_WORK = 1;
     public const STATUS_FAILED = 3;
@@ -57,11 +63,11 @@ class Task extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['deadline', 'created_at', 'updated_at'], 'safe'],
             [['title', 'file'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['executor_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['executor_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -92,7 +98,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['task_id' => 'id']);
+        return $this->hasMany(Comment::class, ['task_id' => 'id']);
     }
 
     /**
@@ -100,7 +106,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getMessages()
     {
-        return $this->hasMany(Message::className(), ['recipient' => 'id']);
+        return $this->hasMany(Message::class, ['recipient' => 'id']);
     }
 
     /**
@@ -108,7 +114,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getMessages0()
     {
-        return $this->hasMany(Message::className(), ['task_id' => 'id']);
+        return $this->hasMany(Message::class, ['task_id' => 'id']);
     }
 
     /**
@@ -116,7 +122,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getResponses()
     {
-        return $this->hasMany(Response::className(), ['task_id' => 'id']);
+        return $this->hasMany(Response::class, ['task_id' => 'id']);
     }
 
     /**
@@ -124,7 +130,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     /**
@@ -132,7 +138,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getCity()
     {
-        return $this->hasOne(City::className(), ['id' => 'city_id']);
+        return $this->hasOne(City::class, ['id' => 'city_id']);
     }
 
     /**
@@ -140,7 +146,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getExecutor()
     {
-        return $this->hasOne(User::className(), ['id' => 'executor_id']);
+        return $this->hasOne(User::class, ['id' => 'executor_id']);
     }
 
     /**
@@ -148,7 +154,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getStatus()
     {
-        return $this->hasOne(Status::className(), ['id' => 'status_id']);
+        return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
     /**
@@ -156,7 +162,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     public function init()
@@ -274,5 +280,30 @@ class Task extends \yii\db\ActiveRecord
     public function isUserOwner(User $user): bool
     {
         return $this->user_id === $user->id;
+    }
+
+    public function isUserExecutor(User $user): bool
+    {
+        return $this->executor_id === $user->id;
+    }
+
+    /**
+     * @param CreateTaskForm $form
+     * @param User $user
+     * @return Task
+     * @throws \yii\base\InvalidConfigException
+     */
+
+    static function createTask(CreateTaskForm $form, User $user)
+    {
+        $task = new self();
+
+        $task->attributes = $form->attributes;
+        $task->user_id = $user->id;
+        $task->city_id = $user->city->id;
+        $task->deadline = Yii::$app->formatter->asDate($task->deadline, 'php:Y-m-d');
+        $task->file = $form->upload();
+
+        return $task;
     }
 }

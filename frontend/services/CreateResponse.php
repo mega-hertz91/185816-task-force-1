@@ -28,13 +28,13 @@ class CreateResponse
     }
 
 
-    public function refuseResponse(User $target_user): void
+    public function refuseResponse(User $currentUser): void
     {
-        if ($this->response->task->user_id !== $target_user->id) {
+        if ($this->response->task->user_id !== $currentUser->id) {
             throw new \Exception('Вы не владелец текущего задания');
         }
 
-        if ($target_user->isExecutor()) {
+        if ($currentUser->isExecutor()) {
             throw new \Exception('У вас не достаточно прав');
         }
 
@@ -47,16 +47,16 @@ class CreateResponse
 
     /**
      * @param Task $task
-     * @param User $target_user
+     * @param User $currentUser
      * @throws \Exception
      */
 
-    public function addNewResponse(Task $task, User $target_user): void
+    public function addNewResponse(Task $task, User $currentUser): void
     {
         $this->response->task_id = $task->id;
-        $this->response->user_id = $target_user->id;
+        $this->response->user_id = $currentUser->id;
 
-        if($this->response::findOne(['user_id' => $target_user->id]) !== null) {
+        if($this->response::findOne(['user_id' => $currentUser->id]) !== null) {
             throw new \Exception('Вы уже отликались на текущее задание');
         }
 

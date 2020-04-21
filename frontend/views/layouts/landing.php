@@ -1,7 +1,7 @@
 <?php
 
 /***
- * @var object $content frontend\View\site\index.php
+ * @var object $content frontend\View\site\create.php
  */
 
 use yii\helpers\Url;

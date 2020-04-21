@@ -5,7 +5,6 @@ namespace frontend\forms;
 
 
 use frontend\models\Category;
-use frontend\models\City;
 use yii\base\Model;
 use yii\web\UploadedFile;
 

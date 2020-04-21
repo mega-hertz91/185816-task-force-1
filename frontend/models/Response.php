@@ -2,6 +2,8 @@
 
 namespace frontend\models;
 
+use common\models\ResponseModelTrait;
+use Exception;
 use Yii;
 
 /**
@@ -19,8 +21,11 @@ use Yii;
  * @property User $user
  * @property Task $task
  */
+
 class Response extends \yii\db\ActiveRecord
 {
+    use ResponseModelTrait;
+
     const STATUS_ACTIVE = 'active';
     const STATUS_DISABLED = 'disabled';
 
@@ -41,8 +46,8 @@ class Response extends \yii\db\ActiveRecord
             [['user_id', 'amount', 'task_id'], 'integer'],
             ['message', 'string'],
             [['created_at', 'updated_at', 'status', 'message'], 'safe'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']],
         ];
     }
 
@@ -71,7 +76,7 @@ class Response extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -79,7 +84,7 @@ class Response extends \yii\db\ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Task::className(), ['id' => 'task_id']);
+        return $this->hasOne(Task::class, ['id' => 'task_id']);
     }
 
     /***
@@ -118,5 +123,28 @@ class Response extends \yii\db\ActiveRecord
         }
 
         return count($result);
+    }
+
+    /**
+     * @param Response $response
+     * @param User $currentUser
+     * @throws Exception
+     */
+
+    public static function blockedResponse(Response $response ,User $currentUser): void
+    {
+        if ($response->task->user_id !== $currentUser->id) {
+            throw new Exception('Вы не владелец текущего задания');
+        }
+
+        if ($currentUser->isExecutor()) {
+            throw new Exception('У вас не достаточно прав');
+        }
+
+        $response->status = $response::STATUS_DISABLED;
+
+        if (!$response->save()) {
+            throw new Exception('Отклик не был сохранен');
+        }
     }
 }

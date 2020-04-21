@@ -4,19 +4,15 @@
 /* @var $content string */
 
 /***
- * @var object $task frontend\models\Task
+ * @var frontend\models\Task $task
  */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use yii\helpers\Url;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
-use common\models\User;
 
 AppAsset::register($this);
-$user = User::findOne(Yii::$app->user->getId());
+$this->title = 'Задания';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -66,13 +62,13 @@ $user = User::findOne(Yii::$app->user->getId());
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
                     <li class="site-list__item">
-                        <a href="/tasks/">Задания</a>
+                        <a href="<?=Url::to(['/tasks/'])?>">Задания</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="/users/">Исполнители</a>
+                        <a href="<?=Url::to(['/users/'])?>">Исполнители</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="<?=\yii\helpers\Url::to('/create/')?>">Создать задание</a>
+                        <a href="<?=Url::to(['/task/create/'])?>">Создать задание</a>
                     </li>
                     <li class="site-list__item">
                         <a>Мой профиль</a>
@@ -111,7 +107,7 @@ $user = User::findOne(Yii::$app->user->getId());
                          alt="Аватар пользователя">
                 </a>
                 <span class="header__account-name">
-                 <?= Html::encode( $user->full_name) ?>
+                 <?= Html::encode( Yii::$app->user->identity->full_name) ?>
              </span>
             </div>
             <div class="account__pop-up">

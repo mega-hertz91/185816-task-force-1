@@ -1,7 +1,7 @@
 <?php
 /**
- * @var array $categories frontend\models\Category
- * @var array $tasks frontend\models\Task
+ * @var frontend\models\Category $categories
+ * @var frontend\models\Task $tasks
  **/
 
 use yii\helpers\Html;

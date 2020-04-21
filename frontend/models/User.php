@@ -104,9 +104,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['about'], 'string'],
             [['full_name', 'email', 'password', 'skype', 'messenger'], 'string', 'max' => 255],
             [['email'], 'unique'],
-            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::className(), 'targetAttribute' => ['role_id' => 'id']],
-            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['user_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserStatus::className(), 'targetAttribute' => ['user_status_id' => 'id']],
+            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['user_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserStatus::class, 'targetAttribute' => ['user_status_id' => 'id']],
         ];
     }
 
@@ -139,7 +139,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getCategoryExecutors()
     {
-        return $this->hasMany(CategoryExecutor::className(), ['user_id' => 'id']);
+        return $this->hasMany(CategoryExecutor::class, ['user_id' => 'id']);
     }
 
     /**
@@ -147,7 +147,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['user_id' => 'id']);
+        return $this->hasMany(Comment::class, ['user_id' => 'id']);
     }
 
     /**
@@ -155,7 +155,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getMessages()
     {
-        return $this->hasMany(Message::className(), ['sender' => 'id']);
+        return $this->hasMany(Message::class, ['sender' => 'id']);
     }
 
     /**
@@ -163,7 +163,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getMessages0()
     {
-        return $this->hasMany(Message::className(), ['recipient' => 'id']);
+        return $this->hasMany(Message::class, ['recipient' => 'id']);
     }
 
     /**
@@ -171,7 +171,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getResponses()
     {
-        return $this->hasMany(Response::className(), ['user_id' => 'id']);
+        return $this->hasMany(Response::class, ['user_id' => 'id']);
     }
 
     /**
@@ -179,7 +179,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getTasks()
     {
-        return $this->hasMany(Task::className(), ['user_id' => 'id']);
+        return $this->hasMany(Task::class, ['user_id' => 'id']);
     }
 
     /**
@@ -187,7 +187,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getTasks0()
     {
-        return $this->hasMany(Task::className(), ['executor_id' => 'id']);
+        return $this->hasMany(Task::class, ['executor_id' => 'id']);
     }
 
     /**
@@ -195,7 +195,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getRole()
     {
-        return $this->hasOne(Role::className(), ['id' => 'role_id']);
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 
     /**
@@ -203,7 +203,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getCity()
     {
-        return $this->hasOne(City::className(), ['id' => 'city_id']);
+        return $this->hasOne(City::class, ['id' => 'city_id']);
     }
 
     /**
@@ -211,7 +211,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getUserStatus()
     {
-        return $this->hasOne(UserStatus::className(), ['id' => 'user_status_id']);
+        return $this->hasOne(UserStatus::class, ['id' => 'user_status_id']);
     }
 
     /**

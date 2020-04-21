@@ -4,10 +4,9 @@ namespace frontend\controllers;
 
 use frontend\forms\TasksForm;
 use frontend\models\Category;
+use frontend\models\Comment;
 use frontend\models\Task;
 use frontend\models\User;
-use frontend\src\exceptions\StatusException;
-use frontend\src\status\CancelAction;
 use Yii;
 use frontend\providers\TasksProvider;
 use yii\web\NotFoundHttpException;
@@ -33,7 +32,7 @@ class TasksController extends BaseController
     public function actionView($id)
     {
         $task = Task::findOne($id);
-        $user = User::findOne(['id' => Yii::$app->user->id]);
+        $user = Yii::$app->user->identity;
 
         if($task === null) {
             throw new NotFoundHttpException('Такого задания не существует');

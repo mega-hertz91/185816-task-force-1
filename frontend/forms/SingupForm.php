@@ -30,7 +30,7 @@ class SingupForm extends Model
     public function rules()
     {
         return [
-            ['email', 'unique', 'targetClass'=> User::className(), 'message' => 'Этот email уже занят'],
+            ['email', 'unique', 'targetClass'=> User::class, 'message' => 'Этот email уже занят'],
             ['email', 'email', 'message' => 'Введите валидный email'],
             ['email', 'required', 'message' => 'Введите валидный email'],
             ['full_name', 'required', 'message' => 'Введите ваше имя и фамилию'],
