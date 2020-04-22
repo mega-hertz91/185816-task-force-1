@@ -73,6 +73,7 @@ class ResponseController extends BaseController
             Response::blockedResponse($this->response ,$this->currentUser);
             Yii::$app->session->setFlash('success', 'Вы отказали  ' . $this->response->user->full_name . '  в выполнении задания');
             $this->redirect(Url::to(['/tasks/view', 'id' => $this->response->task->id]));
+
         } catch (\Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
             $this->redirect('/tasks/view/' . $this->response->task->id);
