@@ -7,7 +7,6 @@ namespace frontend\services;
 use frontend\models\Response;
 use frontend\models\Task;
 use frontend\models\User;
-use yii\db\Exception;
 
 class CreateResponse
 {

@@ -1,18 +1,19 @@
 <?php
 /**
- * @var \frontend\models\Task $task
+ * @var Task $task
+ * @var User $user
  **/
 
-use yii\helpers\Html;
-use frontend\models\User;
-use yii\helpers\Url;
-use frontend\models\Response;
-use frontend\forms\NewResponseForm;
-use yii\widgets\ActiveForm;
+use common\models\User;
 use frontend\forms\CompleteTaskForm;
-use frontend\helpers\TemplateForm;
+use frontend\forms\NewResponseForm;
+use frontend\models\Response;
+use frontend\models\Task;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
-$user = User::findOne(['id' => Yii::$app->user->id]);
+$user = Yii::$app->user->identity;
 $form_response_model = new NewResponseForm();
 $form_complete_model = new CompleteTaskForm();
 ?>
@@ -24,6 +25,7 @@ $form_complete_model = new CompleteTaskForm();
         <div class="alert alert-danger" role="alert"><?php echo Yii::$app->session->getFlash('error') ?></div>
     <?php endif; ?>
 </div>
+
 <div class="main-container page-container">
     <section class="content-view">
         <div class="content-view__card">
@@ -97,14 +99,14 @@ $form_complete_model = new CompleteTaskForm();
         <?php if ($task->isDefaultStatus()): ?>
             <?php if (!$user->isExecutor() && $user->getId() === $task->getUserId()): ?>
                 <div class="content-view__feedback">
-                    <h2>Отклики <span><?= Response::getActiveCountResponses($task->id) ?></span></h2>
+                    <h2>Отклики <span><?= Response::getCountActiveByTaskId($task->id) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <?php if ($response->isActive()): ?>
+                            <?php if ($response->isActive()) : ?>
                                 <div class="content-view__feedback-card">
                                     <div class="feedback-card__top">
                                         <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>">
-                                            <img src="../../../img/man-glasses.jpg" width="55" height="55"></a>
+                                            <img src="/img/man-glasses.jpg" width="55" height="55"></a>
                                         <div class="feedback-card__top--name">
                                             <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
                                                   class="link-regular"><?= Html::encode(
@@ -144,15 +146,15 @@ $form_complete_model = new CompleteTaskForm();
                 </div>
             <?php else: ?>
                 <div class="content-view__feedback">
-                    <h2>Отклики <span><?= Response::getActiveCountResponses($task->id) ?></span></h2>
+                    <h2>Отклики <span><?= Response::getCountActiveByTaskId($task->id) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <?php if ($response->isActive()): ?>
+                            <?php if ($response->isActive()) : ?>
                                 <div class="content-view__feedback-card">
                                     <div class="feedback-card__top">
-                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"><img
-                                                src="../../../img/man-glasses.jpg"
-                                                width="55" height="55"></a>
+                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>">
+                                            <img src="/img/man-glasses.jpg"
+                                                 width="55" height="55"></a>
                                         <div class="feedback-card__top--name">
                                             <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
                                                   class="link-regular"><?= Html::encode(
@@ -234,7 +236,7 @@ $form_complete_model = new CompleteTaskForm();
 <section class="modal response-form form-modal" id="response-form">
     <h2>Отклик на задание</h2>
     <?php $form_response = ActiveForm::begin(
-        ['action' => \yii\helpers\Url::toRoute(['/response/new/','id' => $task->id])]
+        ['action' => \yii\helpers\Url::toRoute(['/response/new/', 'id' => $task->id])]
     ) ?>
     <p>
         <?= $form_response->field($form_response_model, 'amount')->textInput(
@@ -259,25 +261,27 @@ $form_complete_model = new CompleteTaskForm();
     <h2>Завершение задания</h2>
     <p class="form-modal-description">Задание выполнено?</p>
     <?php $form_complete = ActiveForm::begin([
-            'action' => Url::to(['task/complete', 'id' => $task->id])
-        ]) ?>
-    <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes" name="complete" value="1">
+        'action' => Url::to(['task/complete', 'id' => $task->id])
+    ]) ?>
+    <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes"
+           name="complete" value="1">
     <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
-    <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet" name="complete" value="0">
-    <label  class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
-    <?=$form_complete->field($form_complete_model, 'description')
+    <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet"
+           name="complete" value="0">
+    <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
+    <?= $form_complete->field($form_complete_model, 'description')
         ->textarea([
             'class' => 'input textarea',
-            'style'=> 'display: block; width: 100%',
+            'style' => 'display: block; width: 100%',
             'placeholder' => 'Place you text',
             'rows' => 4
         ])
         ->label(null, [
-            'class'=> 'form-modal-description',
+            'class' => 'form-modal-description',
             'style' => 'display: block; width: 100%',
-        ])?>
+        ]) ?>
     <p class="form-modal-description">
-        <?=$form_complete->field($form_complete_model, 'rating')->input('hidden', ['id' => 'rating']) ?>
+        <?= $form_complete->field($form_complete_model, 'rating')->input('hidden', ['id' => 'rating']) ?>
     <div class="feedback-card__top--name completion-form-star">
         <span class="star-disabled"></span>
         <span class="star-disabled"></span>

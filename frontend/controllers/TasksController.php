@@ -4,11 +4,12 @@ namespace frontend\controllers;
 
 use frontend\forms\TasksForm;
 use frontend\models\Category;
-use frontend\models\Comment;
+use frontend\models\Response;
 use frontend\models\Task;
 use frontend\models\User;
 use Yii;
 use frontend\providers\TasksProvider;
+use yii\debug\panels\EventPanel;
 use yii\web\NotFoundHttpException;
 
 class TasksController extends BaseController
@@ -31,21 +32,31 @@ class TasksController extends BaseController
 
     public function actionView($id)
     {
-        $task = Task::findOne($id);
+        /**
+         * @var User $user
+         */
         $user = Yii::$app->user->identity;
+
+        /**
+         * @var Task $task
+         */
+        $task = Task::find()->where(['id' => $id])->with(['user', 'responses','responses.user', 'category'])->one();
 
         if($task === null) {
             throw new NotFoundHttpException('Такого задания не существует');
-        } elseif ($task->status_id === Task::STATUS_DEFAULT) {
-            return $this->render('task', [
-                'task' => $task,
-            ]);
-        } elseif ($task->executor_id === $user->id || $task->user_id === $user->id) {
-            return $this->render('task', [
-                'task' => $task,
-            ]);
         }
 
-        return $this->redirect('/tasks/');
+        if ($task->isDefaultStatus()) {
+            return $this->render('task', [
+                'task' => $task,
+            ]);
+        } else if ($task->isUserOwner($user) || $task->isUserExecutor($user)) {
+            return $this->render('task', [
+                'task' => $task,
+            ]);
+        } else {
+            throw new NotFoundHttpException('У вас нет прав просматривать текущее задание');
+        }
+
     }
 }

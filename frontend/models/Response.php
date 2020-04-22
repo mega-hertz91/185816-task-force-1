@@ -105,26 +105,6 @@ class Response extends \yii\db\ActiveRecord
         return $this->status === self::STATUS_DISABLED;
     }
 
-    /***
-     * @param $id
-     * @return int
-     */
-
-    public static function getActiveCountResponses($id)
-    {
-        $result = [];
-
-        $responses =  Response::find()->where(['task_id'=> $id])->all();
-
-        foreach ($responses as $item) {
-            if ($item->isActive()) {
-                array_push($result, $item);
-            }
-        }
-
-        return count($result);
-    }
-
     /**
      * @param Response $response
      * @param User $currentUser
@@ -146,5 +126,14 @@ class Response extends \yii\db\ActiveRecord
         if (!$response->save()) {
             throw new Exception('Отклик не был сохранен');
         }
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public static function getCountActiveByTaskId($id)
+    {
+        return count(self::find()->where(['task_id' => $id, 'status' => 'active']));
     }
 }

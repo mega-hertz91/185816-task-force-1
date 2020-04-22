@@ -76,7 +76,7 @@ class ResponseController extends BaseController
 
         } catch (\Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect('/tasks/view/' . $this->response->task->id);
+            $this->redirect(Url::to(['/tasks/view', 'id' => $this->response->task->id]));
         }
     }
 }
