@@ -4,6 +4,8 @@ namespace frontend\models;
 
 use Exception;
 use frontend\forms\CompleteTaskForm;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "comment".
@@ -20,7 +22,7 @@ use frontend\forms\CompleteTaskForm;
  * @property User $user
  * @property Task $task
  */
-class Comment extends \yii\db\ActiveRecord
+class Comment extends ActiveRecord
 {
     const MESSAGE_FAILED = 'Задание провалено';
     const RATING_DEFAULT = 1;
@@ -75,7 +77,7 @@ class Comment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
@@ -83,7 +85,7 @@ class Comment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getExecutor()
     {
@@ -91,7 +93,7 @@ class Comment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {

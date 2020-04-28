@@ -2,7 +2,8 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -34,7 +35,7 @@ use yii\web\IdentityInterface;
  * @property City $city
  * @property UserStatus $userStatus
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     public const ADMIN = 1;
     public const CUSTOMER = 2;
@@ -135,7 +136,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategoryExecutors()
     {
@@ -143,7 +144,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getComments()
     {
@@ -151,7 +152,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMessages()
     {
@@ -159,7 +160,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMessages0()
     {
@@ -167,7 +168,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getResponses()
     {
@@ -175,7 +176,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTasks()
     {
@@ -183,7 +184,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTasks0()
     {
@@ -191,7 +192,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getRole()
     {
@@ -199,7 +200,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCity()
     {
@@ -207,7 +208,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUserStatus()
     {

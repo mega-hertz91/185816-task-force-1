@@ -4,7 +4,9 @@ namespace frontend\models;
 
 use common\models\ResponseModelTrait;
 use Exception;
-use Yii;
+use frontend\forms\NewResponseForm;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "response".
@@ -22,7 +24,7 @@ use Yii;
  * @property Task $task
  */
 
-class Response extends \yii\db\ActiveRecord
+class Response extends ActiveRecord
 {
     use ResponseModelTrait;
 
@@ -72,7 +74,7 @@ class Response extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
@@ -80,7 +82,7 @@ class Response extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {
@@ -125,6 +127,34 @@ class Response extends \yii\db\ActiveRecord
 
         if (!$response->save()) {
             throw new Exception('Отклик не был сохранен');
+        }
+    }
+
+    /**
+     * @param Task $task
+     * @param User $currentUser
+     * @param NewResponseForm $form
+     * @throws Exception
+     */
+
+    public static function createResponse(Task $task, User $currentUser,  NewResponseForm $form): void
+    {
+        $response = new self();
+
+        $response->attributes = $form->attributes;
+        $response->task_id = $task->id;
+        $response->user_id = $currentUser->id;
+
+        if ($currentUser->isCustomer()) {
+            throw new \Exception('Только испольнитель может оставлять отклик');
+        }
+
+        if(self::findOne(['user_id' => $currentUser->id, 'task_id' => $task->id]) !== null) {
+            throw new \Exception('Вы уже отликались на текущее задание');
+        }
+
+        if (!$response->save()) {
+            throw new \Exception('Отклик не был сохранен');
         }
     }
 

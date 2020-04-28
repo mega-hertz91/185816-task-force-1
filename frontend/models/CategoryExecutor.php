@@ -2,7 +2,9 @@
 
 namespace frontend\models;
 
-use Yii;
+
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "category_executor".
@@ -14,7 +16,7 @@ use Yii;
  * @property Category $category
  * @property User $user
  */
-class CategoryExecutor extends \yii\db\ActiveRecord
+class CategoryExecutor extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -50,7 +52,7 @@ class CategoryExecutor extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategory()
     {
@@ -58,7 +60,7 @@ class CategoryExecutor extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

@@ -5,6 +5,8 @@ namespace frontend\models;
 use common\models\TaskModelTrait;
 use frontend\forms\CreateTaskForm;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "task".
@@ -33,7 +35,7 @@ use Yii;
  * @property Status $status
  * @property User $user
  */
-class Task extends \yii\db\ActiveRecord
+class Task extends ActiveRecord
 {
 
     use TaskModelTrait;
@@ -94,7 +96,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getComments()
     {
@@ -102,7 +104,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMessages()
     {
@@ -110,7 +112,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMessages0()
     {
@@ -118,7 +120,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getResponses()
     {
@@ -126,7 +128,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategory()
     {
@@ -134,7 +136,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCity()
     {
@@ -142,7 +144,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getExecutor()
     {
@@ -150,7 +152,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getStatus()
     {
@@ -158,7 +160,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

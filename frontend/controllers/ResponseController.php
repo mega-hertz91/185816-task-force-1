@@ -7,12 +7,11 @@ use frontend\forms\NewResponseForm;
 use frontend\models\Response;
 use frontend\models\Task;
 use frontend\models\User;
-use frontend\services\CreateResponse;
+use yii\helpers\Url;
 use Yii;
 use yii\base\Action;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
-use yii\helpers\Url;
 
 class ResponseController extends BaseController
 {
@@ -49,21 +48,19 @@ class ResponseController extends BaseController
     {
         $task = Task::findOne(['id' => $id]);
         $form = new NewResponseForm();
-        $response = new CreateResponse(new Response());
         $request = Yii::$app->request->post();
 
-        if ($form->load($request)) {
-            $response->getObject()->setAttributes($request['NewResponseForm']);
-
+        if ($form->load($request) && $form->validate()) {
             try {
-                $response->addNewResponse($task, $this->currentUser);
-
+                Response::createResponse($task, $this->currentUser, $form);
                 Yii::$app->session->setFlash('success', 'Вы откликнулись на задание  "' . $task->title . '"');
-                $this->redirect('/tasks/view/' . $task->id);
+                $this->redirect(Url::to(['/tasks/view', 'id' => $task->id]));
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
-                $this->redirect('/tasks/view/' . $task->id);
+                $this->redirect(Url::to(['/tasks/view', 'id' => $task->id]));
             }
+        } else {
+            $this->redirect(Url::to(['/tasks/view', 'id' => $task->id]));
         }
     }
 
