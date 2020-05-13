@@ -176,6 +176,15 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @param $taskId
+     * @return bool
+     */
+
+    public function isRespondedByTask($taskId) {
+        return $this->hasMany(Response::class, ['user_id' => 'id'])->where(['task_id' => $taskId])->exists();
+    }
+
+    /**
      * @return ActiveQuery
      */
     public function getTasks()

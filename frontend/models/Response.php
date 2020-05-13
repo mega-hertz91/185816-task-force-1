@@ -5,6 +5,7 @@ namespace frontend\models;
 use common\models\ResponseModelTrait;
 use Exception;
 use frontend\forms\NewResponseForm;
+use phpDocumentor\Reflection\Types\Self_;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -165,5 +166,10 @@ class Response extends ActiveRecord
     public static function getCountActiveByTaskId($id)
     {
         return count(self::find()->where(['task_id' => $id, 'status' => 'active'])->all());
+    }
+
+    public static function getResponedUserByTaskId($taskId, $userId)
+    {
+        return self::find()->where(['task_id' => $taskId, 'user_id' => $userId])->exists();
     }
 }

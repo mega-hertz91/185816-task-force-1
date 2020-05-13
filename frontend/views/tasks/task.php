@@ -71,7 +71,7 @@ $form_complete_model = new CompleteTaskForm();
             </div>
             <?php if ($user->isExecutor()): ?>
                 <div class="content-view__action-buttons">
-                    <?php if ($task->isDefaultStatus()): ?>
+                    <?php if ($task->isDefaultStatus() && !$user->isRespondedByTask($task->id)): ?>
                         <button class=" button button__big-color response-button open-modal"
                                 type="button" data-for="response-form">Откликнуться
                         </button>
@@ -89,7 +89,7 @@ $form_complete_model = new CompleteTaskForm();
                 </div>
             <?php elseif ($task->isNewStatus() && $task->isUserOwner($user)) : ?>
                 <div class="content-view__action-buttons">
-                    <a href="<?= Url::to(['/task/cancel/', 'id' => $task->id]) ?>"
+                    <a href="<?= Url::to(['task/cancel/', 'id' => $task->id]) ?>"
                        class="button button__big-color request-button open-modal"
                        type="button">Отменить задание
                     </a>
@@ -99,86 +99,84 @@ $form_complete_model = new CompleteTaskForm();
         <?php if ($task->isDefaultStatus()): ?>
             <?php if (!$user->isExecutor() && $user->getId() === $task->getUserId()): ?>
                 <div class="content-view__feedback">
-                    <h2>Отклики <span><?= Response::getCountActiveByTaskId($task->id) ?></span></h2>
+                    <h2>Отклики <span><?= count($task->responses) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <?php if ($response->isActive()) : ?>
-                                <div class="content-view__feedback-card">
-                                    <div class="feedback-card__top">
-                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>">
-                                            <img src="/img/man-glasses.jpg" width="55" height="55"></a>
-                                        <div class="feedback-card__top--name">
-                                            <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
-                                                  class="link-regular"><?= Html::encode(
-                                                        $response->user->full_name
-                                                    ) ?></a></p>
-                                            <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
-                                                <?php if ($response->user->rating > $i): ?>
-                                                    <span></span>
-                                                <?php else: ?>
-                                                    <span class="star-disabled"></span>
-                                                <?php endif; ?>
-                                            <?php endfor; ?>
-                                            <b><?= Html::encode($response->user->rating) ?></b>
-                                        </div>
-                                        <span class="new-task__time">25 минут назад</span>
+                            <div class="content-view__feedback-card">
+                                <div class="feedback-card__top">
+                                    <a href="<?= Url::to(['users/view', 'id' => $response->user->id]) ?>">
+                                        <img src="/img/man-glasses.jpg" width="55" height="55"></a>
+                                    <div class="feedback-card__top--name">
+                                        <p><a href="<?= Url::to(['users/view', 'id' => $response->user->id]) ?>"
+                                              class="link-regular"><?= Html::encode(
+                                                    $response->user->full_name
+                                                ) ?></a></p>
+                                        <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
+                                            <?php if ($response->user->rating > $i): ?>
+                                                <span></span>
+                                            <?php else: ?>
+                                                <span class="star-disabled"></span>
+                                            <?php endif; ?>
+                                        <?php endfor; ?>
+                                        <b><?= Html::encode($response->user->rating) ?></b>
                                     </div>
-                                    <div class="feedback-card__content">
-                                        <p>
-                                            <?= Html::encode($response->message) ?>
-                                        </p>
-                                        <span><?= Html::encode($response->amount) ?> ₽</span>
-                                    </div>
-                                    <div class="feedback-card__actions">
-                                        <a href="<?= Url::to(
-                                            ['task/work', 'id' => $task->id, 'executor' => $response->user->id]
-                                        ) ?>"
-                                           class="button__small-color request-button button"
-                                           type="button">Подтвердить</a>
-                                        <a href="<?= Url::to(['response/cancel', 'id' => $response->id]) ?>"
-                                           class="button__small-color refusal-button button"
-                                           type="button">Отказать</a>
-                                    </div>
+                                    <span class="new-task__time">25 минут назад</span>
                                 </div>
-                            <?php endif; ?>
+                                <div class="feedback-card__content">
+                                    <p>
+                                        <?= Html::encode($response->message) ?>
+                                    </p>
+                                    <span><?= Html::encode($response->amount) ?> ₽</span>
+                                </div>
+                               <?php if($response->isActive()) :?>
+                                   <div class="feedback-card__actions">
+                                       <a href="<?= Url::to(
+                                           ['task/work', 'id' => $task->id, 'executor' => $response->user->id]
+                                       ) ?>"
+                                          class="button__small-color request-button button"
+                                          type="button">Подтвердить</a>
+                                       <a href="<?= Url::to(['response/cancel', 'id' => $response->id]) ?>"
+                                          class="button__small-color refusal-button button"
+                                          type="button">Отказать</a>
+                                   </div>
+                                <?php endif; ?>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
             <?php else: ?>
                 <div class="content-view__feedback">
-                    <h2>Отклики <span><?= Response::getCountActiveByTaskId($task->id) ?></span></h2>
+                    <h2>Отклики <span><?= count($task->responses) ?></span></h2>
                     <div class="content-view__feedback-wrapper">
                         <?php foreach ($task->responses as $response) : ?>
-                            <?php if ($response->isActive()) : ?>
-                                <div class="content-view__feedback-card">
-                                    <div class="feedback-card__top">
-                                        <a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>">
-                                            <img src="/img/man-glasses.jpg"
-                                                 width="55" height="55"></a>
-                                        <div class="feedback-card__top--name">
-                                            <p><a href="<?= Url::to(['/users/view', 'id' => $response->user->id]) ?>"
-                                                  class="link-regular"><?= Html::encode(
-                                                        $response->user->full_name
-                                                    ) ?></a></p>
-                                            <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
-                                                <?php if ($response->user->rating > $i): ?>
-                                                    <span></span>
-                                                <?php else: ?>
-                                                    <span class="star-disabled"></span>
-                                                <?php endif; ?>
-                                            <?php endfor; ?>
-                                            <b><?= Html::encode($response->user->rating) ?></b>
-                                        </div>
-                                        <span class="new-task__time">25 минут назад</span>
+                            <div class="content-view__feedback-card">
+                                <div class="feedback-card__top">
+                                    <a href="<?= Url::to(['users/view', 'id' => $response->user->id]) ?>">
+                                        <img src="/img/man-glasses.jpg"
+                                             width="55" height="55"></a>
+                                    <div class="feedback-card__top--name">
+                                        <p><a href="<?= Url::to(['users/view', 'id' => $response->user->id]) ?>"
+                                              class="link-regular"><?= Html::encode(
+                                                    $response->user->full_name
+                                                ) ?></a></p>
+                                        <?php for ($i = 0; $i < $user::MAX_RATING; $i++): ?>
+                                            <?php if ($response->user->rating > $i): ?>
+                                                <span></span>
+                                            <?php else: ?>
+                                                <span class="star-disabled"></span>
+                                            <?php endif; ?>
+                                        <?php endfor; ?>
+                                        <b><?= Html::encode($response->user->rating) ?></b>
                                     </div>
-                                    <div class="feedback-card__content">
-                                        <p>
-                                            <?= Html::encode($response->message) ?>
-                                        </p>
-                                        <span><?= Html::encode($response->amount) ?> ₽</span>
-                                    </div>
+                                    <span class="new-task__time">25 минут назад</span>
                                 </div>
-                            <?php endif ?>
+                                <div class="feedback-card__content">
+                                    <p>
+                                        <?= Html::encode($response->message) ?>
+                                    </p>
+                                    <span><?= Html::encode($response->amount) ?> ₽</span>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -200,7 +198,7 @@ $form_complete_model = new CompleteTaskForm();
                     <span><?= Html::encode(count($task->user->tasks)) ?> заданий</span>
                     <span class="last-">на сайте c <?= Html::encode(date('Y', strtotime($task->user->created_at))) ?> года</span>
                 </p>
-                <a href="<?= Url::to(['/users/view', 'id' => $task->user->id]) ?>" class="link-regular">Смотреть
+                <a href="<?= Url::to(['users/view', 'id' => $task->user->id]) ?>" class="link-regular">Смотреть
                     профиль</a>
             </div>
         </div>
@@ -236,7 +234,7 @@ $form_complete_model = new CompleteTaskForm();
 <section class="modal response-form form-modal" id="response-form">
     <h2>Отклик на задание</h2>
     <?php $form_response = ActiveForm::begin(
-        ['action' => \yii\helpers\Url::toRoute(['/response/new/', 'id' => $task->id])]
+        ['action' => \yii\helpers\Url::toRoute(['/response/new/', 'task_id' => $task->id])]
     ) ?>
     <p>
         <?= $form_response->field($form_response_model, 'amount')->textInput(

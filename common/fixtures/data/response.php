@@ -3,7 +3,7 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$count = 5;
+$count = 2;
 
 function getResponse($faker) {
     $faker = Factory::create();

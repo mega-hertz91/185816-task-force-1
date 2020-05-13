@@ -13,7 +13,7 @@ trait ResponseModelTrait
         $result = Response::findOne($options);
 
         if ($result === null) {
-            throw new NotFoundHttpException('Задание не найдено');
+            throw new NotFoundHttpException('Отзыв не найден');
         }
 
         return $result;

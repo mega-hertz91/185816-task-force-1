@@ -14,8 +14,11 @@ use frontend\src\status\FailedAction;
 use frontend\src\status\RefuseAction;
 use frontend\src\status\WorkAction;
 use Yii;
+use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 
 class TaskController extends BaseController
@@ -31,10 +34,10 @@ class TaskController extends BaseController
     protected $currentUser;
 
     /**
-     * @param \yii\base\Action $action
+     * @param Action $action
      * @return bool
-     * @throws \yii\web\BadRequestHttpException
-     * @throws \yii\web\NotFoundHttpException
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
      */
 
     public function beforeAction($action)
@@ -58,13 +61,13 @@ class TaskController extends BaseController
                 $task = Task::createTask($model, $this->currentUser);
             } catch (InvalidConfigException $e) {
                 Yii::$app->session->setFlash('error', 'Не верный формат даты');
-                return $this->redirect(Url::to(['/tasks/index']));
+                return $this->redirect(Url::to(['tasks/index']));
             }
 
             $task->save();
 
             Yii::$app->session->setFlash('success', 'Ваше задание успешно опубликовано');
-            $this->redirect(Url::to(['tasks/index']));
+            $this->redirect(Url::to(['tasks/']));
         }
         return $this->render('create', ['model' => $model]);
     }
@@ -73,19 +76,14 @@ class TaskController extends BaseController
     {
         $task = Task::findOne(['id' => $id]);
 
-        if ($task === null) {
-            Yii::$app->session->setFlash('error', 'Такого задание не существует');
-            $this->redirect(Url::to(['/tasks/']));
-        }
-
         try {
             $cancelAction = new CancelAction($this->task, $this->currentUser);
             $cancelAction->apply();
             Yii::$app->session->setFlash('success', 'Задание успешно отменено');
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         } catch (StatusException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         }
     }
 
@@ -106,10 +104,10 @@ class TaskController extends BaseController
                     $completeAction->apply();
 
                     Yii::$app->session->setFlash('success', 'Задание успешно выполненно');
-                    $this->redirect(Url::to(['/tasks/']));
+                    $this->redirect(Url::to(['tasks/']));
                 } catch (\Exception $e) {
                     Yii::$app->session->setFlash('error', $e->getMessage());
-                    $this->redirect(Url::to(['/tasks/']));
+                    $this->redirect(Url::to(['tasks/']));
                 }
             } else {
                 $completeAction = new FailedAction($this->task, $this->currentUser);
@@ -120,14 +118,14 @@ class TaskController extends BaseController
                     $completeAction->apply();
 
                     Yii::$app->session->setFlash('success', 'Задание переведено в статус провалено');
-                    $this->redirect(Url::to(['/tasks/']));
+                    $this->redirect(Url::to(['tasks/']));
                 } catch (\Exception $e) {
                     Yii::$app->session->setFlash('error', $e->getMessage());
-                    $this->redirect(Url::to(['/tasks/']));
+                    $this->redirect(Url::to(['tasks/']));
                 }
             }
         } else {
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         }
     }
 
@@ -140,16 +138,16 @@ class TaskController extends BaseController
             $this->currentUser->setRating(Comment::getRating($this->currentUser->id));
         } catch (\Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         }
 
         try {
             $refuseAction->apply();
             Yii::$app->session->setFlash('success', 'Вы отказались от задания, это повлияет на общий рейтинг');
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         } catch (StatusException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         }
     }
 
@@ -162,10 +160,10 @@ class TaskController extends BaseController
             $workAction->apply();
             Yii::$app->session->setFlash('success',
                 'На задание "' . $this->task->title . '" назначен исполнитель: ' . $executor->full_name);
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         } catch (StatusException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['/tasks/']));
+            $this->redirect(Url::to(['tasks/']));
         }
     }
 }

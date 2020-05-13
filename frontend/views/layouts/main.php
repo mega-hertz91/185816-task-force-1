@@ -62,13 +62,13 @@ $this->title = 'Задания';
             <div class="header__nav">
                 <ul class="header-nav__list site-list">
                     <li class="site-list__item">
-                        <a href="<?=Url::to(['/tasks/'])?>">Задания</a>
+                        <a href="<?=Url::to(['tasks/'])?>">Задания</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="<?=Url::to(['/users/'])?>">Исполнители</a>
+                        <a href="<?=Url::to(['users/'])?>">Исполнители</a>
                     </li>
                     <li class="site-list__item">
-                        <a href="<?=Url::to(['/task/create/'])?>">Создать задание</a>
+                        <a href="<?=Url::to(['task/create/'])?>">Создать задание</a>
                     </li>
                     <li class="site-list__item">
                         <a>Мой профиль</a>
@@ -119,7 +119,7 @@ $this->title = 'Задания';
                         <a href="#">Настройки</a>
                     </li>
                     <li>
-                        <a href="<?=\yii\helpers\Url::to('/singout')?>">Выход</a>
+                        <a href="<?=\yii\helpers\Url::to(['singout/'])?>">Выход</a>
                     </li>
                 </ul>
             </div>
