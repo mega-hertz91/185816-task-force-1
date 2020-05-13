@@ -54,13 +54,13 @@ class ResponseController extends BaseController
             try {
                 Response::createResponse($task, $this->currentUser, $form);
                 Yii::$app->session->setFlash('success', 'Вы откликнулись на задание  "' . $task->title . '"');
-                $this->redirect(Url::to(['/tasks/view', 'id' => $task->id]));
+                $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
-                $this->redirect(Url::to(['/tasks/view', 'id' => $task->id]));
+                $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
             }
         } else {
-            $this->redirect(Url::to(['/tasks/view', 'id' => $task->id]));
+            $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
         }
     }
 
@@ -69,11 +69,11 @@ class ResponseController extends BaseController
         try {
             Response::blockedResponse($this->response ,$this->currentUser);
             Yii::$app->session->setFlash('success', 'Вы отказали  ' . $this->response->user->full_name . '  в выполнении задания');
-            $this->redirect(Url::to(['/tasks/view', 'id' => $this->response->task->id]));
+            $this->redirect(Url::to(['tasks/view', 'id' => $this->response->task->id]));
 
         } catch (\Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['/tasks/view', 'id' => $this->response->task->id]));
+            $this->redirect(Url::to(['tasks/view', 'id' => $this->response->task->id]));
         }
     }
 }
