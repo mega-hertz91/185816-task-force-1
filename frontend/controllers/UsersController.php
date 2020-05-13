@@ -21,7 +21,7 @@ class UsersController extends BaseController
         $form = new UsersForm();
         $request = Yii::$app->request->post();
 
-        if($form->load($request)) {
+        if ($form->load($request)) {
             $form->attributes = $request['UsersForm'];
         }
 
@@ -41,7 +41,7 @@ class UsersController extends BaseController
             $comments = null;
         }
 
-        if($user === null) {
+        if ($user === null) {
             throw new NotFoundHttpException('Такого пользователя не существует');
         }
 

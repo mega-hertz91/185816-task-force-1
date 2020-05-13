@@ -18,6 +18,7 @@ class CreateTaskForm extends Model
     public $deadline;
     public $file;
     public $location;
+    protected $dir = 'upload/';
 
     public function attributeLabels()
     {
@@ -62,11 +63,15 @@ class CreateTaskForm extends Model
 
     public function upload()
     {
+        if (!file_exists($this->dir)) {
+            mkdir($this->dir, 0775);
+        }
+
         if (UploadedFile::getInstance($this, 'file')) {
             $this->file = UploadedFile::getInstance($this, 'file');
-            $this->file->saveAs('upload/' . $this->file->baseName . '.' . $this->file->extension);
+            $this->file->saveAs($this->dir . $this->file->baseName . '.' . $this->file->extension);
 
-            return 'upload/' . $this->file->baseName . '.' . $this->file->extension;
+            return $this->dir . $this->file->baseName . '.' . $this->file->extension;
         } else {
             return '';
         }
