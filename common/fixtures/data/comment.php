@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Factory;
+
 $faker = Factory::create();
 
 $count = 10;
@@ -8,10 +9,10 @@ $count = 10;
 function getComment($faker) {
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
     return [
-        'user_id' => rand(1, 60),
-        'task_id' => rand(1, 10),
+        'user_id' => rand(1, 2),
+        'task_id' => rand(1, 5),
         'description' => $faker->paragraph(2, true),
-        'executor_id' => rand(1, 60),
+        'executor_id' => 2,
         'rating' => rand(1, 5),
         'created_at' => $date->format('Y-m-d H:i:s')
     ];

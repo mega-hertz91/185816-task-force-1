@@ -64,7 +64,7 @@ class CreateTaskForm extends Model
     {
         if (UploadedFile::getInstance($this, 'file')) {
             $this->file = UploadedFile::getInstance($this, 'file');
-            $this->file->saveAs('uploads/' . $this->file->baseName . '.' . $this->file->extension);
+            $this->file->saveAs('upload/' . $this->file->baseName . '.' . $this->file->extension);
 
             return 'upload/' . $this->file->baseName . '.' . $this->file->extension;
         } else {

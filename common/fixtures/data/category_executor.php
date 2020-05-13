@@ -1,10 +1,10 @@
 <?php
 
-$count = 40;
+$count = 2;
 
 function getCateExecutor() {
     return [
-        'user_id' => rand(1, 60),
+        'user_id' => rand(1, 2),
         'category_id' =>  rand(1, 8)
     ];
 }

@@ -164,6 +164,6 @@ class Response extends ActiveRecord
      */
     public static function getCountActiveByTaskId($id)
     {
-        return count(self::find()->where(['task_id' => $id, 'status' => 'active']));
+        return count(self::find()->where(['task_id' => $id, 'status' => 'active'])->all());
     }
 }
