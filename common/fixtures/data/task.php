@@ -3,7 +3,7 @@
 use Faker\Factory;
 $faker = Factory::create();
 
-$count = 100;
+$count = 5;
 
 function getTask($faker) {
     $faker = Factory::create();
@@ -13,11 +13,11 @@ function getTask($faker) {
         'title' => $faker->sentence(6, true),
         'description' => $faker->paragraph(3, true),
         'city_id' => rand(1, 100),
-        'user_id' => rand(1, 60),
-        'executor_id' => rand(1, 60),
+        'user_id' => 2,
+        'executor_id' => '',
         'budget' => rand(1000, 150000),
         'deadline' => $date->format('Y-m-d'),
-        'status_id' => rand(1, 5),
+        'status_id' => 5,
         'created_at' => $date->format('Y-m-d H:i:s')
     ];
 }

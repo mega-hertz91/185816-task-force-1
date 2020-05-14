@@ -2,7 +2,9 @@
 
 namespace frontend\models;
 
-use Yii;
+
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "role".
@@ -15,7 +17,7 @@ use Yii;
  *
  * @property User[] $users
  */
-class Role extends \yii\db\ActiveRecord
+class Role extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -53,10 +55,10 @@ class Role extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['role_id' => 'id']);
+        return $this->hasMany(User::class, ['role_id' => 'id']);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/params.php'
@@ -12,6 +13,10 @@ return [
     'modules' => [
         'gii' => [
             'class' => 'yii\gii\Module',
+            'allowedIPs' => ['192.168.10.10', '::1', '192.168.10.*', '192.168.10.10']
+        ],
+        'debug' => [
+            'class' => 'yii\debug\Module',
             'allowedIPs' => ['192.168.10.10', '::1', '192.168.10.*', '192.168.10.10']
         ],
     ],
@@ -47,7 +52,13 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'tasks/view/<id:\d+>' => 'tasks/view',
-                'users/view/<id:\d+>' => 'users/view'
+                'task/cancel/<id:\d+>' => 'task/cancel',
+                'task/work/<id:\d+>/<executor:\d+>' => 'task/work',
+                'task/refuse/<id:\d+>' => 'task/refuse',
+                'task/complete/<id:\d+>' => 'task/complete',
+                'users/view/<id:\d+>' => 'users/view',
+                'response/new/<task_id:\d+>' => 'response/new',
+                'response/cancel/<id:\d+>' => 'response/cancel',
             ],
         ]
     ],

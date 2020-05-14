@@ -19,6 +19,7 @@ class m200130_135601_create_response_table extends Migration
             'amount' => $this->integer()->notNull(),
             'message' => $this->text(),
             'task_id' => $this->integer()->notNull(),
+            'status' => $this->char(255)->notNull()->defaultValue('active'),
             'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
             'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
         ]);

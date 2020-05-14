@@ -4,27 +4,30 @@
 namespace frontend\providers;
 
 
-use frontend\models\User;
+use frontend\models\CategoryExecutor;
 use yii\data\ActiveDataProvider;
 
 class UsersProvider extends Provider
 {
     const SIZE_ELEMENT = 10;
 
+    /***
+     * @param array $attributes frontend\Forms\UserForm
+     * @return ActiveDataProvider
+     */
+
     public static function getContent(array $attributes): ActiveDataProvider
     {
-        $query = User::find();
+        $query = CategoryExecutor::find()->joinWith('user');
 
-        // Временно убрал, потому что нет у юзеров пока категории
-
-        /*if (!empty($attributes['categories'])) {
+        if (!empty($attributes['categories'])) {
             $query->where([
                 'category_id' => $attributes['categories'],
             ]);
-        }*/
+        }
 
         if (!empty($attributes['search'])) {
-            $query->andWhere([
+            $query->where([
                 'like', 'full_name', $attributes['search']
             ]);
         }

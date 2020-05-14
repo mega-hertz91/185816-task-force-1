@@ -1,5 +1,9 @@
 <?php
 
+/***
+ * @var object $content frontend\View\site\create.php
+ */
+
 use yii\helpers\Url;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
@@ -19,8 +23,6 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="landing">
 <div class="table-layout">
@@ -60,7 +62,7 @@ AppAsset::register($this);
                 <a class="header__account-enter open-modal" data-for="enter-form">
                     <span>Вход</span></a>
                 или
-                <a href="<?=Url::to('/singup')?>" class="header__account-registration">
+                <a href="<?=Url::to('singup')?>" class="header__account-registration">
                     Регистрация
                 </a>
             </div>
@@ -130,10 +132,9 @@ AppAsset::register($this);
         <?php ActiveForm::end()?>
         <button class="form-modal-close" type="button">Закрыть</button>
     </section>
-    <?php $this->endBody() ?>
 </div>
 <div class="overlay"></div>
-<script src="/js/main.js"></script>
+<?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

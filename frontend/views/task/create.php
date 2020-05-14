@@ -70,7 +70,7 @@ $this->title = 'Публикация нового задания';
             </div>
             <?= $form->field(
                 $model,
-                'city_id',
+                'location',
                 [
                     'inputOptions' => [
                         'class' => 'input-navigation input-middle input',
@@ -127,10 +127,10 @@ $this->title = 'Публикация нового задания';
                         что всё в фокусе, а фото показывает объект со всех
                         ракурсов.</p>
                 </div>
-                <?php if ($errors) : ?>
+                <?php if ($model->getErrors()) : ?>
                     <div class="warning-item warning-item--error">
                         <h2>Ошибки заполнения формы</h2>
-                        <?php foreach ($errors as $error => $value): ?>
+                        <?php foreach ($model->getErrors() as $error => $value): ?>
                             <h3><?= $model->attributeLabels()[$error] ?></h3>
                             <?php foreach ($value as $key): ?>
                                 <p><?= $key ?></p>

@@ -2,8 +2,11 @@
 
 namespace frontend\models;
 
-use frontend\behaviors\SaveTaskBehavior;
+use common\models\TaskModelTrait;
+use frontend\forms\CreateTaskForm;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "task".
@@ -32,10 +35,16 @@ use Yii;
  * @property Status $status
  * @property User $user
  */
-class Task extends \yii\db\ActiveRecord
+class Task extends ActiveRecord
 {
 
-    const DEFAULT_STATUS = 5;
+    use TaskModelTrait;
+
+    public const STATUS_DEFAULT = 5;
+    public const STATUS_WORK = 1;
+    public const STATUS_FAILED = 3;
+    public const STATUS_COMPLETE = 2;
+    public const STATUS_CANCELED = 4;
 
     /**
      * {@inheritdoc}
@@ -52,22 +61,22 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['category_id', 'city_id', 'user_id', 'status_id'], 'required'],
-            [['category_id', 'city_id', 'user_id', 'executor_id', 'budget', 'status_id'], 'integer'],
+            [['category_id', 'user_id', 'executor_id', 'budget', 'status_id'], 'integer'],
             [['description'], 'string'],
             [['deadline', 'created_at', 'updated_at'], 'safe'],
             [['title', 'file'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['executor_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['executor_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -87,79 +96,216 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['task_id' => 'id']);
+        return $this->hasMany(Comment::class, ['task_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMessages()
     {
-        return $this->hasMany(Message::className(), ['recipient' => 'id']);
+        return $this->hasMany(Message::class, ['recipient' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMessages0()
     {
-        return $this->hasMany(Message::className(), ['task_id' => 'id']);
+        return $this->hasMany(Message::class, ['task_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getResponses()
     {
-        return $this->hasMany(Response::className(), ['task_id' => 'id']);
+        return $this->hasMany(Response::class, ['task_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCity()
     {
-        return $this->hasOne(City::className(), ['id' => 'city_id']);
+        return $this->hasOne(City::class, ['id' => 'city_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getExecutor()
     {
-        return $this->hasOne(User::className(), ['id' => 'executor_id']);
+        return $this->hasOne(User::class, ['id' => 'executor_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getStatus()
     {
-        return $this->hasOne(Status::className(), ['id' => 'status_id']);
+        return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     public function init()
     {
-        $this->status_id = self::DEFAULT_STATUS;
+        $this->status_id = self::STATUS_DEFAULT;
+    }
+
+    /**
+     * @return int
+     */
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    public function getExecutorId()
+    {
+        return $this->executor_id;
+    }
+
+    /**
+     * @return int
+     */
+
+    public function getStatusId(): int
+    {
+        return $this->status_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultStatus(): bool
+    {
+        return $this->status_id === self::STATUS_DEFAULT;
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function isWorkStatus(): bool
+    {
+        return $this->status_id === self::STATUS_WORK;
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function isNewStatus(): bool
+    {
+        return $this->status_id === self::STATUS_DEFAULT;
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function isFailedStatus(): bool
+    {
+        return $this->status_id === self::STATUS_FAILED;
+    }
+
+    /***
+     * @param User $executor
+     * @return bool
+     */
+
+    public function changeStatusWork(User $executor): bool
+    {
+        $this->status_id = Task::STATUS_WORK;
+        $this->executor_id = $executor->id;
+
+        return $this->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function changeStatusFailed(): bool
+    {
+        $this->status_id = Task::STATUS_FAILED;
+        return $this->save();
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function changeStatusCanceled(): bool
+    {
+        $this->status_id = Task::STATUS_CANCELED;
+
+        return $this->save();
+    }
+
+    /***
+     * @return bool
+     */
+
+    public function changeStatusCompleted(): bool
+    {
+        $this->status_id = Task::STATUS_COMPLETE;
+
+        return $this->save();
+    }
+
+    /****
+     * @param User $user
+     * @return bool
+     */
+
+    public function isUserOwner(User $user): bool
+    {
+        return $this->user_id === $user->id;
+    }
+
+    public function isUserExecutor(User $user): bool
+    {
+        return $this->executor_id === $user->id;
+    }
+
+    /**
+     * @param CreateTaskForm $form
+     * @param User $user
+     * @return Task
+     * @throws \yii\base\InvalidConfigException
+     */
+
+    static function createTask(CreateTaskForm $form, User $user)
+    {
+        $task = new self();
+
+        $task->attributes = $form->attributes;
+        $task->user_id = $user->id;
+        $task->city_id = $user->city->id;
+        $task->deadline = Yii::$app->formatter->asDate($task->deadline, 'php:Y-m-d');
+        $task->file = $form->upload();
+
+        return $task;
     }
 }

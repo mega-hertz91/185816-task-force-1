@@ -11,7 +11,7 @@ $this->title = 'Вход';
 <div class="main-container page-container">
     <section class="registration__user">
         <?php if(Yii::$app->session->getFlash('reg')) {
-            echo '<p style="padding: 12px 15px; margin: auto;" class="alert-success">' . Yii::$app->session->getFlash('reg') . ' </p>';
+            echo '<div class="alert alert-success" role="alert">' . Yii::$app->session->getFlash('reg') . '</div>';
         } ?>
         <h1>Вход</h1>
         <div class="registration-wrapper">

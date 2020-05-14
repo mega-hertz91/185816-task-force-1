@@ -38,9 +38,9 @@ class Message extends \yii\db\ActiveRecord
             [['sender', 'recipient', 'task_id'], 'integer'],
             [['message'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['sender'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['sender' => 'id']],
-            [['recipient'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['recipient' => 'id']],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['sender'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['sender' => 'id']],
+            [['recipient'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['recipient' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['task_id' => 'id']],
         ];
     }
 
@@ -65,7 +65,7 @@ class Message extends \yii\db\ActiveRecord
      */
     public function getSender0()
     {
-        return $this->hasOne(User::className(), ['id' => 'sender']);
+        return $this->hasOne(User::class, ['id' => 'sender']);
     }
 
     /**
@@ -73,7 +73,7 @@ class Message extends \yii\db\ActiveRecord
      */
     public function getRecipient0()
     {
-        return $this->hasOne(User::className(), ['id' => 'recipient']);
+        return $this->hasOne(User::class, ['id' => 'recipient']);
     }
 
     /**
@@ -81,6 +81,6 @@ class Message extends \yii\db\ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Task::className(), ['id' => 'task_id']);
+        return $this->hasOne(Task::class, ['id' => 'task_id']);
     }
 }

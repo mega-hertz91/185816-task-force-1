@@ -2,7 +2,8 @@
 
 namespace frontend\models;
 
-use Yii;
+
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "status".
@@ -12,7 +13,7 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  */
-class Status extends \yii\db\ActiveRecord
+class Status extends ActiveRecord
 {
     /**
      * {@inheritdoc}
