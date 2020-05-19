@@ -62,9 +62,7 @@ $form_complete_model = new CompleteTaskForm();
                                              alt="Москва, Новый арбат, 23 к. 1"></a>
                         </div>
                         <div class="content-view__address">
-                            <span class="address__town">Москва</span><br>
-                            <span>Новый арбат, 23 к. 1</span>
-                            <p>Вход под арку, код домофона 1122</p>
+                            <span><?=$task->address?></span>
                         </div>
                     </div>
                 </div>

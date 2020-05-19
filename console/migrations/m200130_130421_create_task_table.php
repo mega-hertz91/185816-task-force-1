@@ -19,6 +19,7 @@ class m200130_130421_create_task_table extends Migration
             'title' => $this->char('255'),
             'description' => $this->text(),
             'city_id' => $this->integer()->notNull(),
+            'address' => $this->char(255),
             'location' => $this->string(),
             'user_id' => $this->integer()->notNull(),
             'executor_id' => $this->integer(),

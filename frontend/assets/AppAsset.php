@@ -15,9 +15,12 @@ class AppAsset extends AssetBundle
         'css/normalize.css',
         'css/site.css',
         'css/style.css',
+        //'https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css'
     ];
     public $js = [
-        'js/main.js'
+        'js/main.js',
+        'https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js',
+        '/js/autoComplete.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

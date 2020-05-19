@@ -7,6 +7,7 @@ use frontend\forms\CreateTaskForm;
 use frontend\models\Comment;
 use frontend\models\Task;
 use frontend\models\User;
+use frontend\services\LocationService;
 use frontend\src\exceptions\StatusException;
 use frontend\src\status\CancelAction;
 use frontend\src\status\CompleteAction;
@@ -55,16 +56,18 @@ class TaskController extends BaseController
     {
         $model = new CreateTaskForm();
         $request = Yii::$app->request->post();
+        $location = new LocationService();
 
         if ($model->load($request) && $model->validate()) {
             try {
-                $task = Task::createTask($model, $this->currentUser);
+                Task::createTask($model, $this->currentUser, $location);
             } catch (InvalidConfigException $e) {
                 Yii::$app->session->setFlash('error', 'Не верный формат даты');
                 return $this->redirect(Url::to(['tasks/index']));
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', $e->getMessage());
+                return $this->redirect(Url::to(['tasks/index']));
             }
-
-            $task->save();
 
             Yii::$app->session->setFlash('success', 'Ваше задание успешно опубликовано');
             $this->redirect(Url::to(['tasks/']));

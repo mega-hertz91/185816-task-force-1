@@ -2481,4 +2481,18 @@ footer {
 .completion-form-star .star-disabled:hover {
   background-image: url("../img/Star.png"); }
 
+#autoComplete {
+  margin-bottom: 0;
+}
+#autoComplete_list {
+  list-style: none;
+  padding-left: 0;
+}
+
+#autoComplete_list li {
+  background-color: #e4e9f2;
+  border: 1px solid #e4e9f2;
+  padding: 14px 16px;
+}
+
 /*# sourceMappingURL=style.css.map */
