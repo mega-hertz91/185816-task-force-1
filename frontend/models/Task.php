@@ -288,9 +288,19 @@ class Task extends ActiveRecord
         return $this->user_id === $user->id;
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
+
     public function isUserExecutor(User $user): bool
     {
         return $this->executor_id === $user->id;
+    }
+
+    public function getLocation()
+    {
+        return array_reverse(explode(' ', str_replace('"', '', $this->location)));
     }
 
     /**

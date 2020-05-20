@@ -150,6 +150,10 @@ class Response extends ActiveRecord
             throw new \Exception('Только испольнитель может оставлять отклик');
         }
 
+        if ($task->isUserOwner($currentUser)) {
+            throw new \Exception('Вы не можете быть исполнителем своего задания');
+        }
+
         if(self::findOne(['user_id' => $currentUser->id, 'task_id' => $task->id]) !== null) {
             throw new \Exception('Вы уже отликались на текущее задание');
         }
