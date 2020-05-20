@@ -56,7 +56,8 @@ class CreateTaskForm extends Model
                 'file',
                 'file',
                 'message' => 'Изображение должно иметь формат jpg, png, jpeg',
-                'extensions' => ['png', 'jpg', 'jpeg']
+                'extensions' => ['png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pdf'],
+                'maxSize' => 1024 * 1024
             ],
         ];
     }

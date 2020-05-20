@@ -16,6 +16,7 @@ function getTask($faker) {
         'user_id' => 2,
         'executor_id' => '',
         'address' => $faker->address,
+        'location' => "30.31735 59.968322",
         'budget' => rand(1000, 150000),
         'deadline' => $date->format('Y-m-d'),
         'status_id' => 5,

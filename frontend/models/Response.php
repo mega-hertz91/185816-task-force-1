@@ -5,7 +5,6 @@ namespace frontend\models;
 use common\models\ResponseModelTrait;
 use Exception;
 use frontend\forms\NewResponseForm;
-use phpDocumentor\Reflection\Types\Self_;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 

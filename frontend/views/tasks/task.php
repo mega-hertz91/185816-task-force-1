@@ -35,7 +35,7 @@ $form_complete_model = new CompleteTaskForm();
                         <h1><?= Html::encode($task->title) ?></h1>
                         <span>Размещено в категории
                             <a href="#" class="link-regular"><?= Html::encode($task->category->category_name) ?></a>
-                            25 минут назад
+                            <?php echo \frontend\helpers\Date::getTimeHasPassed($task->created_at) ?>
                         </span>
                     </div>
                     <b class="new-task__price new-task__price--clean content-view-price"><?= Html::encode(
@@ -49,18 +49,20 @@ $form_complete_model = new CompleteTaskForm();
                         <?= Html::encode($task->description) ?>
                     </p>
                 </div>
-                <div class="content-view__attach">
-                    <h3 class="content-view__h3">Вложения</h3>
-                    <a href="#">my_picture.jpeg</a>
-                    <a href="#">agreement.docx</a>
-                </div>
+                <?php if (isset($task->file)) : ?>
+                    <div class="content-view__attach">
+                        <h3 class="content-view__h3">Вложения</h3>
+                        <a href="<?= Url::to(['/' . $task->file]) ?>"><?= $task->file ?></a>
+                    </div>
+                <?php endif; ?>
                 <div class="content-view__location">
                     <h3 class="content-view__h3">Расположение</h3>
                     <div class="content-view__location-wrapper">
-                        <div class="content-view__map" id="map" style="width: 361px; height: 292px;" data-one="<?=$task->getLocation()[0]?>" data-two="<?=$task->getLocation()[1]?>">
+                        <div class="content-view__map" id="map" style="width: 361px; height: 292px;"
+                             data-one="<?= $task->getLocation()[0] ?>" data-two="<?= $task->getLocation()[1] ?>">
                         </div>
                         <div class="content-view__address" id="address">
-                            <span><?=$task->address?></span>
+                            <span><?= $task->address ?></span>
                         </div>
                     </div>
                 </div>
@@ -124,17 +126,17 @@ $form_complete_model = new CompleteTaskForm();
                                     </p>
                                     <span><?= Html::encode($response->amount) ?> ₽</span>
                                 </div>
-                               <?php if($response->isActive()) :?>
-                                   <div class="feedback-card__actions">
-                                       <a href="<?= Url::to(
-                                           ['task/work', 'id' => $task->id, 'executor' => $response->user->id]
-                                       ) ?>"
-                                          class="button__small-color request-button button"
-                                          type="button">Подтвердить</a>
-                                       <a href="<?= Url::to(['response/cancel', 'id' => $response->id]) ?>"
-                                          class="button__small-color refusal-button button"
-                                          type="button">Отказать</a>
-                                   </div>
+                                <?php if ($response->isActive()) : ?>
+                                    <div class="feedback-card__actions">
+                                        <a href="<?= Url::to(
+                                            ['task/work', 'id' => $task->id, 'executor' => $response->user->id]
+                                        ) ?>"
+                                           class="button__small-color request-button button"
+                                           type="button">Подтвердить</a>
+                                        <a href="<?= Url::to(['response/cancel', 'id' => $response->id]) ?>"
+                                           class="button__small-color refusal-button button"
+                                           type="button">Отказать</a>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
