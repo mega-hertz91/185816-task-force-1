@@ -4,7 +4,9 @@ namespace frontend\models;
 
 use common\models\TaskModelTrait;
 use frontend\forms\CreateTaskForm;
+use frontend\services\LocationService;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -19,6 +21,8 @@ use yii\db\ActiveRecord;
  * @property int $user_id
  * @property int|null $executor_id
  * @property int|null $budget
+ * @property string $location
+ * @property string $address
  * @property string $deadline
  * @property int $status_id
  * @property string|null $file
@@ -60,9 +64,9 @@ class Task extends ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'city_id', 'user_id', 'status_id'], 'required'],
+            [['category_id', 'city_id', 'user_id', 'status_id', 'location', 'address'], 'required'],
             [['category_id', 'user_id', 'executor_id', 'budget', 'status_id'], 'integer'],
-            [['description'], 'string'],
+            [['description', 'location'], 'string'],
             [['deadline', 'created_at', 'updated_at'], 'safe'],
             [['title', 'file'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
@@ -284,28 +288,43 @@ class Task extends ActiveRecord
         return $this->user_id === $user->id;
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
+
     public function isUserExecutor(User $user): bool
     {
         return $this->executor_id === $user->id;
     }
 
+    public function getLocation()
+    {
+        return array_reverse(explode(' ', str_replace('"', '', $this->location)));
+    }
+
     /**
      * @param CreateTaskForm $form
      * @param User $user
-     * @return Task
-     * @throws \yii\base\InvalidConfigException
+     * @param LocationService $location
+     * @throws InvalidConfigException
+     * @throws \Exception
      */
 
-    static function createTask(CreateTaskForm $form, User $user)
+    static function createTask(CreateTaskForm $form, User $user, LocationService $location)
     {
         $task = new self();
+        $coords = $location->getCoords($form->address);
 
         $task->attributes = $form->attributes;
         $task->user_id = $user->id;
         $task->city_id = $user->city->id;
         $task->deadline = Yii::$app->formatter->asDate($task->deadline, 'php:Y-m-d');
         $task->file = $form->upload();
+        $task->location = $coords;
 
-        return $task;
+        if (!$task->save()) {
+            throw new \Exception('Задание не сохранено');
+        }
     }
 }

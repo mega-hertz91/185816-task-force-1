@@ -39,4 +39,38 @@ class Date
     {
         return self::getDate($date)->format(self::FORMAT_BD);
     }
+
+    /**
+     * @param $timeDiff
+     * @return string
+     * @throws \Exception
+     */
+
+    public  static function getTimeHasPassed($timeDiff)
+    {
+        $currentDate = new \DateTime();
+        $timeDiff = new \DateTime($timeDiff);
+        $diff = $currentDate->diff($timeDiff);
+        $result = '';
+
+        if (!isset($timeDiff)) {
+            throw new \Exception('Поле дата пустое');
+        }
+
+        if (isset($diff->d) && $diff->d > 4 && $diff->d !== 0) {
+            $result = 'Несколько дней назад';
+        } else {
+            $result = $diff->d . 'дня назад';
+        }
+
+        if ($diff->d === 0 && $diff->h !== 0) {
+            $result = $diff->h . ' часов назад';
+        }
+
+        if ($diff->h === 0 && $diff->i !== 0) {
+            $result = $diff->i . ' минут назад';
+        }
+
+        return $result ;
+    }
 }

@@ -17,7 +17,7 @@ class CreateTaskForm extends Model
     public $budget;
     public $deadline;
     public $file;
-    public $location;
+    public $address;
     protected $dir = 'upload/';
 
     public function attributeLabels()
@@ -27,7 +27,7 @@ class CreateTaskForm extends Model
             'description' => 'Подробности задания',
             'category_id' => 'Категория',
             'city_id' => 'Город',
-            'location' => 'Локация',
+            'address' => 'Локация',
             'budget' => 'Бюджет',
             'deadline' => 'Срок исполнения',
             'file' => 'Изображение'
@@ -37,7 +37,7 @@ class CreateTaskForm extends Model
     public function rules()
     {
         return [
-            [['title', 'description', 'category_id', 'deadline'], 'required', 'message' => 'Поле не может быть пустым'],
+            [['title', 'description', 'category_id', 'deadline', 'address'], 'required', 'message' => 'Поле не может быть пустым'],
             ['budget', 'integer', 'min' => 1, 'message' => 'Поле должно быть числом, не меньше нуля'],
             [
                 'category_id',
@@ -56,7 +56,8 @@ class CreateTaskForm extends Model
                 'file',
                 'file',
                 'message' => 'Изображение должно иметь формат jpg, png, jpeg',
-                'extensions' => ['png', 'jpg', 'jpeg']
+                'extensions' => ['png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pdf'],
+                'maxSize' => 1024 * 1024
             ],
         ];
     }

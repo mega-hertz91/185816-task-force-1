@@ -70,13 +70,13 @@ $this->title = 'Публикация нового задания';
             </div>
             <?= $form->field(
                 $model,
-                'location',
+                'address',
                 [
                     'inputOptions' => [
                         'class' => 'input-navigation input-middle input',
                         'placeholder' => 'Санкт-Петербург, Калининский район',
                         'style' => 'display: block; width: 100%',
-                        'type' => 'search'
+                        'id' => 'autoComplete'
                     ]
                 ]
             ) ?>

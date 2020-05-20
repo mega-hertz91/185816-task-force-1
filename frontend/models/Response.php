@@ -5,7 +5,6 @@ namespace frontend\models;
 use common\models\ResponseModelTrait;
 use Exception;
 use frontend\forms\NewResponseForm;
-use phpDocumentor\Reflection\Types\Self_;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -148,6 +147,10 @@ class Response extends ActiveRecord
 
         if ($currentUser->isCustomer()) {
             throw new \Exception('Только испольнитель может оставлять отклик');
+        }
+
+        if ($task->isUserOwner($currentUser)) {
+            throw new \Exception('Вы не можете быть исполнителем своего задания');
         }
 
         if(self::findOne(['user_id' => $currentUser->id, 'task_id' => $task->id]) !== null) {
