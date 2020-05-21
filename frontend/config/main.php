@@ -19,6 +19,9 @@ return [
             'class' => 'yii\debug\Module',
             'allowedIPs' => ['192.168.10.10', '::1', '192.168.10.*', '192.168.10.10']
         ],
+        'api' => [
+            'class' => 'frontend\modules\api\Module',
+        ],
     ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
@@ -59,8 +62,12 @@ return [
                 'users/view/<id:\d+>' => 'users/view',
                 'response/new/<task_id:\d+>' => 'response/new',
                 'response/cancel/<id:\d+>' => 'response/cancel',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/messages'
+                ],
             ],
-        ]
+        ],
     ],
     'params' => $params,
 ];
