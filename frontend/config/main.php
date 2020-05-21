@@ -28,6 +28,9 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'cookieValidationKey' => 'asdasdas',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => \frontend\models\User::class,
@@ -66,6 +69,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/messages'
                 ],
+                'api/messages/task/<id:\d+>' => 'api/messages/task'
             ],
         ],
     ],
