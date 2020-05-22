@@ -13,9 +13,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/normalize.css',
-        'css/site.css',
         'css/style.css',
-        //'https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css'
     ];
     public $js = [
         '/js/vue.js',
