@@ -6,6 +6,7 @@
  */
 
 use frontend\models\Task;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
 
@@ -67,7 +68,7 @@ use yii\widgets\Menu;
                                   fill="black"/>
                         </svg>
                     </div><a href="{url}">{label}</a>'],
-                    ['label' => 'Отмененные', 'url' => ['cabinet/tasks/cancel'], 'options' => ['class' => 'menu-toggle__item menu-toggle__item--canceled'],'template' => '<div class="menu-toggle__svg-wrapper">
+                    ['label' => 'Отмененные', 'url' => ['cabinet/tasks/cancel'], 'options' => ['class' => 'menu-toggle__item menu-toggle__item--canceled'], 'template' => '<div class="menu-toggle__svg-wrapper">
                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
                                   d="M0 10C0 4.47715 4.47715 0 10 0C12.6522 0 15.1957 1.05357 17.0711 2.92893C18.9464 4.8043 20 7.34784 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10ZM13.0058 12C13.0058 11.7334 12.8993 11.4778 12.71 11.29L11.41 10L12.71 8.71C13.1021 8.31788 13.1021 7.68212 12.71 7.29C12.3179 6.89788 11.6821 6.89788 11.29 7.29L10 8.59L8.71 7.29C8.31788 6.89788 7.68212 6.89788 7.29 7.29C6.89788 7.68212 6.89788 8.31788 7.29 8.71L8.59 10L7.29 11.29C7.10069 11.4778 6.9942 11.7334 6.9942 12C6.9942 12.2666 7.10069 12.5222 7.29 12.71C7.47777 12.8993 7.73336 13.0058 8 13.0058C8.26664 13.0058 8.52223 12.8993 8.71 12.71L10 11.41L11.29 12.71C11.4778 12.8993 11.7334 13.0058 12 13.0058C12.2666 13.0058 12.5222 12.8993 12.71 12.71C12.8993 12.5222 13.0058 12.2666 13.0058 12Z"
@@ -92,19 +93,25 @@ use yii\widgets\Menu;
                 <div class="new-task__card">
                     <?php foreach ($tasks as $task): ?>
                         <div class="new-task__title">
-                            <a href="<?= Url::to(['tasks/view/', 'id' => $task->id]) ?>" class="link-regular"><h2><?= $task->title ?></h2></a>
-                            <a class="new-task__type link-regular" href="#"><p><?= $task->category->category_name ?></p>
-                            </a>
+                            <a href="<?= Url::to(['tasks/view/', 'id' => $task->id]) ?>" class="link-regular">
+                                <h2><?= $task->title ?></h2></a>
+                            <a class="new-task__type link-regular"
+                               href="<?= Url::to(['tasks/', 'category_id' => $task->category_id]) ?>">
+                                <p><?= Html::encode($task->category->category_name) ?></p></a>
                         </div>
                         <div
-                            class="task-status <?php if ($task->isNewStatus()): ?>new-status<?php endif ?>"><?= $task->status->name ?></div>
+                            class="task-status <?php if ($task->isNewStatus()): ?>new-status<?php elseif ($task->isWorkStatus()): ?>done-status<?php endif ?>">
+                            <?= $task->status->name ?>
+                        </div>
                         <p class="new-task_description">
                             <?= $task->description ?>
                         </p>
                         <div class="feedback-card__top ">
-                            <a href="<?=Url::to(['users/view/', 'id' => $task->user_id])?>"><img src="../../../../img/man-glasses.jpg" width="36" height="36"></a>
+                            <a href="<?= Url::to(['users/view/', 'id' => $task->user_id]) ?>"><img
+                                    src="../../../../img/man-glasses.jpg" width="36" height="36"></a>
                             <div class="feedback-card__top--name my-list__bottom">
-                                <p class="link-name"><a href="<?=Url::to(['users/view/', 'id' => $task->user_id])?>" class="link-regular"><?= $task->user->full_name ?></a>
+                                <p class="link-name"><a href="<?= Url::to(['users/view/', 'id' => $task->user_id]) ?>"
+                                                        class="link-regular"><?= $task->user->full_name ?></a>
                                 </p>
                                 <a href="#" class="my-list__bottom-chat  my-list__bottom-chat--new"><b></b></a>
                                 <?php for ($i = 0; $i < $task->user::MAX_RATING; $i++): ?>

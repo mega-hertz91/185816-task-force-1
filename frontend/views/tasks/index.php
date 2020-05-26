@@ -32,10 +32,12 @@ $this->title = 'Задания';
             <?php foreach ($tasks->getModels() as $task) : ?>
                 <div class="new-task__card">
                     <div class="new-task__title">
-                        <a href="<?=Url::to(['tasks/view', 'id' => $task->id])?>" class="link-regular">
+                        <a href="<?= Url::to(['tasks/view', 'id' => $task->id]) ?>" class="link-regular">
                             <h2><?= Html::encode($task->title) ?></h2>
                         </a>
-                        <a class="new-task__type link-regular" href="#"><p><?= Html::encode($task->category->category_name) ?></p></a>
+                        <a class="new-task__type link-regular"
+                           href="<?= Url::to(['tasks/', 'category_id' => $task->category_id]) ?>">
+                            <p><?= Html::encode($task->category->category_name) ?></p></a>
                     </div>
                     <div class="new-task__icon new-task__icon--translation"></div>
                     <p class="new-task_description">
@@ -43,7 +45,8 @@ $this->title = 'Задания';
                     </p>
                     <b class="new-task__price new-task__price--translation"><?= Html::encode($task->budget) ?><b> ₽</b></b>
                     <p class="new-task__place"><?= Html::encode($task->city->name) ?></p>
-                    <span class="new-task__time"><?= Html::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
+                    <span
+                        class="new-task__time"><?= Html::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
                 </div>
             <?php endforeach; ?>
             <?= yii\widgets\ListView::widget([
@@ -55,37 +58,38 @@ $this->title = 'Задания';
     <section class="search-task">
         <div class="search-task__wrapper">
             <?php $form = ActiveForm::begin([
-                'options' => ['class' => 'search-task__form']
+                'options' => ['class' => 'search-task__form'],
+                'action' => Url::to(['tasks/'])
             ]) ?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                    <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
-                        function ($index, $label, $name, $checked, $value) {
-                            return TemplateForm::getTemplateFormCategory($label, $value, $name);
-                        }]);
-                    ?>
-                </fieldset>
-                <fieldset class="search-task__categories">
-                    <legend>Дополнительно</legend>
-                    <?= Html::activeCheckboxList($model, 'additionally',
-                        ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
-                        ['item' => function ($index, $label, $name, $checked, $value) {
-                            return TemplateForm::getTemplateFormCategory($label, $value, $name);
-                        }]);
-                    ?>
-                </fieldset>
-                <label class="search-task__name" for="tasksform-period">Период</label>
-                <?=Html::activeDropDownList($model, 'period', [
-                    '0' => 'За все время',
-                    '86000' => 'За день',
-                    '604800' => 'За неделю',
-                    '2419200' => 'За менсяц'],
-                    ['class' => 'multiple-select input']);
+                <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
+                    function ($index, $label, $name, $checked, $value) {
+                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                    }]);
                 ?>
-                <label class="search-task__name" for="tasksform-search">Поиск по названию</label>
-                <?= Html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
-                <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
-                <?php $form = ActiveForm::end() ?>
-            </div>
-        </section>
-    </div>
+            </fieldset>
+            <fieldset class="search-task__categories">
+                <legend>Дополнительно</legend>
+                <?= Html::activeCheckboxList($model, 'additionally',
+                    ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
+                    ['item' => function ($index, $label, $name, $checked, $value) {
+                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                    }]);
+                ?>
+            </fieldset>
+            <label class="search-task__name" for="tasksform-period">Период</label>
+            <?= Html::activeDropDownList($model, 'period', [
+                '0' => 'За все время',
+                '86000' => 'За день',
+                '604800' => 'За неделю',
+                '2419200' => 'За менсяц'],
+                ['class' => 'multiple-select input']);
+            ?>
+            <label class="search-task__name" for="tasksform-search">Поиск по названию</label>
+            <?= Html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
+            <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
+            <?php $form = ActiveForm::end() ?>
+        </div>
+    </section>
+</div>

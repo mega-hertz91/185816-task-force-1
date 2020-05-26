@@ -17,14 +17,20 @@ class TasksController extends BaseController
     public function actionIndex()
     {
         $form = new TasksForm();
-        $request = Yii::$app->request->post();
+        $request = Yii::$app->request;
+        $param = [];
 
-        if ($form->load($request)) {
-            $form->attributes = $request['TasksForm'];
+        if ($form->load($request->post())) {
+            $form->attributes = $request->post()['TasksForm'];
+            $param = $form->attributes;
+        }
+
+        if ($request->get('category_id') && Category::find()->where(['id' => $request->get('category_id')])) {
+            $param = ['categories' => $request->get('category_id')];
         }
 
         return $this->render('index', [
-            'tasks' => TasksProvider::getContent($form->attributes),
+            'tasks' => TasksProvider::getContent($param),
             'model' => $form,
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column()
         ]);

@@ -17,6 +17,11 @@ class TasksProvider extends Provider
         return date('Y-m-d H:i:s', $diff);
     }
 
+    /***
+     * @param array $attributes
+     * @return ActiveDataProvider
+     */
+
     public static function getContent(array $attributes): ActiveDataProvider
     {
         $query = Task::find()->where(['status_id' => Task::STATUS_DEFAULT])->with(['city', 'category']);
