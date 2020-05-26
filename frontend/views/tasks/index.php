@@ -10,6 +10,8 @@ use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
 use frontend\models\Response;
 
+
+$this->title = 'Задания';
 ?>
 <div style="width: 1098px; margin: auto;">
     <?php if (Yii::$app->session->getFlash('success')): ?>

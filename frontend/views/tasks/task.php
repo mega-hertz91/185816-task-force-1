@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
 $user = Yii::$app->user->identity;
 $form_response_model = new NewResponseForm();
 $form_complete_model = new CompleteTaskForm();
+$this->title = $task->title;
 ?>
 <div style="width: 1098px; margin: auto;">
     <?php if (Yii::$app->session->getFlash('success')): ?>

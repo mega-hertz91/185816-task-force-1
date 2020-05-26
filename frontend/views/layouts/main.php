@@ -13,7 +13,6 @@ use frontend\assets\AppAsset;
 use yii\widgets\Menu;
 
 AppAsset::register($this);
-$this->title = 'Задания';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -140,7 +139,7 @@ $this->title = 'Задания';
                 <?php echo Menu::widget([
                     'options' => ['class' => 'account__pop-up-list'],
                     'items' => [
-                        ['label' => 'Мои задания', 'url' => ['cabinet/tasks']],
+                        ['label' => 'Мои задания', 'url' => ['cabinet/tasks/new']],
                         ['label' => 'Настроки', 'url' => ['cabinet/settings']],
                         ['label' => 'Выход', 'url' => ['singout/']]
                     ],

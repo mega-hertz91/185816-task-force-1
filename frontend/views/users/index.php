@@ -9,6 +9,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
+
+$this->title = 'Пользователи';
 ?>
 
 <div class="main-container page-container">
