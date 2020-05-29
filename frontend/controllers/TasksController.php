@@ -4,12 +4,10 @@ namespace frontend\controllers;
 
 use frontend\forms\TasksForm;
 use frontend\models\Category;
-use frontend\models\Response;
 use frontend\models\Task;
 use frontend\models\User;
 use Yii;
 use frontend\providers\TasksProvider;
-use yii\debug\panels\EventPanel;
 use yii\web\NotFoundHttpException;
 
 class TasksController extends BaseController
