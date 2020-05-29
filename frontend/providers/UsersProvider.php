@@ -4,7 +4,7 @@
 namespace frontend\providers;
 
 
-use frontend\models\CategoryExecutor;
+use common\models\CategoryExecutor;
 use yii\data\ActiveDataProvider;
 
 class UsersProvider extends Provider

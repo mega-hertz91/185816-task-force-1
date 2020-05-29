@@ -6,9 +6,9 @@
  */
 
 use frontend\forms\UserSettingsForm;
-use frontend\models\Category;
-use frontend\models\City;
-use frontend\models\User;
+use common\models\Category;
+use common\models\City;
+use common\models\User;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Настройки | ' . $user->full_name;

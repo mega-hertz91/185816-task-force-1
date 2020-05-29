@@ -2,7 +2,7 @@
 
 namespace frontend\providers;
 
-use frontend\models\Task;
+use common\models\Task;
 use yii\data\ActiveDataProvider;
 
 class TasksProvider extends Provider

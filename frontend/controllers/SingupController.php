@@ -5,8 +5,8 @@ namespace frontend\controllers;
 
 
 use frontend\forms\SingupForm;
-use frontend\models\City;
-use frontend\models\User;
+use common\models\City;
+use common\models\User;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;

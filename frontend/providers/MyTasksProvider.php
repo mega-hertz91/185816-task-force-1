@@ -2,8 +2,8 @@
 
 namespace frontend\providers;
 
-use frontend\models\Task;
-use frontend\models\User;
+use common\models\Task;
+use common\models\User;
 use phpDocumentor\Reflection\Types\Integer;
 use yii\data\ActiveDataProvider;
 use yii\web\IdentityInterface;

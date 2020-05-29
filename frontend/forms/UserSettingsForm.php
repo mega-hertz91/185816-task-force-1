@@ -4,8 +4,8 @@
 namespace frontend\forms;
 
 
-use frontend\models\City;
-use frontend\models\Role;
+use common\models\City;
+use common\models\Role;
 use yii\base\Model;
 
 class UserSettingsForm extends Model

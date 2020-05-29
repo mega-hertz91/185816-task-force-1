@@ -3,9 +3,9 @@
 namespace frontend\controllers;
 
 use frontend\forms\TasksForm;
-use frontend\models\Category;
-use frontend\models\Task;
-use frontend\models\User;
+use common\models\Category;
+use common\models\Task;
+use common\models\User;
 use Yii;
 use frontend\providers\TasksProvider;
 use yii\web\NotFoundHttpException;

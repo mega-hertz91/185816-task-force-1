@@ -5,10 +5,10 @@ namespace frontend\controllers;
 
 
 use frontend\forms\UsersForm;
-use frontend\models\Category;
-use frontend\models\CategoryExecutor;
-use frontend\models\Comment;
-use frontend\models\User;
+use common\models\Category;
+use common\models\CategoryExecutor;
+use common\models\Comment;
+use common\models\User;
 use frontend\providers\UsersProvider;
 use frontend\services\TimeService;
 use Yii;

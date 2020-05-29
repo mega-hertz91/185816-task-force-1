@@ -4,8 +4,8 @@ namespace frontend\controllers\cabinet;
 
 use frontend\controllers\BaseController;
 use frontend\helpers\Date;
-use frontend\models\Task;
-use frontend\models\User;
+use common\models\Task;
+use common\models\User;
 use frontend\providers\MyTasksProvider;
 use Yii;
 

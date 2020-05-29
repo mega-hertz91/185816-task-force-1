@@ -1,14 +1,14 @@
 <?php
 /**
- * @var frontend\models\Category $categories
- * @var frontend\models\Task $tasks
+ * @var common\models\Category $categories
+ * @var common\models\Task $tasks
  **/
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
-use frontend\models\Response;
+use common\models\Response;
 
 
 $this->title = 'Задания';

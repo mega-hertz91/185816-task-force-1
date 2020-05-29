@@ -4,7 +4,7 @@ namespace frontend\controllers\cabinet;
 
 use frontend\controllers\BaseController;
 use frontend\forms\UserSettingsForm;
-use frontend\models\User;
+use common\models\User;
 use Yii;
 
 class SettingsController extends BaseController

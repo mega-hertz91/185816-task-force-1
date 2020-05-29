@@ -5,7 +5,7 @@
  * @var Task $tasks
  */
 
-use frontend\models\Task;
+use common\models\Task;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;

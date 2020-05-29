@@ -4,7 +4,7 @@
 /* @var $content string */
 
 /***
- * @var frontend\models\Task $task
+ * @var common\models\Task $task
  */
 
 use yii\helpers\Html;
