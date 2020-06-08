@@ -13,10 +13,11 @@ class UsersProvider extends Provider
 
     /***
      * @param array $attributes frontend\Forms\UserForm
+     * @param string $sort
      * @return ActiveDataProvider
      */
 
-    public static function getContent(array $attributes): ActiveDataProvider
+    public static function getContent(array $attributes, $sort = 'created_at'): ActiveDataProvider
     {
         $query = CategoryExecutor::find()->joinWith('user');
 
@@ -39,7 +40,7 @@ class UsersProvider extends Provider
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'created_at' => SORT_DESC,
+                    $sort => SORT_DESC,
                 ]
             ],
         ]);

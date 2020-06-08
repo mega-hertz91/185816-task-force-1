@@ -5,15 +5,24 @@
  * @var UserSettingsForm $formModel
  */
 
-use frontend\forms\UserSettingsForm;
 use common\models\Category;
 use common\models\City;
+use common\models\NoticeCategory;
 use common\models\User;
+use frontend\forms\UserSettingsForm;
+use frontend\helpers\TemplateCheckbox;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Настройки | ' . $user->full_name;
 ?>
-
+<div style="width: 1098px; margin: auto;">
+    <?php if (Yii::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success" role="alert"><?php echo Yii::$app->session->getFlash('success') ?></div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->getFlash('error')): ?>
+        <div class="alert alert-danger" role="alert"><?php echo Yii::$app->session->getFlash('error') ?></div>
+    <?php endif; ?>
+</div>
 <div class="main-container page-container">
     <section class="account__redaction-wrapper">
         <h1>Редактирование настроек профиля</h1>
@@ -33,7 +42,6 @@ $this->title = 'Настройки | ' . $user->full_name;
                         <?= $form->field($formModel,
                             'full_name', [
                                 'inputOptions' => [
-                                    'value' => $user->full_name,
                                     'class' => 'input textarea',
                                     'style' => 'display:block; width: 100%',
                                     'disabled' => 'disabled'
@@ -46,7 +54,6 @@ $this->title = 'Настройки | ' . $user->full_name;
                             'email',
                             [
                                 'inputOptions' => [
-                                    'value' => $user->email,
                                     'class' => 'input textarea',
                                     'style' => 'display:block; width: 100%',
                                 ]
@@ -57,17 +64,15 @@ $this->title = 'Настройки | ' . $user->full_name;
                         <?= $form->field($formModel, 'city_id',
                             [
                                 'inputOptions' => [
-                                    'value' => $user->email,
                                     'class' => 'multiple-select input multiple-select-big',
                                     'style' => 'display:block; width: 100%',
                                 ]])->dropDownList(City::find()->select('name')->indexBy('id')->column()
-                        )?>
+                        ) ?>
                     </div>
                     <div class="account__input account__input--date">
                         <?= $form->field($formModel,
                             'date_birth', [
                                 'inputOptions' => [
-                                    'value' => $user->date_birth,
                                     'class' => 'input textarea',
                                     'style' => 'display:block; width: 100%',
                                     'type' => 'date'
@@ -79,7 +84,6 @@ $this->title = 'Настройки | ' . $user->full_name;
                         <?= $form->field($formModel,
                             'about', [
                                 'inputOptions' => [
-                                    'value' => $user->about,
                                     'class' => 'input textarea',
                                     'style' => 'display:block; width: 100%'
                                 ]
@@ -91,21 +95,27 @@ $this->title = 'Настройки | ' . $user->full_name;
             <h3 class="div-line">Выберите свои специализации</h3>
             <div class="account__redaction-section-wrapper">
                 <div class="search-task__categories account_checkbox--bottom">
-                    <?= $form->field($user, 'city_id',
+                    <?= $form->field($formModel, 'specials',
                         [
-                            'inputOptions' => [
-                                'value' => $user->email,
-                                'class' => 'multiple-select input multiple-select-big',
-                                'style' => 'display:block; width: 100%',
-                            ]])->checkboxList(Category::find()->select('category_name')->indexBy('id')->column()
-                    )?>
+                            'options' => ['tag' => false],
+                        ])
+                        ->checkboxList(
+                            Category::find()->select('category_name')->indexBy('id')->column(),
+                            [
+                                'item' => function ($index, $label, $name, $checked, $value) {
+                                    return TemplateCheckbox::create($label, $name, $checked, $value);
+                                },
+                                'tag' => false
+                            ]
+                        )
+                        ->label(false) ?>
                 </div>
             </div>
             <h3 class="div-line">Безопасность</h3>
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
                     <?= $form->field($formModel,
-                        'password', [
+                        'password_new', [
                             'inputOptions' => [
                                 'value' => 'password',
                                 'class' => 'input textarea',
@@ -137,7 +147,6 @@ $this->title = 'Настройки | ' . $user->full_name;
                         [
                             'inputOptions' => [
                                 'class' => 'input-middle input input-date',
-                                'value' => $user->phone,
                                 'style' => 'display: block;',
                                 'type' => 'tel'
                             ]
@@ -151,7 +160,6 @@ $this->title = 'Настройки | ' . $user->full_name;
                         [
                             'inputOptions' => [
                                 'class' => 'input-middle input input-date',
-                                'value' => $user->skype,
                                 'style' => 'display: block;',
                             ]
                         ]
@@ -164,7 +172,6 @@ $this->title = 'Настройки | ' . $user->full_name;
                         [
                             'inputOptions' => [
                                 'class' => 'input-middle input input-date',
-                                'value' => $user->messenger,
                                 'style' => 'display: block;',
                             ]
                         ]
@@ -175,22 +182,23 @@ $this->title = 'Настройки | ' . $user->full_name;
             <h4>Уведомления</h4>
             <div class="account__redaction-section-wrapper account_section--bottom">
                 <div class="search-task__categories account_checkbox--bottom">
-                    <input class="visually-hidden checkbox__input" id="216" type="checkbox" name="" value=""
-                           checked>
-                    <label for="216">Новое сообщение</label>
-                    <input class="visually-hidden checkbox__input" id="217" type="checkbox" name="" value=""
-                           checked>
-                    <label for="217">Действия по заданию</label>
-                    <input class="visually-hidden checkbox__input" id="218" type="checkbox" name="" value=""
-                           checked>
-                    <label for="218">Новый отзыв</label>
+                    <?= $form->field($formModel, 'settings', ['options' => ['tag' => false]])
+                        ->checkboxList(
+                            NoticeCategory::find()->select('name')->indexBy('id')->column(), [
+                            'item' => function ($index, $label, $name, $checked, $value) {
+                                return TemplateCheckbox::create($label, $name, $checked, $value);
+                            },
+                            'tag' => false
+                        ])
+                        ->label(false) ?>
                 </div>
                 <div class="search-task__categories account_checkbox account_checkbox--secrecy">
-                    <input class="visually-hidden checkbox__input" id="219" type="checkbox" name="" value="">
-                    <label for="219">Показывать мои контакты только заказчику</label>
-                    <input class="visually-hidden checkbox__input" id="220" type="checkbox" name="" value=""
-                           checked>
-                    <label for="220">Не показывать мой профиль</label>
+                    <?= $form->field($formModel, 'hidden', ['template' => "{input}{label}{error}"])
+                        ->checkbox(['class' => 'checkbox__input visually-hidden'],false)
+                    ?>
+                    <?= $form->field($formModel, 'view_only_customer', ['template' => "{input}{label}{error}"])
+                        ->checkbox(['class' => 'checkbox__input visually-hidden'],false)
+                    ?>
                 </div>
             </div>
         </div>

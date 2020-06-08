@@ -57,12 +57,13 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'tasks/view/<id:\d+>' => 'tasks/view',
+                'tasks/<id:\d+>' => 'tasks/view',
                 'task/cancel/<id:\d+>' => 'task/cancel',
                 'task/work/<id:\d+>/<executor:\d+>' => 'task/work',
                 'task/refuse/<id:\d+>' => 'task/refuse',
                 'task/complete/<id:\d+>' => 'task/complete',
-                'users/view/<id:\d+>' => 'users/view',
+                'users/<id:\d+>' => 'users/view',
+                'users/sort/<sort:>' => 'users/sort',
                 'response/new/<task_id:\d+>' => 'response/new',
                 'response/cancel/<id:\d+>' => 'response/cancel',
                 [

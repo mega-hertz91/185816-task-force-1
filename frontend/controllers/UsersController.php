@@ -6,11 +6,9 @@ namespace frontend\controllers;
 
 use frontend\forms\UsersForm;
 use common\models\Category;
-use common\models\CategoryExecutor;
 use common\models\Comment;
 use common\models\User;
 use frontend\providers\UsersProvider;
-use frontend\services\TimeService;
 use Yii;
 use yii\web\NotFoundHttpException;
 

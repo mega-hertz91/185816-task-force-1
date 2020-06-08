@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "notice_category".
@@ -15,7 +17,7 @@ use Yii;
  * @property Notice[] $notices
  * @property UserSettings[] $userSettings
  */
-class NoticeCategory extends \yii\db\ActiveRecord
+class NoticeCategory extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -51,18 +53,18 @@ class NoticeCategory extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getNotices()
     {
-        return $this->hasMany(Notice::className(), ['notice_category_id' => 'id']);
+        return $this->hasMany(Notice::class, ['notice_category_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUserSettings()
     {
-        return $this->hasMany(UserSettings::className(), ['notice_category_id' => 'id']);
+        return $this->hasMany(UserSettings::class, ['notice_category_id' => 'id']);
     }
 }

@@ -4,11 +4,10 @@
  * @var common\models\Task $tasks
  **/
 
+use frontend\helpers\TemplateCheckbox;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
-use common\models\Response;
 
 
 $this->title = 'Задания';
@@ -65,7 +64,7 @@ $this->title = 'Задания';
                 <legend>Категории</legend>
                 <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
                     function ($index, $label, $name, $checked, $value) {
-                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                        return TemplateCheckbox::create($label, $name, $checked, $value);
                     }]);
                 ?>
             </fieldset>
@@ -74,7 +73,7 @@ $this->title = 'Задания';
                 <?= Html::activeCheckboxList($model, 'additionally',
                     ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
                     ['item' => function ($index, $label, $name, $checked, $value) {
-                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                        return TemplateCheckbox::create($label, $name, $checked, $value);
                     }]);
                 ?>
             </fieldset>

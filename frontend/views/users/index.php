@@ -5,9 +5,9 @@
  * @var common\models\User $users
  **/
 
+use frontend\helpers\TemplateCheckbox;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use frontend\helpers\TemplateForm;
 use yii\helpers\Url;
 
 $this->title = 'Пользователи';
@@ -79,7 +79,7 @@ $this->title = 'Пользователи';
                 <legend>Категории</legend>
                 <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
                     function ($index, $label, $name, $checked, $value) {
-                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                        return TemplateCheckbox::create($label, $name, $checked, $value);
                     }]);
                 ?>
             </fieldset>
@@ -93,7 +93,7 @@ $this->title = 'Пользователи';
                         'favorites' => 'В избранном'
                     ],
                     ['item' => function ($index, $label, $name, $checked, $value) {
-                        return TemplateForm::getTemplateFormCategory($label, $value, $name);
+                        return TemplateCheckbox::create($label, $name, $checked, $value);
                     }]);
                 ?>
             </fieldset>
