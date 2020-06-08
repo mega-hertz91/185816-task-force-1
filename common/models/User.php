@@ -25,6 +25,7 @@ use yii\web\IdentityInterface;
  * @property double $rating
  * @property bool $hidden
  * @property double $view_only_customer
+ * @property string $avatar
  * @property string $created_at
  * @property string $updated_at
  *
@@ -145,6 +146,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
             [['user_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserStatus::class, 'targetAttribute' => ['user_status_id' => 'id']],
+            ['avatar', 'file', 'message' => 'Изображение должно иметь формат jpg, png, jpeg', 'extensions' => ['png', 'jpg', 'jpeg'],
+                'maxSize' => 1024 * 1024],
         ];
     }
 

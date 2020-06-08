@@ -72,7 +72,7 @@ class CreateTaskForm extends Model
             $this->file = UploadedFile::getInstance($this, 'file');
             $this->file->saveAs($this->dir . $this->file->baseName . '.' . $this->file->extension);
 
-            return $this->dir . $this->file->baseName . '.' . $this->file->extension;
+            return '/' .  $this->dir . $this->file->baseName . '.' . $this->file->extension;
         } else {
             return '';
         }

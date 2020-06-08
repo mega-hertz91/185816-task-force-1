@@ -27,14 +27,21 @@ $this->title = 'Настройки | ' . $user->full_name;
     <section class="account__redaction-wrapper">
         <h1>Редактирование настроек профиля</h1>
         <?php $form = ActiveForm::begin([
-            'class' => 'settings'
+            'class' => 'settings',
+            'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
         <div class="account__redaction-section">
             <h3 class="div-line">Настройки аккаунта</h3>
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
-                    <img src="../../../../img/man-glasses.jpg" width="156" height="156">
-                    <input type="file" name="avatar" id="upload-avatar">
+                    <img src="<?= $user->avatar ?>" width="156" height="156" alt="<?= $user->full_name?>" title="<?= $user->full_name?>">
+                    <?= $form->field($formModel,
+                        'avatar', [
+                            'inputOptions' => [
+                                'id' => 'upload-avatar'
+                            ]
+                        ]
+                    )->fileInput() ?>
                     <label for="upload-avatar" class="link-regular">Сменить аватар</label>
                 </div>
                 <div class="account__redaction">

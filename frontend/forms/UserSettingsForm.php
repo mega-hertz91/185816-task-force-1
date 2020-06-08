@@ -7,6 +7,7 @@ namespace frontend\forms;
 use common\models\City;
 use common\models\User;
 use yii\base\Model;
+use yii\web\UploadedFile;
 
 class UserSettingsForm extends Model
 {
@@ -24,6 +25,8 @@ class UserSettingsForm extends Model
     public $settings;
     public $hidden;
     public $view_only_customer;
+    public $avatar;
+    protected $dir = 'upload/';
 
     public function rules()
     {
@@ -35,6 +38,8 @@ class UserSettingsForm extends Model
             [['full_name', 'email', 'skype', 'messenger'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
+            [['avatar'], 'file', 'message' => 'Изображение должно иметь формат jpg, png, jpeg', 'extensions' => ['png', 'jpg', 'jpeg'],
+                'maxSize' => 1024 * 1024]
         ];
     }
 
@@ -77,5 +82,25 @@ class UserSettingsForm extends Model
         $form->settings = $user->userSettings;
 
         return $form;
+    }
+
+    /**
+     * @return string
+     */
+
+    public function upload()
+    {
+        if (!file_exists($this->dir)) {
+            mkdir($this->dir, 0775);
+        }
+
+        if (UploadedFile::getInstance($this, 'avatar')) {
+            $this->avatar = UploadedFile::getInstance($this, 'avatar');
+            $this->avatar->saveAs($this->dir . $this->avatar->baseName . '.' . $this->avatar->extension);
+
+            return '/' .  $this->dir . $this->avatar->baseName . '.' . $this->avatar->extension;
+        } else {
+            return '';
+        }
     }
 }
