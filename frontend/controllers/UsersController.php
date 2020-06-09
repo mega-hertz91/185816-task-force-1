@@ -4,6 +4,7 @@
 namespace frontend\controllers;
 
 
+use common\models\CategoryExecutor;
 use frontend\forms\UsersForm;
 use common\models\Category;
 use common\models\Comment;
@@ -48,5 +49,18 @@ class UsersController extends BaseController
             'user' => $user,
             'comments' => $comments
         ]);
+    }
+
+    public function actionTest()
+    {
+        //$users = CategoryExecutor::find()->select(['user_id', 'category_id', 'count' => 'count(user_id)'])->with('user' )->groupBy(['user_id'])->where(['category_id' => 1])->all();
+        $cats = CategoryExecutor::find()->select(['count(user_id) as cnt'])->groupBy(['user_id'])->asArray()->all();
+        $provider = UsersProvider::getContent();
+
+        var_dump(CategoryExecutor::find()->select(['user_id', 'count' => 'count(user_id)'])->with('user')->groupBy(['user_id'])->all());
+
+        /*foreach ($provider as $user) {
+            var_dump($user);
+        }*/
     }
 }

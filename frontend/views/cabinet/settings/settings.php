@@ -11,6 +11,7 @@ use common\models\NoticeCategory;
 use common\models\User;
 use frontend\forms\UserSettingsForm;
 use frontend\helpers\TemplateCheckbox;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Настройки | ' . $user->full_name;
@@ -18,6 +19,9 @@ $this->title = 'Настройки | ' . $user->full_name;
 <div style="width: 1098px; margin: auto;">
     <?php if (Yii::$app->session->getFlash('success')): ?>
         <div class="alert alert-success" role="alert"><?php echo Yii::$app->session->getFlash('success') ?></div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->getFlash('role')): ?>
+        <div class="alert alert alert-info" role="alert"><?php echo Yii::$app->session->getFlash('role') ?></div>
     <?php endif; ?>
     <?php if (Yii::$app->session->getFlash('error')): ?>
         <div class="alert alert-danger" role="alert"><?php echo Yii::$app->session->getFlash('error') ?></div>
@@ -34,14 +38,14 @@ $this->title = 'Настройки | ' . $user->full_name;
             <h3 class="div-line">Настройки аккаунта</h3>
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
-                    <img src="<?= $user->avatar ?>" width="156" height="156" alt="<?= $user->full_name?>" title="<?= $user->full_name?>">
+                    <img src="<?= Html::encode($user->avatar) ?>" width="156" height="156" alt="<?= Html::encode($user->full_name) ?>" title="<?= Html::encode($user->full_name) ?>">
                     <?= $form->field($formModel,
-                        'avatar', [
+                        'image', [
                             'inputOptions' => [
-                                'id' => 'upload-avatar'
+                                'id' => 'upload-avatar',
                             ]
                         ]
-                    )->fileInput() ?>
+                    )->fileInput()->label(false) ?>
                     <label for="upload-avatar" class="link-regular">Сменить аватар</label>
                 </div>
                 <div class="account__redaction">

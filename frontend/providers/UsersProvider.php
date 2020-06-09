@@ -5,11 +5,11 @@ namespace frontend\providers;
 
 
 use common\models\CategoryExecutor;
+use common\models\User;
 use yii\data\ActiveDataProvider;
 
 class UsersProvider extends Provider
 {
-    const SIZE_ELEMENT = 10;
 
     /***
      * @param array $attributes frontend\Forms\UserForm
@@ -17,9 +17,10 @@ class UsersProvider extends Provider
      * @return ActiveDataProvider
      */
 
-    public static function getContent(array $attributes, $sort = 'created_at'): ActiveDataProvider
+    public static function getContent(array $attributes = [], $sort = 'created_at'): ActiveDataProvider
     {
-        $query = CategoryExecutor::find()->joinWith('user');
+        $query = CategoryExecutor::find()->select(['user_id', 'count' => 'count(user_id)'])->with('user')->groupBy(['user_id']);
+
 
         if (!empty($attributes['categories'])) {
             $query->where([
@@ -37,11 +38,6 @@ class UsersProvider extends Provider
             'query' => $query,
             'pagination' => [
                 'pageSize' => self::SIZE_ELEMENT
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    $sort => SORT_DESC,
-                ]
             ],
         ]);
     }

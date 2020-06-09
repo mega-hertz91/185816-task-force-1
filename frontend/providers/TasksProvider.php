@@ -7,8 +7,6 @@ use yii\data\ActiveDataProvider;
 
 class TasksProvider extends Provider
 {
-    const SIZE_ELEMENT = 10;
-
     protected static function getDate($period)
     {
         $now = strtotime('now');

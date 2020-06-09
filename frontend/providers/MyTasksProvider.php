@@ -4,14 +4,10 @@ namespace frontend\providers;
 
 use common\models\Task;
 use common\models\User;
-use phpDocumentor\Reflection\Types\Integer;
 use yii\data\ActiveDataProvider;
-use yii\web\IdentityInterface;
 
 class MyTasksProvider extends Provider
 {
-    const SIZE_ELEMENT = 10;
-
     protected static function getDate($period)
     {
         $now = strtotime('now');
@@ -46,7 +42,7 @@ class MyTasksProvider extends Provider
      * @param array $attributes
      * @param User $user
      * @param bool $failed
-     * @param string $date
+     * @param bool $date
      * @return ActiveDataProvider
      */
 

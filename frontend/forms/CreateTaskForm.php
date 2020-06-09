@@ -62,6 +62,10 @@ class CreateTaskForm extends Model
         ];
     }
 
+    /**
+     * @return string
+     */
+
     public function upload()
     {
         if (!file_exists($this->dir)) {

@@ -6,7 +6,6 @@ use common\models\User;
 use frontend\controllers\BaseController;
 use frontend\forms\UserSettingsForm;
 use Yii;
-use yii\web\UploadedFile;
 
 class SettingsController extends BaseController
 {
@@ -17,12 +16,12 @@ class SettingsController extends BaseController
         $request = Yii::$app->request->post();
 
         if ($formModel->load($request)) {
+            $formModel->avatar = $formModel->upload();
             $user->attributes = $formModel->getAttributes();
-            $user->avatar = $formModel->upload();
 
-             $user->save();
-             Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
-             return Yii::$app->response->redirect(['cabinet/settings/']);
+            $user->save();
+            Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
+            return Yii::$app->response->redirect(['cabinet/settings/']);
         }
 
         return $this->render('settings', [
