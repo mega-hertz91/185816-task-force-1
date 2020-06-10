@@ -16,19 +16,11 @@ class TasksController extends BaseController
     {
         $form = new TasksForm();
         $request = Yii::$app->request;
-        $param = [];
 
-        if ($form->load($request->post())) {
-            $form->attributes = $request->post()['TasksForm'];
-            $param = $form->attributes;
-        }
-
-        if ($request->get('category_id') && Category::find()->where(['id' => $request->get('category_id')])) {
-            $param = ['categories' => $request->get('category_id')];
-        }
+        $form->load(Yii::$app->getRequest()->get());
 
         return $this->render('index', [
-            'tasks' => TasksProvider::getContent($param),
+            'tasks' => TasksProvider::getContent($form->attributes),
             'model' => $form,
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column()
         ]);

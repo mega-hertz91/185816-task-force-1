@@ -5,7 +5,6 @@ namespace frontend\providers;
 
 
 use common\models\CategoryExecutor;
-use common\models\User;
 use yii\data\ActiveDataProvider;
 
 class UsersProvider extends Provider
@@ -19,17 +18,23 @@ class UsersProvider extends Provider
 
     public static function getContent(array $attributes = [], $sort = 'created_at'): ActiveDataProvider
     {
-        $query = CategoryExecutor::find()->select(['user_id', 'count' => 'count(user_id)'])->with('user')->groupBy(['user_id']);
+        $query = CategoryExecutor::find()
+            ->alias('ce')
+            ->select('user_id')
+            ->innerJoinWith('user u')
+            ->groupBy('ce.user_id')
+        ;
+
 
 
         if (!empty($attributes['categories'])) {
-            $query->where([
+            $query->andwhere([
                 'category_id' => $attributes['categories'],
             ]);
         }
 
         if (!empty($attributes['search'])) {
-            $query->where([
+            $query->andwhere([
                 'like', 'full_name', $attributes['search']
             ]);
         }

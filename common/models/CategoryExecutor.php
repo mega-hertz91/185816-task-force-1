@@ -3,6 +3,7 @@
 namespace common\models;
 
 
+use phpDocumentor\Reflection\Types\Self_;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -67,18 +68,9 @@ class CategoryExecutor extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    /**
-     * @param $userId
-     * @param int $categoryId
-     * @return bool
-     */
-
-    public static function create($userId, $categoryId)
+    public static function create($values)
     {
-        $category = new self();
-        $category->user_id = $userId;
-        $category->category_id = $categoryId;
-
-        return $category->save();
+        $query = \Yii::$app->db->createCommand()
+        ->insert(self::tableName(), []);
     }
 }

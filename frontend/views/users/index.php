@@ -68,7 +68,7 @@ $this->title = 'Пользователи';
                 </div>
                 <div class="link-specialization user__search-link--bottom">
                     <?php foreach ($user->categoryExecutors as $cat): ?>
-                        <a href="#" class="link-regular"><?= Html::encode($cat->category->category_name) ?></a>
+                        <a href="<?= Url::to(['users/index', 'UsersForm[categories][]='=> $cat->category->id ]) ?>" class="link-regular"><?= Html::encode($cat->category->category_name) ?></a>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -81,7 +81,8 @@ $this->title = 'Пользователи';
     <section class="search-task">
         <div class="search-task__wrapper">
             <?php $form = ActiveForm::begin([
-                'options' => ['class' => 'search-task__form']
+                'options' => ['class' => 'search-task__form'],
+                'method' => 'GET'
             ]) ?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>

@@ -34,8 +34,7 @@ $this->title = 'Задания';
                         <a href="<?= Url::to(['tasks/view', 'id' => $task->id]) ?>" class="link-regular">
                             <h2><?= Html::encode($task->title) ?></h2>
                         </a>
-                        <a class="new-task__type link-regular"
-                           href="<?= Url::to(['tasks/', 'category_id' => $task->category_id]) ?>">
+                        <a class="new-task__type link-regular" href="<?= Url::to(['tasks/index', 'TasksForm[categories][]='=> $task->category_id ]) ?>">
                             <p><?= Html::encode($task->category->category_name) ?></p></a>
                     </div>
                     <div class="new-task__icon new-task__icon--translation"></div>
@@ -58,7 +57,8 @@ $this->title = 'Задания';
         <div class="search-task__wrapper">
             <?php $form = ActiveForm::begin([
                 'options' => ['class' => 'search-task__form'],
-                'action' => Url::to(['tasks/'])
+                'action' => Url::to(['tasks/']),
+                'method' => 'GET'
             ]) ?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
