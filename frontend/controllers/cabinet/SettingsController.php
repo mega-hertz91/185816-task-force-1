@@ -7,7 +7,6 @@ use frontend\controllers\BaseController;
 use frontend\forms\UserSettingsForm;
 use frontend\services\UserAdditionService;
 use Yii;
-use yii\db\Exception;
 
 class SettingsController extends BaseController
 {
@@ -16,16 +15,13 @@ class SettingsController extends BaseController
         $user = User::findOne(Yii::$app->user->id);
         $formModel = UserSettingsForm::create($user);
         $request = Yii::$app->request->post();
-        $userSave = new UserAdditionService($user);
 
         if ($formModel->load($request)) {
             $formModel->avatar = $formModel->upload();
             $user->attributes = $formModel->getAttributes();
+            $newUser = new UserAdditionService($user);
+            $newUser->update();
 
-            $userSave->updateSpecials();
-            die();
-
-            $user->save();
             Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
             return Yii::$app->response->redirect(['cabinet/settings/']);
         }
