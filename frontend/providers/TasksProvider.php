@@ -17,10 +17,11 @@ class TasksProvider extends Provider
 
     /***
      * @param array $attributes
+     * @param bool $sort
      * @return ActiveDataProvider
      */
 
-    public static function getContent(array $attributes): ActiveDataProvider
+    public static function getContent(array $attributes, $sort = false): ActiveDataProvider
     {
         $query = Task::find()->where(['status_id' => Task::STATUS_DEFAULT])->with(['city', 'category']);
 

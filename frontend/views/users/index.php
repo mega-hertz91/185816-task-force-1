@@ -23,6 +23,10 @@ $this->title = 'Пользователи';
         <div class="user__search-link">
             <p>Сортировать по:</p>
             <ul class="user__search-list">
+                <?= yii\widgets\LinkSorter::widget([
+                    'sort' => $sort,
+                    'attributes' => ['rating'],
+                ]) ?>
                 <li class="user__search-item user__search-item--current">
                     <a href="#" class="link-regular">Рейтингу</a>
                 </li>

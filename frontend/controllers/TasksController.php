@@ -20,7 +20,7 @@ class TasksController extends BaseController
         $form->load(Yii::$app->getRequest()->get());
 
         return $this->render('index', [
-            'tasks' => TasksProvider::getContent($form->attributes),
+            'tasks' => TasksProvider::getContent($form->attributes, false),
             'model' => $form,
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column()
         ]);
