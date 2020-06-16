@@ -34,13 +34,14 @@ class UserSettingsForm extends Model
         return [
             [['full_name', 'phone'], 'required'],
             [['city_id',], 'integer'],
-            [['date_birth', 'settings','specials', 'password_new',  'password_verify', 'hidden', 'view_only_customer', 'avatar'], 'safe'],
+            [['date_birth', 'settings','specials', 'hidden', 'view_only_customer', 'avatar'], 'safe'],
             [['about', 'avatar'], 'string'],
             [['full_name', 'email', 'skype', 'messenger'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::class, 'targetAttribute' => ['city_id' => 'id']],
             [['image'], 'file', 'message' => 'Изображение должно иметь формат jpg, png, jpeg', 'extensions' => ['png', 'jpg', 'jpeg'],
-                'maxSize' => 1024 * 1024]
+                'maxSize' => 1024 * 1024],
+            [['password_new',  'password_verify'], 'string', 'min' => 8]
         ];
     }
 
@@ -56,6 +57,7 @@ class UserSettingsForm extends Model
             'date_birth' => 'Дата рождения',
             'about' => 'Информация о себе',
             'password' => 'Новый пароль',
+            'password_new' => 'Новый пароль',
             'password_verify' => 'Подтвердите пароль',
             'phone' => 'Телефон',
             'specials' => 'Специализации',
@@ -80,7 +82,7 @@ class UserSettingsForm extends Model
         $form = new self;
         $form->attributes = $user->getAttributes();
         $form->specials = $user->specials;
-        $form->settings = $user->userSettings;
+        $form->settings = $user->settings;
 
         return $form;
     }

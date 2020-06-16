@@ -17,13 +17,19 @@ class SettingsController extends BaseController
         $request = Yii::$app->request->post();
 
         if ($formModel->load($request)) {
-            $formModel->avatar = $formModel->upload();
-            $user->attributes = $formModel->getAttributes();
-            $newUser = new UserAdditionService($user);
-            $newUser->update();
+            if ($formModel->password_new !== $formModel->password_verify) {
+                Yii::$app->session->setFlash('error', 'Пароли не совпадают');
+                return Yii::$app->response->redirect(['cabinet/settings']);
+            } else {
+                $formModel->avatar = $formModel->upload();
+                $user->attributes = $formModel->getAttributes();
+                $user->password = Yii::$app->security->generatePasswordHash($formModel->password_new);
+                $newUser = new UserAdditionService($user);
+                $newUser->update();
 
-            Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
-            return Yii::$app->response->redirect(['cabinet/settings/']);
+                Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
+                return Yii::$app->response->redirect(['cabinet/settings']);
+            }
         }
 
         return $this->render('settings', [

@@ -5,6 +5,7 @@ namespace frontend\providers;
 
 
 use common\models\CategoryExecutor;
+use common\models\Task;
 use yii\data\ActiveDataProvider;
 use yii\data\Sort;
 
@@ -21,10 +22,14 @@ class UsersProvider extends Provider
     {
         $query = CategoryExecutor::find()
             ->alias('ce')
-            ->select('user_id')
-            ->innerJoinWith('user u')
-            ->groupBy('ce.user_id')
+            ->select(['ce.user_id', 't.executor_id as order', 'c.executor_id as popular'])
+            ->leftJoin('user u', 'ce.user_id = u.id')
+            ->leftJoin('task t', 'ce.user_id = t.executor_id')
+            ->leftJoin('comment c', 'ce.user_id = c.executor_id')
+            ->groupBy(['ce.user_id', 't.executor_id', 'c.executor_id'])
         ;
+
+
 
         if (!empty($attributes['categories'])) {
             $query->andwhere([

@@ -18,6 +18,7 @@ class UsersController extends BaseController
     public function actionIndex()
     {
         $form = new UsersForm();
+
         $sort = new Sort([
             'attributes' => [
                 'rating' => [
@@ -27,10 +28,16 @@ class UsersController extends BaseController
                     'label' => 'Рейтингу',
                 ],
                 'order' => [
-                    'asc' => ['u.rating' => SORT_ASC],
-                    'desc' => ['u.rating' => SORT_DESC],
+                    'asc' => ['order' => SORT_ASC],
+                    'desc' => ['order' => SORT_DESC],
                     'default' => SORT_DESC,
                     'label' => 'Числу заказов',
+                ],
+                'popular' => [
+                    'asc' => ['popular' => SORT_ASC],
+                    'desc' => ['popular' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Популярности',
                 ],
             ],
         ]);

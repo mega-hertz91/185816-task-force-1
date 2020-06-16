@@ -31,7 +31,8 @@ $this->title = 'Настройки | ' . $user->full_name;
     <section class="account__redaction-wrapper">
         <h1>Редактирование настроек профиля</h1>
         <?php $form = ActiveForm::begin([
-            'class' => 'settings',
+            'class' => 'settings dropzone dz-clickable',
+            'id' => 'my-drop',
             'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
         <div class="account__redaction-section">
@@ -128,7 +129,7 @@ $this->title = 'Настройки | ' . $user->full_name;
                     <?= $form->field($formModel,
                         'password_new', [
                             'inputOptions' => [
-                                'value' => 'password',
+                                'placeholder' => 'Новый пароль',
                                 'class' => 'input textarea',
                                 'style' => 'display:block; width: 100%',
                                 'type' => 'password'
@@ -140,7 +141,7 @@ $this->title = 'Настройки | ' . $user->full_name;
                     <?= $form->field($formModel,
                         'password_verify', [
                             'inputOptions' => [
-                                'value' => 'password',
+                                'placeholder' => 'Повторите пароль',
                                 'class' => 'input textarea',
                                 'style' => 'display:block; width: 100%',
                                 'type' => 'password'
@@ -149,6 +150,12 @@ $this->title = 'Настройки | ' . $user->full_name;
                     ) ?>
                 </div>
             </div>
+            <h3 class="div-line">Фото работ</h3>
+
+            <div class="account__redaction-section-wrapper account__redaction">
+                <div class="dropzone" id="dropzone">Выбрать фотографии</div>
+            </div>
+
             <h3 class="div-line">Контакты</h3>
             <div class="account__redaction-section-wrapper account__redaction">
                 <div class="account__input">
@@ -217,3 +224,10 @@ $this->title = 'Настройки | ' . $user->full_name;
         <?php $form::end() ?>
     </section>
 </div>
+<script src="/js/dropzone.js"></script>
+<script>
+    Dropzone.autoDiscover = false;
+
+    var dropzone = new Dropzone(".dropzone", {url: window.location.href, maxFiles: 6, uploadMultiple: true,
+        acceptedFiles: 'image/*', previewTemplate: '<a href="#"><img data-dz-thumbnail alt="Фото работы"></a>'});
+</script>

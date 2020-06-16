@@ -5,12 +5,14 @@
  * @var UsersProvider $users
  * @var User $user
  * @var Category $categories
+ * @var Sort $sort
  **/
 
 use common\models\Category;
 use common\models\User;
 use frontend\helpers\TemplateCheckbox;
 use frontend\providers\UsersProvider;
+use yii\data\Sort;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -23,18 +25,14 @@ $this->title = 'Пользователи';
         <div class="user__search-link">
             <p>Сортировать по:</p>
             <ul class="user__search-list">
-                <?= yii\widgets\LinkSorter::widget([
-                    'sort' => $sort,
-                    'attributes' => ['rating'],
-                ]) ?>
                 <li class="user__search-item user__search-item--current">
-                    <a href="#" class="link-regular">Рейтингу</a>
+                    <?php echo $sort->link('rating') ?>
                 </li>
                 <li class="user__search-item">
-                    <a href="#" class="link-regular">Числу заказов</a>
+                    <?php echo $sort->link('order') ?>
                 </li>
                 <li class="user__search-item">
-                    <a href="#" class="link-regular">Популярности</a>
+                    <?php echo $sort->link('popular') ?>
                 </li>
             </ul>
         </div>

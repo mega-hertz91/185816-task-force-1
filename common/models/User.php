@@ -193,6 +193,14 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return ActiveQuery
      */
+    public function getPhotoJobs()
+    {
+        return $this->hasMany(PhotoJob::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
     public function getCategoryExecutors()
     {
         return $this->hasMany(CategoryExecutor::class, ['user_id' => 'id']);
