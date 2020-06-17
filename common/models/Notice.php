@@ -21,6 +21,12 @@ use yii\db\ActiveRecord;
  */
 class Notice extends ActiveRecord
 {
+    public $class = [
+        '1' => 'lightbulb__new-task--message',
+        '2' => 'lightbulb__new-task--executor',
+        '3' => 'lightbulb__new-task--close'
+    ];
+
     /**
      * {@inheritdoc}
      */

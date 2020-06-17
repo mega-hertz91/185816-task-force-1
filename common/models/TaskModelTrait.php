@@ -3,7 +3,6 @@
 
 namespace common\models;
 
-use common\models\Task;
 use yii\web\NotFoundHttpException;
 
 trait TaskModelTrait

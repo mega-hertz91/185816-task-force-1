@@ -6,6 +6,7 @@ namespace frontend\services;
 use common\models\CategoryExecutor;
 use common\models\User;
 use common\models\UserSettings;
+use frontend\forms\UserSettingsForm;
 use Yii;
 use yii\db\Exception;
 
@@ -24,19 +25,41 @@ class UserAdditionService
      */
     protected $userSetting;
 
-    public function __construct(User $user)
+    /**
+     * @var UserSettingsForm $form
+     */
+    protected $form;
+
+    /**
+     * UserAdditionService constructor.
+     * @param User $user
+     * @param UserSettingsForm $form
+     */
+
+    public function __construct(User $user, UserSettingsForm $form)
     {
         $this->user = $user;
+        $this->form = $form;
         $this->categoryExecutor = CategoryExecutor::class;
         $this->userSetting = UserSettings::class;
+
+        $this->user->attributes = $this->form->attributes;
     }
+
+    /**
+     * @param $settings
+     * @return array|string
+     */
 
     public function generateArray($settings)
     {
         $result = [];
 
-        foreach ($settings as $setting => $id) {
-            $result[] = [$this->user->id, $id];
+        if (!empty($settings)) {
+
+            foreach ($settings as $setting => $id) {
+                $result[] = [$this->user->id, $id];
+            }
         }
 
         return $result;
@@ -80,12 +103,27 @@ class UserAdditionService
     }
 
     /**
+     * @return bool
+     */
+
+    public function checkPassword()
+    {
+        return $this->form->password_new === $this->form->password_verify;
+    }
+
+    /**
      * Update new user
      * @return bool|string
      */
 
     public function update()
     {
+        if ($this->checkPassword()) {
+            $this->user->password = Yii::$app->security->generatePasswordHash($this->form->password_verify);
+        } else {
+            Yii::$app->session->setFlash('error', 'Пароли не совпадают, попробуйте снова');
+        }
+
         try {
             $this->updateSpecials($this->categoryExecutor, ['user_id', 'category_id'], $this->generateArray($this->user->specials));
             $this->updateSpecials($this->userSetting, ['user_id', 'notice_category_id'], $this->generateArray($this->user->settings));

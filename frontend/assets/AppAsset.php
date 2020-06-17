@@ -14,6 +14,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/normalize.css',
         'css/style.css',
+        'css/dropzone.css'
     ];
     public $js = [
         '/js/vue.js',

@@ -31,15 +31,14 @@ $this->title = 'Настройки | ' . $user->full_name;
     <section class="account__redaction-wrapper">
         <h1>Редактирование настроек профиля</h1>
         <?php $form = ActiveForm::begin([
-            'class' => 'settings dropzone dz-clickable',
-            'id' => 'my-drop',
             'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
         <div class="account__redaction-section">
             <h3 class="div-line">Настройки аккаунта</h3>
             <div class="account__redaction-section-wrapper">
                 <div class="account__redaction-avatar">
-                    <img src="<?= Html::encode($user->avatar) ?>" width="156" height="156" alt="<?= Html::encode($user->full_name) ?>" title="<?= Html::encode($user->full_name) ?>">
+                    <img src="<?= Html::encode($user->avatar) ?>" width="156" height="156"
+                         alt="<?= Html::encode($user->full_name) ?>" title="<?= Html::encode($user->full_name) ?>">
                     <?= $form->field($formModel,
                         'image', [
                             'inputOptions' => [
@@ -153,7 +152,7 @@ $this->title = 'Настройки | ' . $user->full_name;
             <h3 class="div-line">Фото работ</h3>
 
             <div class="account__redaction-section-wrapper account__redaction">
-                <div class="dropzone" id="dropzone">Выбрать фотографии</div>
+                <span class="dropzone" style="width: 100%; display: block">
             </div>
 
             <h3 class="div-line">Контакты</h3>
@@ -212,10 +211,10 @@ $this->title = 'Настройки | ' . $user->full_name;
                 </div>
                 <div class="search-task__categories account_checkbox account_checkbox--secrecy">
                     <?= $form->field($formModel, 'hidden', ['template' => "{input}{label}{error}"])
-                        ->checkbox(['class' => 'checkbox__input visually-hidden'],false)
+                        ->checkbox(['class' => 'checkbox__input visually-hidden'], false)
                     ?>
                     <?= $form->field($formModel, 'view_only_customer', ['template' => "{input}{label}{error}"])
-                        ->checkbox(['class' => 'checkbox__input visually-hidden'],false)
+                        ->checkbox(['class' => 'checkbox__input visually-hidden'], false)
                     ?>
                 </div>
             </div>
@@ -226,8 +225,19 @@ $this->title = 'Настройки | ' . $user->full_name;
 </div>
 <script src="/js/dropzone.js"></script>
 <script>
-    Dropzone.autoDiscover = false;
-
-    var dropzone = new Dropzone(".dropzone", {url: window.location.href, maxFiles: 6, uploadMultiple: true,
-        acceptedFiles: 'image/*', previewTemplate: '<a href="#"><img data-dz-thumbnail alt="Фото работы"></a>'});
+    var dropzoneObject = new Dropzone(
+        ".dropzone",
+        {
+            url: window.location.href,
+            maxFiles: 6,
+            parallelUploads: 6,
+            maxFilesize: 2,
+            paramName: 'PhotoJobForm[photos]',
+            acceptedFiles: 'image/*',
+            previewTemplate: '<a href="#"><img data-dz-thumbnail alt="Фото работы"></a>',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+            }
+        }
+    );
 </script>

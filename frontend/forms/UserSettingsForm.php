@@ -5,12 +5,15 @@ namespace frontend\forms;
 
 
 use common\models\City;
+use common\models\UploadFileTrait;
 use common\models\User;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
 class UserSettingsForm extends Model
 {
+    use UploadFileTrait;
+
     public $full_name;
     public $email;
     public $city_id;
@@ -34,7 +37,7 @@ class UserSettingsForm extends Model
         return [
             [['full_name', 'phone'], 'required'],
             [['city_id',], 'integer'],
-            [['date_birth', 'settings','specials', 'hidden', 'view_only_customer', 'avatar'], 'safe'],
+            [['date_birth', 'settings','specials', 'hidden', 'view_only_customer', 'avatar', 'photos'], 'safe'],
             [['about', 'avatar'], 'string'],
             [['full_name', 'email', 'skype', 'messenger'], 'string', 'max' => 255],
             [['email'], 'unique'],
@@ -85,25 +88,5 @@ class UserSettingsForm extends Model
         $form->settings = $user->settings;
 
         return $form;
-    }
-
-    /**
-     * @return string
-     */
-
-    public function upload()
-    {
-        if (!file_exists($this->dir)) {
-            mkdir($this->dir, 0775);
-        }
-
-        if (UploadedFile::getInstance($this, 'image')) {
-            $this->image = UploadedFile::getInstance($this, 'image');
-            $this->image->saveAs($this->dir . $this->image->baseName . '.' . $this->image->extension);
-
-            return '/' .  $this->dir . $this->image->baseName . '.' . $this->image->extension;
-        } else {
-            return $this->avatar;
-        }
     }
 }

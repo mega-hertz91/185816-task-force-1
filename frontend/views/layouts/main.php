@@ -1,15 +1,19 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+/* @var View $this
+ * @var Notice $notice
+ * @var string  $content
+ */
 
 /***
  * @var common\models\Task $task
  */
 
+use common\models\Notice;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use frontend\assets\AppAsset;
+use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Menu;
 
 AppAsset::register($this);
@@ -112,18 +116,12 @@ AppAsset::register($this);
             <div class="header__lightbulb"></div>
             <div class="lightbulb__pop-up">
                 <h3>Новые события</h3>
-                <p class="lightbulb__new-task lightbulb__new-task--message">
-                    Новое сообщение в чате
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-                <p class="lightbulb__new-task lightbulb__new-task--executor">
-                    Выбран исполнитель для
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
-                <p class="lightbulb__new-task lightbulb__new-task--close">
-                    Завершено задание
-                    <a href="#" class="link-regular">«Помочь с курсовой»</a>
-                </p>
+                <?php foreach ($this->context->notices as $notice): ?>
+                    <p class="lightbulb__new-task  <?= Html::encode($notice->class[$notice->notice_category_id]) ?>">
+                        <?= Html::encode($notice->noticeCategory->name) ?>
+                        <a href="<?= Url::to(['event/delete', 'id' => $notice->id]) ?>" class="link-regular"><?= Html::encode($notice->message) ?></a>
+                    </p>
+                <?php endforeach; ?>
             </div>
             <div class="header__account">
                 <a class="header__account-photo">
@@ -198,6 +196,12 @@ AppAsset::register($this);
     </footer>
 </div>
 <div class="overlay"></div>
+<script>
+    var lightbulb = document.getElementsByClassName('header__lightbulb')[0];
+    lightbulb.addEventListener('mouseover', function () {
+        fetch('/event');
+    });
+</script>
 <?php $this->endBody() ?>
 </body>
 </html>

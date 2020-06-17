@@ -2,11 +2,14 @@
 
 namespace frontend\controllers\cabinet;
 
+use common\models\PhotoJob;
 use common\models\User;
 use frontend\controllers\BaseController;
+use frontend\forms\PhotoJobForm;
 use frontend\forms\UserSettingsForm;
 use frontend\services\UserAdditionService;
 use Yii;
+use yii\db\Exception;
 
 class SettingsController extends BaseController
 {
@@ -15,21 +18,25 @@ class SettingsController extends BaseController
         $user = User::findOne(Yii::$app->user->id);
         $formModel = UserSettingsForm::create($user);
         $request = Yii::$app->request->post();
+        $photoJobForm = new PhotoJobForm();
+
+        if (Yii::$app->request->isAjax) {
+            try {
+                $photoJobForm->img = $photoJobForm->upload($photoJobForm, 'photos');
+                PhotoJob::createNewPhotoJob($photoJobForm);
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+        }
 
         if ($formModel->load($request)) {
-            if ($formModel->password_new !== $formModel->password_verify) {
-                Yii::$app->session->setFlash('error', 'Пароли не совпадают');
-                return Yii::$app->response->redirect(['cabinet/settings']);
-            } else {
-                $formModel->avatar = $formModel->upload();
-                $user->attributes = $formModel->getAttributes();
-                $user->password = Yii::$app->security->generatePasswordHash($formModel->password_new);
-                $newUser = new UserAdditionService($user);
-                $newUser->update();
+            $formModel->avatar = $formModel->upload($formModel, 'image', $formModel->avatar);
+            $newUser = new UserAdditionService($user, $formModel);
+            $newUser->update();
 
-                Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
-                return Yii::$app->response->redirect(['cabinet/settings']);
-            }
+            Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
+            return Yii::$app->response->redirect(['cabinet/settings']);
+
         }
 
         return $this->render('settings', [

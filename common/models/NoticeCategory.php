@@ -67,4 +67,9 @@ class NoticeCategory extends ActiveRecord
     {
         return $this->hasMany(UserSettings::class, ['notice_category_id' => 'id']);
     }
+
+    /**
+     * @param $id
+     * @return string
+     */
 }
