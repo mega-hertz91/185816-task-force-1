@@ -222,6 +222,17 @@ footer {
   fill: #e0e0e0;
 }
 
+.header__lightbulb.active:before {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  top: 0;
+  right: 0;
+  background-color: red;
+  border-radius: 50%;
+}
+
 .header__lightbulb:hover {
   background-image: url("../img/lightbulb-white.png");
   width: 30px;

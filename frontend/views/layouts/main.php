@@ -2,7 +2,7 @@
 
 /* @var View $this
  * @var Notice $notice
- * @var string  $content
+ * @var string $content
  */
 
 /***
@@ -10,8 +10,8 @@
  */
 
 use common\models\Notice;
-use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Menu;
@@ -113,13 +113,17 @@ AppAsset::register($this);
                     <option value="Vladivostok">Владивосток</option>
                 </select>
             </div>
-            <div class="header__lightbulb"></div>
+            <div
+                class="header__lightbulb <?php if (Notice::getVisibleNoticesByUser(Yii::$app->user->id)): ?>active<?php endif ?>"></div>
             <div class="lightbulb__pop-up">
                 <h3>Новые события</h3>
                 <?php foreach ($this->context->notices as $notice): ?>
                     <p class="lightbulb__new-task  <?= Html::encode($notice->class[$notice->notice_category_id]) ?>">
-                        <?= Html::encode($notice->noticeCategory->name) ?>
-                        <a href="<?= Url::to(['event/delete', 'id' => $notice->id]) ?>" class="link-regular"><?= Html::encode($notice->message) ?></a>
+                        <span class="label label-primary"
+                              style="display: block; margin-bottom: 2px; padding-top: 3px"><?= Html::encode($notice->noticeCategory->name) ?></span>
+                        <?= Html::encode($notice->message) ?>
+                        <a href="<?= Url::to(['event/disable', 'id' => $notice->id]) ?>" class="link-regular"
+                           style="display: block">удалить</a>
                     </p>
                 <?php endforeach; ?>
             </div>
@@ -197,10 +201,32 @@ AppAsset::register($this);
 </div>
 <div class="overlay"></div>
 <script>
-    var lightbulb = document.getElementsByClassName('header__lightbulb')[0];
-    lightbulb.addEventListener('mouseover', function () {
-        fetch('/event');
-    });
+    function disabledNotice(element) {
+        element.preventDefault();
+        fetch(element.getAttribute('href'));
+    }
+
+    var popup = document.querySelector('.lightbulb__pop-up');
+    var links = document.querySelectorAll('.link-regular');
+    var items = document.querySelectorAll('.lightbulb__new-task');
+
+    popup.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        for (var i = 0; i < links.length; i++) {
+            if (links[i] === e.target) {
+                fetch(links[i].getAttribute('href'), {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-Token": document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                    }
+                })
+
+                items[i].remove();
+            }
+        }
+    })
+
 </script>
 <?php $this->endBody() ?>
 </body>

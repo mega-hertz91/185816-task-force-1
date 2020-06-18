@@ -72,7 +72,8 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/messages'
                 ],
-                'api/messages/task/<id:\d+>' => 'api/messages/task'
+                'api/messages/task/<id:\d+>' => 'api/messages/task',
+                'event/disable/<id:\d+>' => 'event/disable'
             ],
         ],
     ],

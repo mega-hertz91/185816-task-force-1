@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -13,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property string|null $message
  * @property int $notice_category_id
  * @property int $user_id
+ * @property bool visible
  * @property string|null $created_at
  * @property string|null $updated_at
  *
@@ -79,5 +79,30 @@ class Notice extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * @return bool
+     */
+
+    public function disable()
+    {
+        $this->visible = false;
+        return $this->save();
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+
+    public static function getVisibleNoticesByUser($id)
+    {
+        return self::find()
+            ->where([
+                'visible' => true,
+                'user_id' => $id
+            ])
+            ->exists();
     }
 }
