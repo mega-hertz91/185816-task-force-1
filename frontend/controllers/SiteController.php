@@ -4,7 +4,7 @@ namespace frontend\controllers;
 use frontend\forms\SinginForm;
 use common\models\Task;
 use Yii;
-use yii\filters\AccessControl;
+use yii\authclient\clients\VKontakte;
 
 
 /**
@@ -14,6 +14,7 @@ class SiteController extends BaseController
 {
 
     public $model;
+    protected $apiId = '7515660';
 
     public function behaviors()
     {
@@ -51,6 +52,10 @@ class SiteController extends BaseController
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
         ];
     }
 
@@ -65,12 +70,13 @@ class SiteController extends BaseController
         $request = Yii::$app->request->post();
         $session = Yii::$app->session;
         $model = new SinginForm();
+        $oauthClient = new VKontakte();
         $this->model = $model;
 
         if ($model->load($request)) {
             if ($model->validate()) {
                 $user = $model->getUser();
-                \Yii::$app->user->login($user);
+                Yii::$app->user->login($user);
                 $session->setFlash('success', "Добро пожаловать $user->full_name");
                 return $this->goHome();
             } else {
@@ -84,5 +90,10 @@ class SiteController extends BaseController
                 'model' => $model
             ]
         );
+    }
+
+    public function onAuthSuccess($client)
+    {
+        var_dump($client);
     }
 }
