@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "auth".
@@ -14,7 +17,7 @@ use Yii;
  *
  * @property User $user
  */
-class Auth extends \yii\db\ActiveRecord
+class Auth extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,8 +34,8 @@ class Auth extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'source', 'source_id'], 'required'],
-            [['user_id'], 'integer'],
-            [['source', 'source_id'], 'string', 'max' => 255],
+            [['user_id', 'source_id'], 'integer'],
+            [['source'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -51,10 +54,24 @@ class Auth extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * @param array $attributes
+     * @throws Exception
+     */
+    public static function create($attributes = [])
+    {
+        $auth = new self();
+        $auth->attributes = $attributes;
+
+        if (!$auth->save()) {
+            throw new Exception('Error, auth not save');
+        }
     }
 }

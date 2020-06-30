@@ -133,7 +133,7 @@ AppAsset::register($this);
         <?php ActiveForm::end()?>
         <button class="form-modal-close" type="button">Закрыть</button>
         <?= yii\authclient\widgets\AuthChoice::widget([
-            'baseAuthUrl' => ['site/index'],
+            'baseAuthUrl' => ['site/auth'],
             'popupMode' => false,
         ]) ?>
     </section>

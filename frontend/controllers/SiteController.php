@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use frontend\forms\SinginForm;
 use common\models\Task;
+use frontend\handlers\AuthHandler;
 use Yii;
 use yii\authclient\clients\VKontakte;
 
@@ -20,7 +21,7 @@ class SiteController extends BaseController
     {
         $rules = parent::behaviors();
         $rule = [
-            'actions' => ['index'],
+            'actions' => ['index', 'auth'],
             'allow' => true,
             'roles' => ['?'],
             'denyCallback' => function ($rule, $action) {
@@ -70,7 +71,6 @@ class SiteController extends BaseController
         $request = Yii::$app->request->post();
         $session = Yii::$app->session;
         $model = new SinginForm();
-        $oauthClient = new VKontakte();
         $this->model = $model;
 
         if ($model->load($request)) {
@@ -94,6 +94,6 @@ class SiteController extends BaseController
 
     public function onAuthSuccess($client)
     {
-        var_dump($client);
+        (new AuthHandler($client))->handle();
     }
 }

@@ -12,8 +12,8 @@ class m200619_052847_add_table_oauth_token_for_user extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%user}}', 'auth_token', $this->string()->notNull());
-        $this->addColumn('{{%user}}', 'refresh_auth_token', $this->string()->notNull());
+        $this->addColumn('{{%user}}', 'auth_token', $this->string());
+        $this->addColumn('{{%user}}', 'refresh_auth_token', $this->string());
     }
 
     /**
