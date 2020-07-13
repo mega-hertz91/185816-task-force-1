@@ -8,6 +8,7 @@ use common\models\Task;
 use common\models\User;
 use Yii;
 use frontend\providers\TasksProvider;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 
 class TasksController extends BaseController
