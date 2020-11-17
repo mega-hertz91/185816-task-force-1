@@ -16,8 +16,8 @@ class m200130_120207_create_city_table extends Migration
         $this->createTable('city', [
             'id' => $this->primaryKey('255')->unique(),
             'name' => $this->text()->notNull(),
-            'created_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull(),
-            'updated_at' => $this->dateTime()->defaultValue(Date::getDateNow())->notNull()
+            'created_at' => $this->dateTime()->defaultExpression('NOW()'),
+            'updated_at' => $this->dateTime()->defaultExpression('NOW()')
         ]);
     }
 
