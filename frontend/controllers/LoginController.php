@@ -8,7 +8,7 @@ use frontend\forms\SinginForm;
 use frontend\forms\SingupForm;
 use Yii;
 
-class SinginController extends BaseController
+class LoginController extends BaseController
 {
     public $model;
 

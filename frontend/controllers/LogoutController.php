@@ -8,7 +8,7 @@ use frontend\helpers\AccessSettings;
 use Yii;
 use yii\web\Controller;
 
-class SingoutController extends BaseController
+class LogoutController extends BaseController
 {
 
     public function actionIndex()

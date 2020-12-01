@@ -79,6 +79,9 @@ return [
                 'users/sort/<sort:>' => 'users/sort',
                 'response/new/<task_id:\d+>' => 'response/new',
                 'response/cancel/<id:\d+>' => 'response/cancel',
+                'login' => 'login/index',
+                'logout' => 'logout/index',
+                'register' => 'register/index',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/messages'

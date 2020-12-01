@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use Yii;
 
-class SingupController extends BaseController
+class RegisterController extends BaseController
 {
     public $model;
 
@@ -53,7 +53,7 @@ class SingupController extends BaseController
             $user->setHash();
             $user->save();
             $session->setFlash('reg','Вы успешно зарегистрировались');
-            return $this->redirect('/singin');
+            return $this->redirect('/login');
         }
 
         return $this->render('index',

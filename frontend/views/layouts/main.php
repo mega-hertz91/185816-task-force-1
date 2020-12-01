@@ -143,7 +143,7 @@ AppAsset::register($this);
                     'items' => [
                         ['label' => 'Мои задания', 'url' => ['cabinet/tasks/new']],
                         ['label' => 'Настроки', 'url' => ['cabinet/settings']],
-                        ['label' => 'Выход', 'url' => ['singout/']]
+                        ['label' => 'Выход', 'url' => ['logout/index']]
                     ],
                 ]);
                 ?>
@@ -166,28 +166,7 @@ AppAsset::register($this);
                     mail@taskforce.com
                 </p>
             </div>
-            <div class="page-footer__links">
-                <ul class="links__list">
-                    <li class="links__item">
-                        <a href="">Задания</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Мой профиль</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Исполнители</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Регистрация</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Создать задание</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Справка</a>
-                    </li>
-                </ul>
-            </div>
+            <?= Yii::$app->view->renderFile('@app/views/layouts/menu/footer-menu.php')?>
             <div class="page-footer__copyright">
                 <a>
                     <img class="copyright-logo"
