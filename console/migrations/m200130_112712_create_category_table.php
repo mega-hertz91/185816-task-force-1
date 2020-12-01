@@ -1,7 +1,6 @@
 <?php
 
 use yii\db\Migration;
-use frontend\helpers\Date;
 
 /**
  * Class m200130_112712_create_category

@@ -1,7 +1,6 @@
 <?php
 
 use yii\db\Migration;
-use frontend\helpers\Date;
 
 /**
  * Handles the creation of table `{{%role}}`.
