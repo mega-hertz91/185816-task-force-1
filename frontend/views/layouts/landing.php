@@ -97,7 +97,9 @@ AppAsset::register($this);
     </footer>
     <section class="modal enter-form form-modal" id="enter-form" style="bottom: auto">
         <h2>Вход на сайт</h2>
-        <?php $form = ActiveForm::begin()?>
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['login/index'])
+        ])?>
         <?=$form->field($this->context->model, 'email',
             [
                 'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'kumarm@mail.ru', 'style' => 'width: 100%']

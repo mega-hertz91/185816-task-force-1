@@ -21,7 +21,7 @@ class MyTasksProvider extends Provider
      * @return ActiveDataProvider
      */
 
-    public static function getContent(array $attributes): ActiveDataProvider
+    public static function getContent(array $attributes)
     {
         $query = Task::find()->where($attributes)->with(['city', 'category', 'user']);
 

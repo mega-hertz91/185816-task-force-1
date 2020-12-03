@@ -4,17 +4,25 @@
 namespace frontend\controllers;
 
 
+use frontend\forms\SinginForm;
 use frontend\forms\SingupForm;
 use common\models\City;
 use common\models\User;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use Yii;
+use yii\web\Response;
 
 class RegisterController extends BaseController
 {
+    /**
+     * @var SingupForm|mixed
+     */
     public $model;
+
+    /**
+     * Replace behaviors for register
+     *
+     * @return array|array[]
+     */
 
     public function behaviors()
     {
@@ -30,20 +38,27 @@ class RegisterController extends BaseController
         return $rules;
     }
 
+    /**
+     * Checked guest user
+     *
+     * @param $action
+     * @return string|Response
+     */
     public function beforeAction($action)
     {
-        if(Yii::$app->user->isGuest) {
-            return 'you guest';
-        } else {
-            return Yii::$app->response->redirect('/tasks/');
-        }
+        return Yii::$app->user->isGuest ?  true : Yii::$app->response->redirect(['tasks/index']);
     }
 
+    /**
+     * Register user
+     *
+     * @return string|Response
+     */
     public function actionIndex ()
     {
         $this->layout = 'landing';
         $model = new SingupForm();
-        $this->model = new SingupForm();
+        $this->model = new SinginForm();
         $request = Yii::$app->request->post();
         $session = Yii::$app->session;
         $user = new User;
