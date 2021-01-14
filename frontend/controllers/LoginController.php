@@ -7,10 +7,18 @@ namespace frontend\controllers;
 use frontend\forms\SinginForm;
 use frontend\forms\SingupForm;
 use Yii;
+use yii\web\Response;
 
 class LoginController extends BaseController
 {
     public $model;
+
+    /**
+     * Check login user or guest
+     *
+     * @param $action
+     * @return string|Response
+     */
 
     public function beforeAction($action)
     {
@@ -20,6 +28,12 @@ class LoginController extends BaseController
             return Yii::$app->response->redirect('/tasks/');
         }
     }
+
+    /**
+     * Login route
+     *
+     * @return string|Response
+     */
 
     public function actionIndex()
     {

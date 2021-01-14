@@ -3,15 +3,19 @@
 
 namespace frontend\controllers;
 
-
-use frontend\helpers\AccessSettings;
 use Yii;
-use yii\web\Controller;
+use yii\web\Response;
 
 class LogoutController extends BaseController
 {
 
-    public function actionIndex()
+    /**
+     * Logout route
+     *
+     * @return Response
+     */
+
+    public function actionIndex(): Response
     {
         Yii::$app->user->logout();
         return $this->goHome();
