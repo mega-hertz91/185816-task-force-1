@@ -10,6 +10,7 @@ use frontend\forms\SingupForm;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Регистрация';
+
 ?>
 
 <div class="main-container page-container">

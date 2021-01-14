@@ -11,6 +11,7 @@
 
 use common\models\Notice;
 use frontend\assets\AppAsset;
+use frontend\extensions\models\NoticeExtension;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -114,7 +115,7 @@ AppAsset::register($this);
                 </select>
             </div>
             <div
-                class="header__lightbulb <?php if (Notice::getVisibleNoticesByUser(Yii::$app->user->id)): ?>active<?php endif ?>"></div>
+                class="header__lightbulb <?php if (NoticeExtension::getVisibleNoticesByUser(Yii::$app->user->id)): ?>active<?php endif ?>"></div>
             <div class="lightbulb__pop-up">
                 <h3>Новые события</h3>
                 <?php foreach ($this->context->notices as $notice): ?>

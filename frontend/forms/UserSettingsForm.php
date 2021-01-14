@@ -80,7 +80,7 @@ class UserSettingsForm extends Model
      * @return UserSettingsForm
      */
 
-    public static function create(User $user)
+    public static function create(User $user): UserSettingsForm
     {
         $form = new self;
         $form->attributes = $user->getAttributes();

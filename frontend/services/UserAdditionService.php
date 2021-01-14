@@ -67,6 +67,7 @@ class UserAdditionService
 
     /**
      * Create new relationship
+     *
      * @param CategoryExecutor|UserSettings $class
      * @param array $attributes
      * @param array $values
@@ -106,7 +107,7 @@ class UserAdditionService
      * @return bool
      */
 
-    public function checkPassword()
+    public function checkPassword(): bool
     {
         return $this->form->password_new === $this->form->password_verify;
     }
@@ -114,6 +115,7 @@ class UserAdditionService
     /**
      * Update new user
      * @return bool|string
+     * @throws \yii\base\Exception
      */
 
     public function update()

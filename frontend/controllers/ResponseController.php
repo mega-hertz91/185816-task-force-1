@@ -3,6 +3,7 @@
 
 namespace frontend\controllers;
 
+use frontend\extensions\models\NoticeExtension;
 use frontend\forms\NewResponseForm;
 use common\models\Response;
 use common\models\Task;
@@ -10,7 +11,6 @@ use common\models\User;
 use yii\helpers\Url;
 use Yii;
 use yii\base\Action;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
 class ResponseController extends BaseController
@@ -52,6 +52,7 @@ class ResponseController extends BaseController
         if ($form->load($request) && $form->validate()) {
             try {
                 Response::createResponse($task, $this->currentUser, $form);
+                NoticeExtension::create($task->user_id, NoticeExtension::CATEGORY_RESPONSE);
                 Yii::$app->session->setFlash('success', 'Вы откликнулись на задание  "' . $task->title . '"');
                 $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
             } catch (\Exception $e) {

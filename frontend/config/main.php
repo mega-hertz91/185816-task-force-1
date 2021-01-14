@@ -96,7 +96,11 @@ return [
             'password' => 'taskforce',
             'port' => 6379,
             'database' => 0,
-        ]
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true,
+        ],
     ],
     'params' => $params,
 ];
