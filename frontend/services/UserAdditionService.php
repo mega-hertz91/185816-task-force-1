@@ -36,6 +36,8 @@ class UserAdditionService
      * @param UserSettingsForm $form
      */
 
+    public $callbackMessage = 'Ваши настройки успешно обновлены';
+
     public function __construct(User $user, UserSettingsForm $form)
     {
         $this->user = $user;
@@ -78,15 +80,17 @@ class UserAdditionService
     {
         $class::deleteAll(['user_id' => $this->user->id]);
 
-        $query = Yii::$app->db->createCommand()
-            ->batchInsert(
-                $class::tableName(),
-                $attributes,
-                $values
-            );
+        if(count($values) > 0) {
+            $query = Yii::$app->db->createCommand()
+                ->batchInsert(
+                    $class::tableName(),
+                    $attributes,
+                    $values
+                );
 
-        if (!$query->query()) {
-            throw new Exception('Данные не сохранились');
+            if (!$query->query()) {
+                throw new Exception('Данные не сохранились');
+            }
         }
     }
 
@@ -96,7 +100,7 @@ class UserAdditionService
 
     public function checkStatus()
     {
-        if (!empty($this->specials) && $this->user->role_id === $this->user::CUSTOMER) {
+        if (!empty($this->form->specials) &&  $this->form->specials !== '') {
             $this->user->role_id = $this->user::EXECUTOR;
         } else {
             $this->user->role_id = $this->user::CUSTOMER;
@@ -130,7 +134,6 @@ class UserAdditionService
             $this->updateSpecials($this->categoryExecutor, ['user_id', 'category_id'], $this->generateArray($this->user->specials));
             $this->updateSpecials($this->userSetting, ['user_id', 'notice_category_id'], $this->generateArray($this->user->settings));
             $this->checkStatus();
-
             return $this->user->save();
         } catch (Exception $e) {
             return $e->getMessage();

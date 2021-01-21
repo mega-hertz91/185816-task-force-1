@@ -8,7 +8,7 @@ use common\models\City;
 use common\models\UploadFileTrait;
 use common\models\User;
 use yii\base\Model;
-use yii\web\UploadedFile;
+
 
 class UserSettingsForm extends Model
 {
@@ -35,9 +35,9 @@ class UserSettingsForm extends Model
     public function rules()
     {
         return [
-            [['full_name', 'phone'], 'required'],
+            [['full_name', ], 'required'],
             [['city_id',], 'integer'],
-            [['date_birth', 'settings','specials', 'hidden', 'view_only_customer', 'avatar', 'photos'], 'safe'],
+            [['date_birth', 'settings','specials', 'hidden', 'view_only_customer', 'avatar', 'photos', 'phone'], 'safe'],
             [['about', 'avatar'], 'string'],
             [['full_name', 'email', 'skype', 'messenger'], 'string', 'max' => 255],
             [['email'], 'unique'],

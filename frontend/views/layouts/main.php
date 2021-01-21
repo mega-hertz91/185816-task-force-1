@@ -120,11 +120,15 @@ AppAsset::register($this);
                 <h3>Новые события</h3>
                 <?php foreach ($this->context->notices as $notice): ?>
                     <p class="lightbulb__new-task  <?= Html::encode($notice->class[$notice->notice_category_id]) ?>">
-                        <span class="label label-primary"
-                              style="display: block; margin-bottom: 2px; padding-top: 3px"><?= Html::encode($notice->noticeCategory->name) ?></span>
-                        <?= Html::encode($notice->message) ?>
-                        <a href="<?= Url::to(['event/disable', 'id' => $notice->id]) ?>" class="link-regular"
-                           style="display: block">удалить</a>
+                        <span class="label label-primary" style="display: block; margin-bottom: 2px; padding-top: 3px"><?= Html::encode($notice->noticeCategory->name) ?></span>
+                        <span class="d-flex">
+                            <a href="<?= Url::to(['event/disable', 'id' => $notice->id]) ?>" class="link-notice label label-info text-white" data-to="<?= Html::encode($notice->message) ?>">
+                                Смотреть
+                            </a>
+                             <a href="<?= Url::to(['event/disable', 'id' => $notice->id]) ?>" class="link-notice label label-danger text-white">
+                                 Удалить
+                             </a>
+                        </span>
                     </p>
                 <?php endforeach; ?>
             </div>
@@ -181,32 +185,35 @@ AppAsset::register($this);
 </div>
 <div class="overlay"></div>
 <script>
-    function disabledNotice(element) {
-        element.preventDefault();
-        fetch(element.getAttribute('href'));
-    }
-
     var popup = document.querySelector('.lightbulb__pop-up');
-    var links = document.querySelectorAll('.link-regular');
-    var items = document.querySelectorAll('.lightbulb__new-task');
+    var links = popup.querySelectorAll('.link-notice');
+    var items = popup.querySelectorAll('.lightbulb__new-task');
 
     popup.addEventListener('click', function (e) {
         e.preventDefault();
 
         for (var i = 0; i < links.length; i++) {
             if (links[i] === e.target) {
-                fetch(links[i].getAttribute('href'), {
+                const currentElement = links[i];
+                const currentItem = items[i];
+                const result = fetch(currentElement.getAttribute('href'), {
                     method: "POST",
                     headers: {
                         "X-CSRF-Token": document.querySelector('meta[name=csrf-token]').getAttribute('content')
                     }
-                })
+                });
 
-                items[i].remove();
+                result.then(function (response) {
+                   if(response.status === 200) {
+                       currentItem.remove();
+                       if(currentElement.getAttribute('data-to')) {
+                           location.href = currentElement.getAttribute('data-to');
+                       }
+                   }
+                });
             }
         }
-    })
-
+    });
 </script>
 <?php $this->endBody() ?>
 </body>

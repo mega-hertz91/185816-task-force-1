@@ -5,6 +5,7 @@ namespace frontend\extensions\models;
 use common\models\Notice;
 use Yii;
 use yii\db\Exception;
+use yii\helpers\Url;
 
 class NoticeExtension extends Notice
 {
@@ -76,7 +77,7 @@ class NoticeExtension extends Notice
             'user_id' => $userID,
             'visible' => true,
             'notice_category_id' => $categoryID,
-            'message' => 'new response'
+            'message' => Yii::$app->urlManager->createUrl(['tasks/view', 'id' => $taskID])
         ]);
 
         if($notice->save()) {

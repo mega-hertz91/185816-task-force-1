@@ -17,7 +17,6 @@ class SettingsController extends BaseController
     {
         $user = User::findOne(Yii::$app->user->id);
         $formModel = UserSettingsForm::create($user);
-        $request = Yii::$app->request->post();
         $photoJobForm = new PhotoJobForm();
 
         if (Yii::$app->request->isAjax) {
@@ -29,14 +28,17 @@ class SettingsController extends BaseController
             }
         }
 
-        if ($formModel->load($request)) {
+        if ($formModel->load(Yii::$app->request->post())) {
             $formModel->avatar = $formModel->upload($formModel, 'image', $formModel->avatar);
-            $newUser = new UserAdditionService($user, $formModel);
-            $newUser->update();
-
-            Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
-            return Yii::$app->response->redirect(['cabinet/settings']);
-
+            $updateUser = new UserAdditionService($user, $formModel);
+            try {
+                $updateUser->update();
+                Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
+                return Yii::$app->response->redirect(['cabinet/settings']);
+            } catch (\yii\base\Exception $e) {
+                Yii::$app->session->setFlash('error', $e->getMessage());
+                return Yii::$app->response->redirect(['cabinet/settings']);
+            }
         }
 
         return $this->render('settings', [
