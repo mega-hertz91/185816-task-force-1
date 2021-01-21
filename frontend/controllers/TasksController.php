@@ -12,10 +12,9 @@ use yii\web\NotFoundHttpException;
 
 class TasksController extends BaseController
 {
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $form = new TasksForm();
-        $request = Yii::$app->request;
 
         $form->load(Yii::$app->getRequest()->get());
 
@@ -26,7 +25,7 @@ class TasksController extends BaseController
         ]);
     }
 
-    public function actionView($id)
+    public function actionView($id): string
     {
         /**
          * @var User $user

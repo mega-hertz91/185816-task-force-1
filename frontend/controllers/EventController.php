@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 
 use common\models\Notice;
+use frontend\extensions\models\NoticeExtension;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -29,7 +30,7 @@ class EventController extends Controller
              * @var $notice Notice
              */
             $notice = Notice::find()->where(['id' => $id])->one();
-            return Notice::hidden($notice);
+            return NoticeExtension::hidden($notice);
         }
 
         return Yii::$app->response->redirect('/');

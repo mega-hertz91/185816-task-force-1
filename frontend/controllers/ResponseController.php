@@ -43,7 +43,14 @@ class ResponseController extends BaseController
         return parent::beforeAction($action);
     }
 
-    public function actionNew($task_id)
+    /**
+     * Add response from current task
+     *
+     * @param $task_id
+     * @return \yii\web\Response
+     */
+
+    public function actionNew($task_id): \yii\web\Response
     {
         $task = Task::findOne(['id' => $task_id]);
         $form = new NewResponseForm();
@@ -52,28 +59,35 @@ class ResponseController extends BaseController
         if ($form->load($request) && $form->validate()) {
             try {
                 Response::createResponse($task, $this->currentUser, $form);
-                NoticeExtension::create($task->user_id, NoticeExtension::CATEGORY_RESPONSE);
+                NoticeExtension::create($task->user_id, NoticeExtension::CATEGORY_RESPONSE, $task_id);
                 Yii::$app->session->setFlash('success', 'Вы откликнулись на задание  "' . $task->title . '"');
-                $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
+                return $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
-                $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
+                return $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
             }
         } else {
-            $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
+            return $this->redirect(Url::to(['tasks/view', 'id' => $task->id]));
         }
     }
 
-    public function actionCancel()
+
+    /**
+     * Canceled response
+     *
+     * @return \yii\web\Response
+     */
+
+    public function actionCancel(): \yii\web\Response
     {
         try {
             Response::blockedResponse($this->response ,$this->currentUser);
             Yii::$app->session->setFlash('success', 'Вы отказали  ' . $this->response->user->full_name . '  в выполнении задания');
-            $this->redirect(Url::to(['tasks/view', 'id' => $this->response->task->id]));
+            return $this->redirect(Url::to(['tasks/view', 'id' => $this->response->task->id]));
 
         } catch (\Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['tasks/view', 'id' => $this->response->task->id]));
+            return $this->redirect(Url::to(['tasks/view', 'id' => $this->response->task->id]));
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\extensions\models\NoticeExtension;
 use frontend\forms\CompleteTaskForm;
 use frontend\forms\CreateTaskForm;
 use common\models\Comment;
@@ -17,8 +18,10 @@ use frontend\src\status\WorkAction;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
+use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 
 class TaskController extends BaseController
@@ -73,22 +76,21 @@ class TaskController extends BaseController
         return $this->render('create', ['model' => $model]);
     }
 
-    public function actionCancel($id)
+    public function actionCancel()
     {
-        $task = Task::findOne(['id' => $id]);
-
         try {
             $cancelAction = new CancelAction($this->task, $this->currentUser);
             $cancelAction->apply();
             Yii::$app->session->setFlash('success', 'Задание успешно отменено');
-            $this->redirect(Url::to(['tasks/index']));
-        } catch (StatusException $e) {
+            NoticeExtension::create(Yii::$app->user->id, NoticeExtension::CATEGORY_ACTION, $this->task->id);
+            return $this->redirect(Url::to(['tasks/index']));
+        } catch (StatusException | \Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
-            $this->redirect(Url::to(['tasks/index']));
+            return $this->redirect(Url::to(['tasks/index']));
         }
     }
 
-    public function actionComplete($id)
+    public function actionComplete()
     {
         $form = new CompleteTaskForm();
         $request = Yii::$app->request->post();
@@ -159,6 +161,7 @@ class TaskController extends BaseController
         try {
             $workAction = new WorkAction($this->task, $this->currentUser, $executor);
             $workAction->apply();
+            NoticeExtension::create($executor->id, NoticeExtension::CATEGORY_ACTION, $this->task->id);
             Yii::$app->session->setFlash('success',
                 'На задание "' . $this->task->title . '" назначен исполнитель: ' . $executor->full_name);
             $this->redirect(Url::to(['tasks/index']));

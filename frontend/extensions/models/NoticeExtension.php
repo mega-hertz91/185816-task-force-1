@@ -8,10 +8,24 @@ use yii\db\Exception;
 
 class NoticeExtension extends Notice
 {
+    /**
+     * Category email message
+     */
     const CATEGORY_MESSAGE = 1;
     const CATEGORY_ACTION = 2;
     const CATEGORY_RESPONSE = 3;
+
+    /**
+     * Relations category to message
+     */
+    const messageMap = [
+        self::CATEGORY_RESPONSE => '@frontend/mail/response-html',
+        self::CATEGORY_ACTION => '@frontend/mail/action-html',
+        self::CATEGORY_MESSAGE => '@frontend/mail/message-html'
+    ];
+
     const FROM = 'task-force@academy.ru';
+    protected $taskID;
 
     public $class = [
         '1' => 'lightbulb__new-task--message',
@@ -52,10 +66,11 @@ class NoticeExtension extends Notice
     /**
      * @param int $userID
      * @param int $categoryID
+     * @param int $taskID
      * @throws Exception
      * @throws \Exception
      */
-    public static function create(int $userID, int $categoryID)
+    public static function create(int $userID, int $categoryID, int $taskID)
     {
         $notice = new self([
             'user_id' => $userID,
@@ -65,7 +80,7 @@ class NoticeExtension extends Notice
         ]);
 
         if($notice->save()) {
-            $notice->send();
+            $notice->send($taskID, $categoryID);
         } else {
             throw new Exception('Notice not saved');
         }
@@ -73,15 +88,21 @@ class NoticeExtension extends Notice
 
     /**
      * Sending message
+     *
+     * @param int $taskID
+     * @param int $categoryID
+     * @return bool
      * @throws \Exception
      */
-    protected function send(): bool
+    protected function send(int $taskID, int $categoryID): bool
     {
-        $message = Yii::$app->mailer->compose()
+        $message = Yii::$app->mailer->compose(self::messageMap[$categoryID], [
+            'user' => $this->user,
+            'taskID' => $taskID
+        ])
             ->setFrom(self::FROM)
             ->setTo($this->user->email)
-            ->setSubject($this->noticeCategory->name)
-            ->setHtmlBody('<p>Received a new response to your assignment from ' . $this->user->full_name . '</p>');
+            ->setSubject($this->noticeCategory->name);
 
         if($message->send()) {
             return true;
