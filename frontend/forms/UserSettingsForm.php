@@ -89,4 +89,12 @@ class UserSettingsForm extends Model
 
         return $form;
     }
+
+    public function load($data, $formName = null)
+    {
+        if (parent::load($data, $formName)) {
+            return $this->avatar = $this->upload($this, 'image', $this->avatar);
+        }
+        return false;
+    }
 }

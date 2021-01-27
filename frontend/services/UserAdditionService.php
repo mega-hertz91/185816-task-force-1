@@ -7,6 +7,7 @@ use common\models\CategoryExecutor;
 use common\models\User;
 use common\models\UserSettings;
 use frontend\forms\UserSettingsForm;
+use frontend\helpers\SessionNotices;
 use Yii;
 use yii\db\Exception;
 
@@ -34,9 +35,8 @@ class UserAdditionService
      * UserAdditionService constructor.
      * @param User $user
      * @param UserSettingsForm $form
+     * @throws \yii\base\Exception
      */
-
-    public $callbackMessage = 'Ваши настройки успешно обновлены';
 
     public function __construct(User $user, UserSettingsForm $form)
     {
@@ -46,6 +46,8 @@ class UserAdditionService
         $this->userSetting = UserSettings::class;
 
         $this->user->attributes = $this->form->attributes;
+
+        $this->update();
     }
 
     /**
@@ -102,6 +104,7 @@ class UserAdditionService
     {
         if (!empty($this->form->specials) &&  $this->form->specials !== '') {
             $this->user->role_id = $this->user::EXECUTOR;
+
         } else {
             $this->user->role_id = $this->user::CUSTOMER;
         }
@@ -138,5 +141,17 @@ class UserAdditionService
         } catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    /**
+     * Return new class UserSettings
+     *
+     * @param User $user
+     * @param UserSettingsForm $formModel
+     * @return UserAdditionService
+     */
+    public static function changeUserSettings(User $user, UserSettingsForm $formModel): UserAdditionService
+    {
+        return new self($user, $formModel);
     }
 }

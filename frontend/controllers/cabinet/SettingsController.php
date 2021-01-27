@@ -7,6 +7,7 @@ use common\models\User;
 use frontend\controllers\BaseController;
 use frontend\forms\PhotoJobForm;
 use frontend\forms\UserSettingsForm;
+use frontend\helpers\SessionNotices;
 use frontend\services\UserAdditionService;
 use Yii;
 use yii\db\Exception;
@@ -17,11 +18,10 @@ class SettingsController extends BaseController
     {
         $user = User::findOne(Yii::$app->user->id);
         $formModel = UserSettingsForm::create($user);
-        $photoJobForm = new PhotoJobForm();
 
         if (Yii::$app->request->isAjax) {
             try {
-                $photoJobForm->img = $photoJobForm->upload($photoJobForm, 'photos');
+                $photoJobForm = PhotoJobForm::loadFile();
                 PhotoJob::createNewPhotoJob($photoJobForm);
             } catch (Exception $e) {
                 return $e->getMessage();
@@ -29,15 +29,13 @@ class SettingsController extends BaseController
         }
 
         if ($formModel->load(Yii::$app->request->post())) {
-            $formModel->avatar = $formModel->upload($formModel, 'image', $formModel->avatar);
-            $updateUser = new UserAdditionService($user, $formModel);
             try {
-                $updateUser->update();
-                Yii::$app->session->setFlash('success', 'Данные успешно обновлены');
-                return Yii::$app->response->redirect(['cabinet/settings']);
-            } catch (\yii\base\Exception $e) {
-                Yii::$app->session->setFlash('error', $e->getMessage());
-                return Yii::$app->response->redirect(['cabinet/settings']);
+                UserAdditionService::changeUserSettings($user, $formModel);
+                SessionNotices::createSuccessNotice('Данные успешно обновлены');
+                return $this->redirect(['cabinet/settings']);
+            } catch (\Exception $e) {
+                SessionNotices::createErrorNotice($e->getMessage());
+                return $this->redirect(['cabinet/settings']);
             }
         }
 
