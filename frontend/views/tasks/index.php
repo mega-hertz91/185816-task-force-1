@@ -2,13 +2,12 @@
 /**
  * @var common\models\Category $categories
  * @var common\models\Task $tasks
+ * @var TasksForm $taskForm
  **/
 
-use frontend\helpers\TemplateCheckbox;
+use frontend\forms\TasksForm;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-
 
 $this->title = 'Задания';
 ?>
@@ -53,42 +52,8 @@ $this->title = 'Задания';
             ]); ?>
         </div>
     </section>
-    <section class="search-task">
-        <div class="search-task__wrapper">
-            <?php $form = ActiveForm::begin([
-                'options' => ['class' => 'search-task__form'],
-                'action' => Url::to(['tasks/']),
-                'method' => 'GET'
-            ]) ?>
-            <fieldset class="search-task__categories">
-                <legend>Категории</legend>
-                <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
-                    function ($index, $label, $name, $checked, $value) {
-                        return TemplateCheckbox::create($label, $name, $checked, $value);
-                    }]);
-                ?>
-            </fieldset>
-            <fieldset class="search-task__categories">
-                <legend>Дополнительно</legend>
-                <?= Html::activeCheckboxList($model, 'additionally',
-                    ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
-                    ['item' => function ($index, $label, $name, $checked, $value) {
-                        return TemplateCheckbox::create($label, $name, $checked, $value);
-                    }]);
-                ?>
-            </fieldset>
-            <label class="search-task__name" for="tasksform-period">Период</label>
-            <?= Html::activeDropDownList($model, 'period', [
-                '0' => 'За все время',
-                '86000' => 'За день',
-                '604800' => 'За неделю',
-                '2419200' => 'За менсяц'],
-                ['class' => 'multiple-select input']);
-            ?>
-            <label class="search-task__name" for="tasksform-search">Поиск по названию</label>
-            <?= Html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
-            <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
-            <?php $form = ActiveForm::end() ?>
-        </div>
-    </section>
+    <?php echo $this->renderFile('@app/views/tasks/filters/asideFilter.php', [
+        'taskForm' => $taskForm,
+        'categories' => $categories
+    ])?>
 </div>

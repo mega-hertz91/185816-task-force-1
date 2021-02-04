@@ -8,6 +8,7 @@ use frontend\forms\SinginForm;
 use frontend\forms\SingupForm;
 use common\models\City;
 use common\models\User;
+use frontend\helpers\SessionNotices;
 use Yii;
 use yii\web\Response;
 
@@ -57,23 +58,22 @@ class RegisterController extends BaseController
     public function actionIndex ()
     {
         $this->layout = 'landing';
-        $model = new SingupForm();
+        $singUpForm= new SingupForm();
         $this->model = new SinginForm();
-        $request = Yii::$app->request->post();
-        $session = Yii::$app->session;
-        $user = new User;
 
-        if ($model->load($request) && $model->validate()) {
-            $user->attributes = $model->attributes;
-            $user->setHash();
-            $user->save();
-            $session->setFlash('reg','Вы успешно зарегистрировались');
+        if ($singUpForm->load(Yii::$app->request->post()) && $singUpForm->validate()) {
+            try {
+                User::create($singUpForm->attributes);
+            } catch (\Exception $e) {
+                SessionNotices::createErrorNotice('Registration is failed, contact the administrator');
+            }
+            SessionNotices::createSuccessNotice('Registration success');
             return $this->redirect('/login');
         }
 
         return $this->render('index',
             [
-                'model' => $model,
+                'model' => $singUpForm,
                 'cities' => City::find()->select(['name'])->indexBy('id')->column(),
             ]);
     }

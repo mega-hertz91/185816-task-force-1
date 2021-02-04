@@ -47,7 +47,7 @@ class LoginController extends BaseController
             if ($model->validate()) {
                 $user = $model->getUser();
                 \Yii::$app->user->login($user);
-                $session->setFlash('reg', "Добро пожаловать $user->full_name");
+                $session->setFlash('success', "Добро пожаловать $user->full_name");
                 return $this->goHome();
             }
         }

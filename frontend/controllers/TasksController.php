@@ -14,13 +14,13 @@ class TasksController extends BaseController
 {
     public function actionIndex(): string
     {
-        $form = new TasksForm();
+        $taskForm = new TasksForm();
 
-        $form->load(Yii::$app->getRequest()->get());
+        $taskForm->load(Yii::$app->getRequest()->get());
 
         return $this->render('index', [
-            'tasks' => TasksProvider::getContent($form->attributes, false),
-            'model' => $form,
+            'tasks' => TasksProvider::getContent($taskForm->attributes, false),
+            'taskForm' => $taskForm,
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column()
         ]);
     }
