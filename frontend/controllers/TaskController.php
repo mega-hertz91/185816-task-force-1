@@ -21,7 +21,6 @@ use yii\base\InvalidConfigException;
 use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 
 
 class TaskController extends BaseController
@@ -165,7 +164,7 @@ class TaskController extends BaseController
             Yii::$app->session->setFlash('success',
                 'На задание "' . $this->task->title . '" назначен исполнитель: ' . $executor->full_name);
             $this->redirect(Url::to(['tasks/index']));
-        } catch (StatusException | Exception $e) {
+        } catch (StatusException | \Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
             $this->redirect(Url::to(['tasks/index']));
         }
