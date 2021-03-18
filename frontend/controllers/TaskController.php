@@ -165,7 +165,7 @@ class TaskController extends BaseController
             Yii::$app->session->setFlash('success',
                 'На задание "' . $this->task->title . '" назначен исполнитель: ' . $executor->full_name);
             $this->redirect(Url::to(['tasks/index']));
-        } catch (StatusException $e) {
+        } catch (StatusException | Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
             $this->redirect(Url::to(['tasks/index']));
         }
