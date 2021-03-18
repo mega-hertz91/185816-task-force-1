@@ -52,7 +52,7 @@ class UsersController extends BaseController
         return $this->render('index', [
             'users' => UsersProvider::getContent($form->attributes, $sort),
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column(),
-            'model' => $form,
+            'usersSearchForm' => $form,
             'sort' => $sort
         ]);
     }

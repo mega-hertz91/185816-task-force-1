@@ -1,13 +1,14 @@
 <?php
 /**
  * @var common\models\Category $categories
- * @var common\models\Task $tasks
+ * @var DataProvider $tasks
+ * @var Task $task
  * @var TasksForm $taskForm
  **/
 
+use common\models\Task;
 use frontend\forms\TasksForm;
-use yii\helpers\Html;
-use yii\helpers\Url;
+use yii\debug\models\timeline\DataProvider;
 
 $this->title = 'Задания';
 ?>
@@ -28,23 +29,9 @@ $this->title = 'Задания';
                 <h1>Новые задания</h1>
             <?php endif ?>
             <?php foreach ($tasks->getModels() as $task) : ?>
-                <div class="new-task__card">
-                    <div class="new-task__title">
-                        <a href="<?= Url::to(['tasks/view', 'id' => $task->id]) ?>" class="link-regular">
-                            <h2><?= Html::encode($task->title) ?></h2>
-                        </a>
-                        <a class="new-task__type link-regular" href="<?= Url::to(['tasks/index', 'TasksForm[categories][]='=> $task->category_id ]) ?>">
-                            <p><?= Html::encode($task->category->category_name) ?></p></a>
-                    </div>
-                    <div class="new-task__icon new-task__icon--translation"></div>
-                    <p class="new-task_description">
-                        <?= Html::encode($task->description) ?>
-                    </p>
-                    <b class="new-task__price new-task__price--translation"><?= Html::encode($task->budget) ?><b> ₽</b></b>
-                    <p class="new-task__place"><?= Html::encode($task->city->name) ?></p>
-                    <span
-                        class="new-task__time"><?= Html::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
-                </div>
+               <?= $this->renderFile(__DIR__ . '/components/task-card.php', [
+                   'task' => $task
+                ]) ?>
             <?php endforeach; ?>
             <?= yii\widgets\ListView::widget([
                 'dataProvider' => $tasks,
@@ -52,7 +39,7 @@ $this->title = 'Задания';
             ]); ?>
         </div>
     </section>
-    <?php echo $this->renderFile('@app/views/tasks/filters/asideFilter.php', [
+    <?= $this->renderFile(__DIR__ . '/components/asideFilter.php', [
         'taskForm' => $taskForm,
         'categories' => $categories
     ])?>
