@@ -4,7 +4,6 @@
  * @var object $content frontend\View\site\create.php
  */
 
-use yii\authclient\widgets\AuthChoice;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;

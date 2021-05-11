@@ -37,7 +37,7 @@ class NoticeExtension extends Notice
     /**
      * Add status disable
      *
-     * @param $notice
+     * @param Notice $notice
      * @return bool
      */
 
