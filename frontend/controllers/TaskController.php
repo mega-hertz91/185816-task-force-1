@@ -9,16 +9,15 @@ use common\models\Comment;
 use common\models\Task;
 use common\models\User;
 use frontend\services\LocationService;
-use frontend\src\exceptions\StatusException;
-use frontend\src\status\CancelAction;
-use frontend\src\status\CompleteAction;
-use frontend\src\status\FailedAction;
-use frontend\src\status\RefuseAction;
-use frontend\src\status\WorkAction;
+use src\exceptions\StatusException;
+use src\status\CancelAction;
+use src\status\CompleteAction;
+use src\status\FailedAction;
+use src\status\RefuseAction;
+use src\status\WorkAction;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
-use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
@@ -41,7 +40,7 @@ class TaskController extends BaseController
      * @throws NotFoundHttpException
      */
 
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if (Yii::$app->request->get('id') && Yii::$app->request->get('id') !== null) {
             $this->task = Task::findOrFail(['id' => Yii::$app->request->get('id')]);

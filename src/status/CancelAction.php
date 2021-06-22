@@ -1,9 +1,9 @@
 <?php
 
 
-namespace frontend\src\status;
+namespace src\status;
 
-use frontend\src\exceptions\StatusException;
+use src\exceptions\StatusException;
 
 class CancelAction extends AvailableActions
 {

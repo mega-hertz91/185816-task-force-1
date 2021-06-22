@@ -1,17 +1,16 @@
 <?php
 
 use Faker\Factory;
-$faker = Factory::create();
 
 $count = 15;
+$faker = Factory::create('ru_RU');
 
 function getTask($faker) {
-    $faker = Factory::create();
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
     return [
         'category_id' => rand(1, 8),
-        'title' => $faker->sentence(6, true),
-        'description' => $faker->paragraph(3, true),
+        'title' => $faker->sentence,
+        'description' => $faker->text,
         'city_id' => rand(1, 100),
         'user_id' => 2,
         'executor_id' => '',

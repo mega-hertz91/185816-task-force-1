@@ -407,7 +407,7 @@ footer {
           justify-content: center; }
 
 .new-task {
-  width: 780px;
+  /*width: 780px;*/
   margin-right: 20px;
   background-color: #ffffff;
   margin-bottom: auto; }

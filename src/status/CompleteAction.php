@@ -1,12 +1,12 @@
 <?php
 
 
-namespace frontend\src\status;
+namespace src\status;
 
 
 use common\models\Task;
 use common\models\User;
-use frontend\src\exceptions\StatusException;
+use src\exceptions\StatusException;
 
 class CompleteAction extends AvailableActions
 {

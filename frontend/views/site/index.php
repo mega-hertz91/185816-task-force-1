@@ -127,7 +127,7 @@ $this->title = 'Task-force';
             <?php endforeach; ?>
         </div>
         <div class="landing-bottom-container">
-            <button type="button" class="button red-button">смотреть все задания</button>
+            <a class="button red-button" href="<?=Url::to(['tasks/index'])?>">смотреть все задания</a>
         </div>
     </div>
 </div>

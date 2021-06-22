@@ -1,7 +1,7 @@
 <?php
 
 
-namespace frontend\src\exceptions;
+namespace src\exceptions;
 
 use Exception;
 

@@ -1,12 +1,10 @@
 <?php
 
 use Faker\Factory;
-$faker = Factory::create();
-
+$faker = Factory::create('ru_RU');
 $count = 2;
 
 function getResponse($faker) {
-    $faker = Factory::create();
     $date = $faker->dateTimeInInterval('-1 year', '+1 year', null);
     return [
         'user_id' => 1,

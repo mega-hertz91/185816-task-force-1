@@ -1,8 +1,8 @@
 <?php
 
 use Faker\Factory;
-$faker = Factory::create();
 
+$faker = Factory::create('ru_RU');
 $count = 20;
 
 function getMessage($faker) {

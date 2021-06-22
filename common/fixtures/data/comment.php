@@ -2,8 +2,7 @@
 
 use Faker\Factory;
 
-$faker = Factory::create();
-
+$faker = Factory::create('en_US');
 $count = 10;
 
 function getComment($faker) {
