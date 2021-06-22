@@ -7,8 +7,8 @@
 use common\models\User;
 use frontend\forms\CompleteTaskForm;
 use frontend\forms\NewResponseForm;
-use frontend\models\Response;
-use frontend\models\Task;
+use common\models\Response;
+use common\models\Task;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
 $user = Yii::$app->user->identity;
 $form_response_model = new NewResponseForm();
 $form_complete_model = new CompleteTaskForm();
+$this->title = $task->title;
 ?>
 <div style="width: 1098px; margin: auto;">
     <?php if (Yii::$app->session->getFlash('success')): ?>
@@ -203,9 +204,8 @@ $form_complete_model = new CompleteTaskForm();
         <?php if ($user->getId() === $task->getUserId() || $user->getId() === $task->getExecutorId()): ?>
             <?php if ($task->isWorkStatus()) : ?>
                 <div id="chat-container">
-                    <!--                    добавьте сюда атрибут task с указанием в нем id текущего задания-->
                     <chat class="connect-desk__chat" task="<?= $task->id ?>" sender="<?= Yii::$app->user->id ?>"
-                          recipient="<?= $task->user->id ?>"></chat>
+                          recipient="<?= Yii::$app->user->id === $task->user_id ? $task->executor_id : $task->user_id ?>"></chat>
                 </div>
             <?php endif; ?>
         <?php endif; ?>
@@ -214,7 +214,7 @@ $form_complete_model = new CompleteTaskForm();
 <section class="modal response-form form-modal" id="response-form">
     <h2>Отклик на задание</h2>
     <?php $form_response = ActiveForm::begin(
-        ['action' => \yii\helpers\Url::toRoute(['/response/new/', 'task_id' => $task->id])]
+        ['action' => Url::toRoute(['/response/new/', 'task_id' => $task->id])]
     ) ?>
     <p>
         <?= $form_response->field($form_response_model, 'amount')->textInput(
@@ -282,7 +282,7 @@ $form_complete_model = new CompleteTaskForm();
     <button class="button__form-modal button" id="close-modal"
             type="button">Отмена
     </button>
-    <a href="<?= \yii\helpers\Url::toRoute(['/task/refuse/', 'id' => $task->id]) ?>"
+    <a href="<?= Url::toRoute(['/task/refuse/', 'id' => $task->id]) ?>"
        class="button__form-modal refusal-button button"
        type="button">Отказаться</a>
     <button class="form-modal-close" type="button">Закрыть</button>

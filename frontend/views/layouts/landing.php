@@ -11,7 +11,6 @@ use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
 
-
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -22,6 +21,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>
     <?php $this->head() ?>
 </head>
 <body class="landing">
@@ -62,7 +62,7 @@ AppAsset::register($this);
                 <a class="header__account-enter open-modal" data-for="enter-form">
                     <span>Вход</span></a>
                 или
-                <a href="<?=Url::to('singup')?>" class="header__account-registration">
+                <a href="<?= Url::to(['register/index'])?>" class="header__account-registration">
                     Регистрация
                 </a>
             </div>
@@ -83,28 +83,7 @@ AppAsset::register($this);
                     mail@taskforce.com
                 </p>
             </div>
-            <div class="page-footer__links">
-                <ul class="links__list">
-                    <li class="links__item">
-                        <a href="">Задания</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Мой профиль</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Исполнители</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Регистрация</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Создать задание</a>
-                    </li>
-                    <li class="links__item">
-                        <a href="">Справка</a>
-                    </li>
-                </ul>
-            </div>
+            <?= Yii::$app->view->renderFile('@app/views/layouts/menu/footer-menu.php')?>
             <div class="page-footer__copyright">
                 <a href="https://htmlacademy.ru">
                     <img class="copyright-logo"
@@ -117,7 +96,9 @@ AppAsset::register($this);
     </footer>
     <section class="modal enter-form form-modal" id="enter-form" style="bottom: auto">
         <h2>Вход на сайт</h2>
-        <?php $form = ActiveForm::begin()?>
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['login/index'])
+        ])?>
         <?=$form->field($this->context->model, 'email',
             [
                 'inputOptions' => ['class' => 'input textarea', 'placeholder' => 'kumarm@mail.ru', 'style' => 'width: 100%']
@@ -131,6 +112,10 @@ AppAsset::register($this);
         <button class="button button__registration" type="submit">Войти</button>
         <?php ActiveForm::end()?>
         <button class="form-modal-close" type="button">Закрыть</button>
+        <?= yii\authclient\widgets\AuthChoice::widget([
+            'baseAuthUrl' => ['site/auth'],
+            'popupMode' => false,
+        ]) ?>
     </section>
 </div>
 <div class="overlay"></div>

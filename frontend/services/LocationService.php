@@ -2,9 +2,10 @@
 
 namespace frontend\services;
 
+use Exception;
 use GuzzleHttp\Client;
+use Yii;
 use yii\helpers\Json;
-use yii\web\Request;
 
 class LocationService
 {
@@ -31,7 +32,7 @@ class LocationService
      * @return array
      */
 
-    protected function sendResponse(string $address)
+    protected function sendResponse(string $address): array
     {
         $response = $this->client->request('GET', $this->uri, [
             'query' => [
@@ -44,28 +45,49 @@ class LocationService
         return Json::decode($response->getBody()->getContents(), true);
     }
 
-    public function getResponse($address)
+    /**
+     * @param $address
+     * @return string
+     * @throws Exception
+     */
+
+    public function getResponse(string $address): string
     {
         $data = $this->sendResponse($address);
+        $cache = Yii::$app->redis->get(base64_encode($address));
         $result = [];
 
         if (!isset($data)) {
-            throw new \Exception('Результата не найдено');
+            throw new Exception('Результата не найдено');
         }
 
         foreach ($data['response']['GeoObjectCollection']['featureMember'] as $item) {
             array_push($result, $item['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']);
         }
 
-        return Json::encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        if ($cache !== null) {
+            return $cache;
+        } else {
+            Yii::$app->redis->set(base64_encode($address),
+                Json::encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+            );
+
+            return Json::encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        }
     }
 
-    public function getCoords($address)
+    /**
+     * @param $address
+     * @return string
+     * @throws Exception
+     */
+
+    public function getCoords(string $address): string
     {
         $data = $this->sendResponse($address);
 
         if (!isset($data)) {
-            throw new \Exception('Результата не найдено');
+            throw new Exception('Результата не найдено');
         }
 
         return Json::encode($data['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);

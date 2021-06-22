@@ -3,37 +3,69 @@
 
 namespace frontend\controllers;
 
-
+use common\models\Category;
+use common\models\Comment;
+use common\models\User;
 use frontend\forms\UsersForm;
-use frontend\models\Category;
-use frontend\models\CategoryExecutor;
-use frontend\models\Comment;
-use frontend\models\User;
 use frontend\providers\UsersProvider;
-use frontend\services\TimeService;
 use Yii;
+use yii\data\Sort;
 use yii\web\NotFoundHttpException;
 
 class UsersController extends BaseController
 {
+    /**
+     * View all users
+     *
+     * @return string
+     */
 
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $form = new UsersForm();
-        $request = Yii::$app->request->post();
 
-        if ($form->load($request)) {
-            $form->attributes = $request['UsersForm'];
-        }
+        $sort = new Sort([
+            'attributes' => [
+                'rating' => [
+                    'asc' => ['u.rating' => SORT_ASC],
+                    'desc' => ['u.rating' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Рейтингу',
+                ],
+                'order' => [
+                    'asc' => ['order' => SORT_ASC],
+                    'desc' => ['order' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Числу заказов',
+                ],
+                'popular' => [
+                    'asc' => ['popular' => SORT_ASC],
+                    'desc' => ['popular' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Популярности',
+                ],
+            ],
+        ]);
+
+        $form->load(Yii::$app->getRequest()->get());
 
         return $this->render('index', [
-            'users' => UsersProvider::getContent($form->attributes),
+            'users' => UsersProvider::getContent($form->attributes, $sort),
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column(),
-            'model' => $form
+            'usersSearchForm' => $form,
+            'sort' => $sort
         ]);
     }
 
-    public function actionView($id)
+    /**
+     * View current user
+     *
+     * @param int $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+
+    public function actionView(int $id): string
     {
         $user = User::findOne($id);
         if (Comment::find()->where(['executor_id' => $id])->exists()) {

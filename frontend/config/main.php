@@ -25,6 +25,16 @@ return [
     ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'authClientCollection' => [
+            'class' => yii\authclient\Collection::class,
+            'clients' => [
+                'vkontakte' => [
+                    'class' => 'yii\authclient\clients\VKontakte',
+                    'clientId' => '7515660',
+                    'clientSecret' => 'bMEQFPcHlgweqppYYSLJ',
+                ],
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'cookieValidationKey' => 'asdasdas',
@@ -33,7 +43,7 @@ return [
             ]
         ],
         'user' => [
-            'identityClass' => \frontend\models\User::class,
+            'identityClass' => \common\models\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -57,20 +67,39 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'tasks/view/<id:\d+>' => 'tasks/view',
+                '/' => 'site/index',
+                'tasks' => 'tasks/index',
+                'tasks/<id:\d+>' => 'tasks/view',
                 'task/cancel/<id:\d+>' => 'task/cancel',
                 'task/work/<id:\d+>/<executor:\d+>' => 'task/work',
                 'task/refuse/<id:\d+>' => 'task/refuse',
                 'task/complete/<id:\d+>' => 'task/complete',
-                'users/view/<id:\d+>' => 'users/view',
+                'users' => 'users/index',
+                'users/<id:\d+>' => 'users/view',
+                'users/sort/<sort:>' => 'users/sort',
                 'response/new/<task_id:\d+>' => 'response/new',
                 'response/cancel/<id:\d+>' => 'response/cancel',
+                'login' => 'login/index',
+                'logout' => 'logout/index',
+                'register' => 'register/index',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/messages'
                 ],
-                'api/messages/task/<id:\d+>' => 'api/messages/task'
+                'api/messages/task/<id:\d+>' => 'api/messages/task',
+                'event/disable/<id:\d+>' => 'event/disable'
             ],
+        ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'password' => 'taskforce',
+            'port' => 6379,
+            'database' => 0,
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true,
         ],
     ],
     'params' => $params,

@@ -9,7 +9,7 @@ for (var i = 0; i < openModalLinks.length; i++) {
     var modalId = event.currentTarget.getAttribute("data-for");
 
     var modal = document.getElementById(modalId);
-    modal.setAttribute("style", "display: block; bottom: auto");
+    modal.setAttribute("style", "display: block");
     overlay.setAttribute("style", "display: block");
 
   });
@@ -28,7 +28,9 @@ for (var j = 0; j < closeModalLinks.length; j++) {
   closeModalLink.addEventListener("click", closeModal)
 }
 
-document.getElementById('close-modal').addEventListener("click", closeModal);
+if(document.getElementById('close-modal')) {
+  document.getElementById('close-modal').addEventListener("click", closeModal);
+}
 
 var starRating = document.getElementsByClassName("completion-form-star");
 

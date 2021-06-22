@@ -1,15 +1,16 @@
 <?php
 /**
- * @var frontend\models\Category $categories
- * @var frontend\models\Task $tasks
+ * @var common\models\Category $categories
+ * @var DataProvider $tasks
+ * @var Task $task
+ * @var TasksForm $taskForm
  **/
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use frontend\helpers\TemplateForm;
-use yii\helpers\Url;
-use frontend\models\Response;
+use common\models\Task;
+use frontend\forms\TasksForm;
+use yii\debug\models\timeline\DataProvider;
 
+$this->title = 'Задания';
 ?>
 <div style="width: 1098px; margin: auto;">
     <?php if (Yii::$app->session->getFlash('success')): ?>
@@ -28,21 +29,9 @@ use frontend\models\Response;
                 <h1>Новые задания</h1>
             <?php endif ?>
             <?php foreach ($tasks->getModels() as $task) : ?>
-                <div class="new-task__card">
-                    <div class="new-task__title">
-                        <a href="<?=Url::to(['tasks/view', 'id' => $task->id])?>" class="link-regular">
-                            <h2><?= Html::encode($task->title) ?></h2>
-                        </a>
-                        <a class="new-task__type link-regular" href="#"><p><?= Html::encode($task->category->category_name) ?></p></a>
-                    </div>
-                    <div class="new-task__icon new-task__icon--translation"></div>
-                    <p class="new-task_description">
-                        <?= Html::encode($task->description) ?>
-                    </p>
-                    <b class="new-task__price new-task__price--translation"><?= Html::encode($task->budget) ?><b> ₽</b></b>
-                    <p class="new-task__place"><?= Html::encode($task->city->name) ?></p>
-                    <span class="new-task__time"><?= Html::encode(Yii::$app->formatter->asDate($task->created_at)) ?></span>
-                </div>
+               <?= $this->renderFile(__DIR__ . '/components/task-card.php', [
+                   'task' => $task
+                ]) ?>
             <?php endforeach; ?>
             <?= yii\widgets\ListView::widget([
                 'dataProvider' => $tasks,
@@ -50,40 +39,8 @@ use frontend\models\Response;
             ]); ?>
         </div>
     </section>
-    <section class="search-task">
-        <div class="search-task__wrapper">
-            <?php $form = ActiveForm::begin([
-                'options' => ['class' => 'search-task__form']
-            ]) ?>
-            <fieldset class="search-task__categories">
-                <legend>Категории</legend>
-                    <?= Html::activeCheckboxList($model, 'categories', $categories, ['item' =>
-                        function ($index, $label, $name, $checked, $value) {
-                            return TemplateForm::getTemplateFormCategory($label, $value, $name);
-                        }]);
-                    ?>
-                </fieldset>
-                <fieldset class="search-task__categories">
-                    <legend>Дополнительно</legend>
-                    <?= Html::activeCheckboxList($model, 'additionally',
-                        ['response' => 'Без откликов', 'telework' => 'Удаленная работа'],
-                        ['item' => function ($index, $label, $name, $checked, $value) {
-                            return TemplateForm::getTemplateFormCategory($label, $value, $name);
-                        }]);
-                    ?>
-                </fieldset>
-                <label class="search-task__name" for="tasksform-period">Период</label>
-                <?=Html::activeDropDownList($model, 'period', [
-                    '0' => 'За все время',
-                    '86000' => 'За день',
-                    '604800' => 'За неделю',
-                    '2419200' => 'За менсяц'],
-                    ['class' => 'multiple-select input']);
-                ?>
-                <label class="search-task__name" for="tasksform-search">Поиск по названию</label>
-                <?= Html::activeInput('search', $model, 'search', ['class' => 'input-middle input']) ?>
-                <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
-                <?php $form = ActiveForm::end() ?>
-            </div>
-        </section>
-    </div>
+    <?= $this->renderFile(__DIR__ . '/components/asideFilter.php', [
+        'taskForm' => $taskForm,
+        'categories' => $categories
+    ])?>
+</div>

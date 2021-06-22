@@ -3,16 +3,19 @@
 
 namespace frontend\controllers;
 
-use yii\web\Controller;
-use yii\filters\AccessControl;
+use frontend\extensions\models\NoticeExtension;
 use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
 
 class BaseController extends Controller
 {
+    public $notices;
+
     public function behaviors()
     {
         return [
-            'access' =>  [
+            'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
@@ -25,5 +28,19 @@ class BaseController extends Controller
                 }
             ]
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        NoticeExtension::CATEGORY_RESPONSE;
+        $this->notices = NoticeExtension::find()
+            ->where(
+                [
+                    'user_id' => Yii::$app->user->id,
+                    'visible' => true
+                ]
+            )
+            ->all();
+        return parent::beforeAction($action);
     }
 }

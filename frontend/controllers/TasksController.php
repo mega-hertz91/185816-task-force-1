@@ -3,34 +3,29 @@
 namespace frontend\controllers;
 
 use frontend\forms\TasksForm;
-use frontend\models\Category;
-use frontend\models\Response;
-use frontend\models\Task;
-use frontend\models\User;
+use common\models\Category;
+use common\models\Task;
+use common\models\User;
 use Yii;
 use frontend\providers\TasksProvider;
-use yii\debug\panels\EventPanel;
 use yii\web\NotFoundHttpException;
 
 class TasksController extends BaseController
 {
-    public function actionIndex()
+    public function actionIndex(): string
     {
-        $form = new TasksForm();
-        $request = Yii::$app->request->post();
+        $taskForm = new TasksForm();
 
-        if ($form->load($request)) {
-            $form->attributes = $request['TasksForm'];
-        }
+        $taskForm->load(Yii::$app->getRequest()->get());
 
         return $this->render('index', [
-            'tasks' => TasksProvider::getContent($form->attributes),
-            'model' => $form,
+            'tasks' => TasksProvider::getContent($taskForm->attributes, false),
+            'taskForm' => $taskForm,
             'categories' => Category::find()->select(['category_name'])->indexBy('id')->column()
         ]);
     }
 
-    public function actionView($id)
+    public function actionView($id): string
     {
         /**
          * @var User $user
